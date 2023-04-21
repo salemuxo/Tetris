@@ -1,0 +1,15 @@
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\terminal8x8.png
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\Tetris.exe.config
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\Tetris.exe
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\Tetris.pdb
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\OpenTK.dll
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\RLNET.dll
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\OpenTK.xml
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\OpenTK.dll.config
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\bin\Debug\RLNET.pdb
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.csproj.AssemblyReference.cache
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.csproj.SuggestedBindingRedirects.cache
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.csproj.CopyComplete
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.exe
+C:\Users\s.stockdale1\CS30\RLNet\Tetris\obj\Debug\Tetris.pdb
