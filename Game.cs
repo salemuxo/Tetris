@@ -25,9 +25,11 @@ namespace Tetris
 
         public static void Main(string[] args)
         {
-            Board = new Board(_boardWidth, _boardHeight);
             Random = new Random();
-            TimeHandler.Start();
+            Board = new Board(_boardWidth, _boardHeight);
+
+            TimeManager.Initialize();
+            TetrominoController.Initialize();
 
             // create root console
             _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
@@ -43,23 +45,19 @@ namespace Tetris
             _rootConsole.Run();
         }
 
-        // update with deltaTime
-        public static void Update(TimeSpan deltaTime)
-        {
-            Board.Update();
-        }
-
         // RLNET Update event handler
         private static void OnRootConsoleUpdate(object sender, UpdateEventArgs e)
         {
+            TimeManager.Update();
             InputHandler.HandleInput(_rootConsole);
+            TetrominoController.Update();
+            Board.Update(TimeManager.DeltaTime);
         }
 
         // RLNET Render event handler
         private static void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
-            _boardConsole.Clear();
-            _boardConsole.Print(0, 0, TimeHandler.Tick.ToString(), RLColor.White);
+            Board.Draw(_boardConsole);
             // blit subconsoles to root console
             RLConsole.Blit(_boardConsole, 0, 0, _boardWidth, _boardHeight,
                 _rootConsole, 1, 1);

@@ -1,6 +1,7 @@
 ﻿using RLNET;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
+using Tetris.Systems;
 
 namespace Tetris.Core
 {
@@ -8,27 +9,40 @@ namespace Tetris.Core
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public List<Tile> StaticTiles { get; set; }
-        public List<Tetromino> FallingTetrominos { get; set; }
+        public Cell[,] Cells { get; set; }
 
         public Board(int width, int height)
         {
             Width = width;
             Height = height;
-            StaticTiles = new List<Tile>();
-            FallingTetrominos = new List<Tetromino>();
+            Cells = new Cell[Width, Height];
+
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    Cells[x, y] = new Cell(x, y);
+                }
+            }
         }
 
-        public void Update()
+        private double elapsedTime = 0;
+
+        public void Update(double deltaTime)
         {
-            foreach (var tetromino in FallingTetrominos)
+            elapsedTime += deltaTime;
+            if (elapsedTime >= TimeManager.UpdateTime)
             {
-                tetromino.MoveDown();
+                elapsedTime = 0;
             }
         }
 
         public void Draw(RLConsole boardConsole)
         {
+            foreach (Cell cell in Cells)
+            {
+                cell.Draw(boardConsole);
+            }
         }
     }
 }

@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tetris.Core
+﻿namespace Tetris.Core
 {
     public class Tetromino
     {
-        public List<Tile> Tiles { get; set; }
+        public bool[,] Body { get; private set; }
+        public int Width => Body.GetLength(0);
+        public int Height => Body.GetLength(1);
 
-        public Tetromino()
+        public Tetromino(bool[,] body)
         {
-            int shape = Game.Random.Next(7);
-            Tiles = new List<Tile>();
-        }
-
-        public void MoveDown()
-        {
-            foreach (var tile in Tiles)
-            {
-            }
+            Body = body;
         }
     }
 }

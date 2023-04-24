@@ -1,5 +1,6 @@
 ﻿using RLNET;
 using System.Diagnostics;
+using Tetris.Core;
 
 namespace Tetris.Systems
 {
@@ -21,18 +22,22 @@ namespace Tetris.Systems
                 {
                     case RLKey.Up:
                         {
+                            TetrominoController.Move(Direction.Up);
                             break;
                         }
                     case RLKey.Left:
                         {
+                            TetrominoController.Move(Direction.Left);
                             break;
                         }
                     case RLKey.Down:
                         {
+                            TetrominoController.Move(Direction.Down);
                             break;
                         }
                     case RLKey.Right:
                         {
+                            TetrominoController.Move(Direction.Right);
                             break;
                         }
                     case RLKey.Space:
@@ -44,7 +49,6 @@ namespace Tetris.Systems
                             break;
                         }
                 }
-                Debug.WriteLine(keyPress.Key);
             }
         }
 
