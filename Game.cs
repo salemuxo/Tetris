@@ -33,7 +33,7 @@ namespace Tetris
 
             // create root console
             _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
-                8, 8, 2f, _consoleTitle);
+                8, 8, 4f, _consoleTitle);
 
             // create subconsoles
             _boardConsole = new RLConsole(_boardWidth, _boardHeight);
@@ -50,7 +50,6 @@ namespace Tetris
         {
             TimeManager.Update();
             InputHandler.HandleInput(_rootConsole);
-            TetrominoController.Update();
             Board.Update(TimeManager.DeltaTime);
         }
 
