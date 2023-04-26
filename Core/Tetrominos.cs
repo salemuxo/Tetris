@@ -6,88 +6,178 @@ using System.Threading.Tasks;
 
 namespace Tetris.Core
 {
-    public static class Tetrominos
+    public class I : Tetromino
     {
-        public static Tetromino GetI()
+        public I()
         {
-            return new Tetromino(new bool[,]
+            bodies = new List<bool[,]>()
             {
-                { true, true, true, true }
-            }, 1, 0);
+                new bool[,]
+                {
+                    { true, true, true, true }
+                },
+                new bool [,]
+                {
+                    { true },
+                    { true },
+                    { true },
+                    { true }
+                },
+                new bool[,]
+                {
+                    { true, true, true, true }
+                },
+                new bool [,]
+                {
+                    { true },
+                    { true },
+                    { true },
+                    { true }
+                }
+            };
+            Body = bodies[rotation];
         }
 
-        public static Tetromino GetO()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "I";
+        }
+    }
+
+    public class O : Tetromino
+    {
+        public O()
+        {
+            Body = new bool[,]
             {
                 { true, true },
                 { true, true }
-            }, 1, 0);
+            };
         }
 
-        public static Tetromino GetT()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "O";
+        }
+    }
+
+    public class T : Tetromino
+    {
+        public T()
+        {
+            Body = new bool[,]
             {
                 { true, true, true },
                 { false, true, false }
-            }, 1, 0);
+            };
         }
 
-        public static Tetromino GetJ()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "T";
+        }
+    }
+
+    public class J : Tetromino
+    {
+        public J()
+        {
+            Body = new bool[,]
             {
                 { true, false, false },
                 { true, true, true }
-            }, 1, 0);
+            };
         }
 
-        public static Tetromino GetL()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "J";
+        }
+    }
+
+    public class L : Tetromino
+    {
+        public L()
+        {
+            Body = new bool[,]
             {
                 { false, false, true },
                 { true, true, true }
-            }, 1, 0);
+            };
         }
 
-        public static Tetromino GetS()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "L";
+        }
+    }
+
+    public class S : Tetromino
+    {
+        public S()
+        {
+            Body = new bool[,]
             {
                 { false, true, true },
                 { true, true, false }
-            }, 1, 0);
+            };
         }
 
-        public static Tetromino GetZ()
+        public override void Rotate()
         {
-            return new Tetromino(new bool[,]
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "S";
+        }
+    }
+
+    public class Z : Tetromino
+    {
+        public Z()
+        {
+            Body = new bool[,]
             {
                 { true, true, false },
                 { false, true, true }
-            }, 1, 0);
-        }
-
-        public static List<Tetromino> GetTetrominos()
-        {
-            List<Tetromino> tetrominos = new List<Tetromino>
-            {
-                GetI(), GetO(), GetT(), GetJ(), GetL(), GetS(), GetZ()
             };
-            Shuffle<Tetromino>(tetrominos);
-            return tetrominos;
         }
 
-        private static void Shuffle<T>(List<T> list)
+        public override void Rotate()
         {
-            int n = list.Count;
-            for (int i = 0; i < (n - 1); i++)
-            {
-                int r = i + Game.Random.Next(n - i);
-                (list[i], list[r]) = (list[r], list[i]);
-            }
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "Z";
         }
     }
 }

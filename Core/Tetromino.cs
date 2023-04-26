@@ -1,24 +1,27 @@
-﻿using RLNET;
-using System.Diagnostics;
+﻿using OpenTK.Graphics.OpenGL;
+using RLNET;
+using System.Collections.Generic;
 using Tetris.Systems;
 
 namespace Tetris.Core
 {
-    public class Tetromino
+    public abstract class Tetromino
     {
-        public bool[,] Body { get; private set; }
+        public bool[,] Body { get; protected set; }
         public int Width => Body.GetLength(0);
         public int Height => Body.GetLength(1);
 
         // coords of top left corner
-        public static int X { get; set; }
-        public static int Y { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
-        public Tetromino(bool[,] body, int x, int y)
+        protected int rotation = 0;
+        protected List<bool[,]> bodies;
+
+        public void Initialize()
         {
-            Body = body;
-            X = x;
-            Y = y;
+            X = 1;
+            Y = 0;
             SetCells();
         }
 
@@ -52,7 +55,9 @@ namespace Tetris.Core
             }
         }
 
-        private void SetPos(int x, int y)
+        public abstract void Rotate();
+
+        public void SetPos(int x, int y)
         {
             ResetCells();
             X = x;
@@ -144,7 +149,7 @@ namespace Tetris.Core
             }
         }
 
-        private void SetCells()
+        protected void SetCells()
         {
             for (int x = 0; x < Width; x++)
             {
