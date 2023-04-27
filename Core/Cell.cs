@@ -6,6 +6,7 @@ namespace Tetris.Core
     public class Cell : IDrawable
     {
         public bool IsTile { get; set; }
+        public bool IsBorder { get; set; }
 
         public Cell(int x, int y)
         {
@@ -15,6 +16,13 @@ namespace Tetris.Core
             Symbol = 'T';
 
             IsTile = false;
+            IsBorder = false;
+        }
+
+        public void SetBorder()
+        {
+            IsBorder = true;
+            IsTile = true;
         }
 
         // IDrawable implementation

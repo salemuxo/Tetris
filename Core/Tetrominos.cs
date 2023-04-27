@@ -14,25 +14,31 @@ namespace Tetris.Core
             {
                 new bool[,]
                 {
-                    { true, true, true, true }
+                    { false, false, false, false },
+                    { true, true, true, true },
+                    { false, false, false, false },
+                    { false, false, false, false }
                 },
                 new bool [,]
                 {
-                    { true },
-                    { true },
-                    { true },
-                    { true }
+                    { false, false, true, false },
+                    { false, false, true, false },
+                    { false, false, true, false },
+                    { false, false, true, false }
                 },
                 new bool[,]
                 {
-                    { true, true, true, true }
+                    { false, false, false, false },
+                    { false, false, false, false },
+                    { true, true, true, true },
+                    { false, false, false, false }
                 },
                 new bool [,]
                 {
-                    { true },
-                    { true },
-                    { true },
-                    { true }
+                    { false, true, false, false },
+                    { false, true, false, false },
+                    { false, true, false, false },
+                    { false, true, false, false }
                 }
             };
             Body = bodies[rotation];
@@ -75,11 +81,35 @@ namespace Tetris.Core
     {
         public T()
         {
-            Body = new bool[,]
+            bodies = new List<bool[,]>()
             {
-                { true, true, true },
-                { false, true, false }
+                new bool[,]
+                {
+                    { false, true, false },
+                    { true, true, true },
+                    { false, false, false }
+                },
+                new bool[,]
+                {
+                    { false, true, false },
+                    { false, true, true },
+                    { false, true, false }
+                },
+                new bool[,]
+                {
+                    { false, false, false },
+                    { true, true, true },
+                    { false, true, false }
+                },
+                new bool[,]
+                {
+                    { false, true, false },
+                    { true, true, false },
+                    { false, true, false }
+                }
             };
+
+            Body = bodies[rotation];
         }
 
         public override void Rotate()
@@ -93,15 +123,39 @@ namespace Tetris.Core
         }
     }
 
-    public class J : Tetromino
+    public class L : Tetromino
     {
-        public J()
+        public L()
         {
-            Body = new bool[,]
+            bodies = new List<bool[,]>()
             {
-                { true, false, false },
-                { true, true, true }
+                new bool[,]
+                {
+                    { true, false, false},
+                    { true, true, true },
+                    { false, false, false }
+                },
+                new bool[,]
+                {
+                    { false, true, true },
+                    { false, true, false },
+                    { false, true, false }
+                },
+                new bool[,]
+                {
+                    { false, false, false },
+                    { true, true, true },
+                    { false, false, true }
+                },
+                new bool[,]
+                {
+                    { false, true, false },
+                    { false, true, false },
+                    { true, true, false }
+                }
             };
+
+            Body = bodies[rotation];
         }
 
         public override void Rotate()
@@ -115,15 +169,39 @@ namespace Tetris.Core
         }
     }
 
-    public class L : Tetromino
+    public class J : Tetromino
     {
-        public L()
+        public J()
         {
-            Body = new bool[,]
+            bodies = new List<bool[,]>
             {
-                { false, false, true },
-                { true, true, true }
+                new bool[,]
+                {
+                    { false, false, true},
+                    { true, true, true },
+                    { false, false, false }
+                },
+                new bool[,]
+                {
+                    { false, true, false },
+                    { false, true, false },
+                    { false, true, true }
+                },
+                new bool[,]
+                {
+                    { false, false, false },
+                    { true, true, true },
+                    { true, false , false }
+                },
+                new bool[,]
+                {
+                    { true, true, false },
+                    { false, true, false },
+                    { false, true, false }
+                }
             };
+
+            Body = bodies[rotation];
         }
 
         public override void Rotate()
@@ -141,6 +219,36 @@ namespace Tetris.Core
     {
         public S()
         {
+            bodies = new List<bool[,]>()
+            {
+                new bool[,]
+                {
+                    { false, true, true },
+                    { true, true, false },
+                    { false, false, false }
+                },
+                new bool[,]
+                {
+                    { false, true, false },
+                    { false, true, true },
+                    { false, false, true }
+                },
+                new bool[,]
+                {
+                    { false, false, false },
+                    { false, true, true },
+                    { true, true, false }
+                },
+                new bool[,]
+                {
+                    { true, false, false },
+                    { true, true, false },
+                    { false, true, false }
+                }
+            };
+
+            Body = bodies[rotation];
+
             Body = new bool[,]
             {
                 { false, true, true },
@@ -163,6 +271,36 @@ namespace Tetris.Core
     {
         public Z()
         {
+            bodies = new List<bool[,]>()
+            {
+                new bool[,]
+                {
+                    { true, true, false },
+                    { false, true, true },
+                    { false, false, false }
+                },
+                new bool[,]
+                {
+                    { false, false, true },
+                    { false, true, true },
+                    { false, true, false }
+                },
+                new bool[,]
+                {
+                    { false, false, false },
+                    { true, true, false },
+                    { false, true, true }
+                },
+                new bool[,]
+                {
+                    { false, true, false},
+                    { true, true, false },
+                    { true, false, false }
+                }
+            };
+
+            Body = bodies[rotation];
+
             Body = new bool[,]
             {
                 { true, true, false },

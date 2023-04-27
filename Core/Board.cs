@@ -1,7 +1,4 @@
 ﻿using RLNET;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using Tetris.Systems;
 
 namespace Tetris.Core
@@ -34,7 +31,7 @@ namespace Tetris.Core
             elapsedTime += deltaTime;
             if (elapsedTime >= TimeManager.UpdateTime)
             {
-                TetrominoController.Move(Direction.Down);
+                //TetrominoController.Move(Direction.Down);
                 elapsedTime = 0;
             }
         }

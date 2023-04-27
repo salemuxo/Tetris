@@ -49,7 +49,7 @@ namespace Tetris.Systems
                 new J(), new L(),
                 new S(), new Z()
             };
-            Shuffle<Tetromino>(tetrominos);
+            //Shuffle<Tetromino>(tetrominos);
             return tetrominos;
         }
 

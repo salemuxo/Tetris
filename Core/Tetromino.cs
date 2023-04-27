@@ -1,6 +1,8 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using RLNET;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Tetris.Systems;
 
 namespace Tetris.Core
@@ -8,8 +10,8 @@ namespace Tetris.Core
     public abstract class Tetromino
     {
         public bool[,] Body { get; protected set; }
-        public int Width => Body.GetLength(0);
-        public int Height => Body.GetLength(1);
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
 
         // coords of top left corner
         public int X { get; set; }
@@ -20,6 +22,9 @@ namespace Tetris.Core
 
         public void Initialize()
         {
+            Width = Body.GetLength(0);
+            Height = Body.GetLength(1);
+            SetSize();
             X = 1;
             Y = 0;
             SetCells();
@@ -57,12 +62,13 @@ namespace Tetris.Core
 
         public abstract void Rotate();
 
-        public void SetPos(int x, int y)
+        private void SetPos(int x, int y)
         {
             ResetCells();
             X = x;
             Y = y;
             SetCells();
+            Debug.WriteLine($"{X}, {Y}");
         }
 
         // check if movement is valid (no tile or boundary in way)
@@ -173,6 +179,34 @@ namespace Tetris.Core
                     Game.Board.Cells[X + x, Y + y].IsTile = false;
                 }
             }
+        }
+
+        private void SetSize()
+        {
+            if (GetColumn(Body, Width - 1).All(cell => cell == false))
+            {
+                Height--;
+            }
+
+            if (GetRow(Body, Height - 1).All(cell => cell == false))
+            {
+                Width--;
+            }
+            Debug.WriteLine($"{Width}, {Height}");
+        }
+
+        private bool[] GetColumn(bool[,] matrix, int columnNumber)
+        {
+            return Enumerable.Range(0, matrix.GetLength(0))
+                    .Select(x => matrix[x, columnNumber])
+                    .ToArray();
+        }
+
+        private bool[] GetRow(bool[,] matrix, int rowNumber)
+        {
+            return Enumerable.Range(0, matrix.GetLength(1))
+                    .Select(x => matrix[rowNumber, x])
+                    .ToArray();
         }
     }
 }
