@@ -20,6 +20,15 @@ namespace Tetris.Systems
             Tetromino.Move(direction);
         }
 
+        public static void NoMoveDown()
+        {
+            for (int y = 0; y < Tetromino.Height; y++)
+            {
+                Game.Board.CheckLine(Tetromino.Y + y);
+            }
+            CycleTetromino();
+        }
+
         public static void CycleTetromino()
         {
             if (Queue.Count > 0)
@@ -43,11 +52,15 @@ namespace Tetris.Systems
 
         private static List<Tetromino> GetTetrominos()
         {
+            //List<Tetromino> tetrominos = new List<Tetromino>
+            //{
+            //    new I(), new O(), new T(),
+            //    new J(), new L(),
+            //    new S(), new Z()
+            //};
             List<Tetromino> tetrominos = new List<Tetromino>
             {
-                new I(), new O(), new T(),
-                new J(), new L(),
-                new S(), new Z()
+                new I(), new O()
             };
             Shuffle<Tetromino>(tetrominos);
             return tetrominos;

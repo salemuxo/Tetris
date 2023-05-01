@@ -10,32 +10,10 @@ namespace Tetris.Core
     {
         public I()
         {
-            bodies = new List<bool[,]>()
+            Body = new bool[,]
             {
-                new bool[,]
-                {
-                    { true, true, true, true }
-                },
-                new bool [,]
-                {
-                    { true },
-                    { true },
-                    { true },
-                    { true }
-                },
-                new bool[,]
-                {
-                    { true, true, true, true }
-                },
-                new bool [,]
-                {
-                    { true },
-                    { true },
-                    { true },
-                    { true }
-                }
+                { true, true, true, true }
             };
-            Body = bodies[rotation];
         }
 
         public override void Rotate()

@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using RLNET;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Tetris.Systems;
 
 namespace Tetris.Core
@@ -51,7 +52,7 @@ namespace Tetris.Core
             else if (direction == Direction.Down)
             {
                 SetCells();
-                TetrominoController.CycleTetromino();
+                TetrominoController.NoMoveDown();
             }
         }
 
@@ -72,7 +73,7 @@ namespace Tetris.Core
             {
                 case Direction.Left:
                     {
-                        if (X > 0 && !IsTileOnSide(direction))
+                        if (X > 0 && CheckValidPos(X - 1, Y))
                         {
                             return true;
                         }
@@ -80,7 +81,7 @@ namespace Tetris.Core
                     }
                 case Direction.Down:
                     {
-                        if (Y + Height < Game.Board.Height && !IsTileOnSide(direction))
+                        if (Y + Height < Game.Board.Height && CheckValidPos(X, Y + 1))
                         {
                             return true;
                         }
@@ -88,7 +89,7 @@ namespace Tetris.Core
                     }
                 case Direction.Right:
                     {
-                        if (X + Width < Game.Board.Width && !IsTileOnSide(direction))
+                        if (X + Width < Game.Board.Width && CheckValidPos(X + 1, Y))
                         {
                             return true;
                         }
@@ -101,52 +102,22 @@ namespace Tetris.Core
             }
         }
 
-        // check for cell containing tile on given side of tetromino
-        private bool IsTileOnSide(Direction direction)
+        private bool CheckValidPos(int newX, int newY)
         {
-            switch (direction)
+            ResetCells();
+            for (int x = 0; x < Width; x++)
             {
-                case Direction.Left:
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Body[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
                     {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            if (Game.Board.Cells[X - 1, Y + y].IsTile
-                                && Game.Board.Cells[X, Y + y].IsTile)
-                            {
-                                return true;
-                            }
-                        }
+                        SetCells();
                         return false;
                     }
-                case Direction.Down:
-                    {
-                        for (int x = 0; x < Width; x++)
-                        {
-                            if (Game.Board.Cells[X + x, Y + Height].IsTile
-                                && Game.Board.Cells[X + x, Y + Height - 1].IsTile)
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                case Direction.Right:
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            if (Game.Board.Cells[X + Width, Y + y].IsTile
-                                && Game.Board.Cells[X + Width - 1, Y + y].IsTile)
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                default:
-                    {
-                        return false;
-                    }
+                }
             }
+            SetCells();
+            return true;
         }
 
         protected void SetCells()
@@ -170,7 +141,10 @@ namespace Tetris.Core
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    Game.Board.Cells[X + x, Y + y].IsTile = false;
+                    if (Body[x, y])
+                    {
+                        Game.Board.Cells[X + x, Y + y].IsTile = false;
+                    }
                 }
             }
         }
