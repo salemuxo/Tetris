@@ -68,7 +68,6 @@ namespace Tetris.Core
             X = x;
             Y = y;
             SetCells();
-            Debug.WriteLine($"{X}, {Y}");
         }
 
         // check if movement is valid (no tile or boundary in way)
@@ -183,26 +182,36 @@ namespace Tetris.Core
 
         private void SetSize()
         {
-            if (GetColumn(Body, Width - 1).All(cell => cell == false))
-            {
-                Height--;
-            }
+            int height = Height;
+            int width = Width;
 
-            if (GetRow(Body, Height - 1).All(cell => cell == false))
+            for (int y = 0; y < height; y++)
             {
-                Width--;
+                if (GetRow(Body, y).All(cell => cell == false))
+                {
+                    Debug.WriteLine($"Row {y} is blank");
+                    Height--;
+                }
+            }
+            for (int x = 0; x < width; x++)
+            {
+                if (GetColumn(Body, x).All(cell => cell == false))
+                {
+                    Debug.WriteLine($"Column {x} is blank");
+                    Width--;
+                }
             }
             Debug.WriteLine($"{Width}, {Height}");
         }
 
-        private bool[] GetColumn(bool[,] matrix, int columnNumber)
+        private bool[] GetRow(bool[,] matrix, int columnNumber)
         {
             return Enumerable.Range(0, matrix.GetLength(0))
                     .Select(x => matrix[x, columnNumber])
                     .ToArray();
         }
 
-        private bool[] GetRow(bool[,] matrix, int rowNumber)
+        private bool[] GetColumn(bool[,] matrix, int rowNumber)
         {
             return Enumerable.Range(0, matrix.GetLength(1))
                     .Select(x => matrix[rowNumber, x])
