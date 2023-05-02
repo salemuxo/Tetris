@@ -20,6 +20,11 @@ namespace Tetris.Systems
             Tetromino.Move(direction);
         }
 
+        public static void Rotate()
+        {
+            Tetromino.Rotate();
+        }
+
         public static void NoMoveDown()
         {
             for (int y = 0; y < Tetromino.Height; y++)
@@ -60,7 +65,7 @@ namespace Tetris.Systems
             //};
             List<Tetromino> tetrominos = new List<Tetromino>
             {
-                new I(), new O()
+                new T(), new S(), new Z()
             };
             Shuffle<Tetromino>(tetrominos);
             return tetrominos;

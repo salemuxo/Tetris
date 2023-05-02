@@ -22,6 +22,7 @@ namespace Tetris.Systems
                 {
                     case RLKey.Up:
                         {
+                            TetrominoController.Rotate();
                             break;
                         }
                     case RLKey.Left:

@@ -26,7 +26,7 @@ namespace Tetris.Core
             elapsedTime += deltaTime;
             if (elapsedTime >= TimeManager.UpdateTime)
             {
-                TetrominoController.Move(Direction.Down);
+                //TetrominoController.Move(Direction.Down);
                 elapsedTime = 0;
             }
         }
@@ -56,6 +56,7 @@ namespace Tetris.Core
             }
         }
 
+        // return 2d array of blank cells
         private Cell[,] CreateCells()
         {
             Cell[,] cells = new Cell[Width, Height];
@@ -86,7 +87,7 @@ namespace Tetris.Core
 
             for (int x = 0; x < Width; x++)
             {
-                for (int y = 0; y < maxY; y++)
+                for (int y = 0; y < maxY - 1; y++)
                 {
                     if (oldCells[x, y].IsTile)
                     {

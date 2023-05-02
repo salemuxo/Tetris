@@ -1,7 +1,9 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using RLNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Tetris.Systems;
 
 namespace Tetris.Core
@@ -15,9 +17,7 @@ namespace Tetris.Core
         // coords of top left corner
         public int X { get; set; }
         public int Y { get; set; }
-
-        protected int rotation = 0;
-        protected List<bool[,]> bodies;
+        protected int rotation = 1;
 
         public void Initialize()
         {
@@ -66,6 +66,88 @@ namespace Tetris.Core
             SetCells();
         }
 
+        // set all cells occupied by tetromino to tile
+        protected void SetCells()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Body[x, y])
+                    {
+                        Game.Board.Cells[X + x, Y + y].IsTile = true;
+                    }
+                }
+            }
+        }
+
+        // remove tile from cells
+        protected void ResetCells()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Body[x, y])
+                    {
+                        try
+                        {
+                            Game.Board.Cells[X + x, Y + y].IsTile = false;
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+        }
+
+        // rotate matrix 90 degrees clockwise
+        protected bool[,] RotateMatrix(bool[,] matrix)
+        {
+            matrix = TransposeMatrix(matrix);
+
+            bool[,] result = new bool[matrix.GetLength(0), matrix.GetLength(1)];
+
+            int maxX = matrix.GetUpperBound(0);
+            int maxY = matrix.GetUpperBound(1);
+
+            for (int row = 0; row <= maxX; row++)
+            {
+                for (int col = 0; col <= (maxY / 2); col++)
+                {
+                    result[row, col] = matrix[row, maxY - col];
+                    result[row, maxY - col] = matrix[row, col];
+                }
+            }
+            return result;
+        }
+
+        protected void SetNewBody(bool[,] newBody)
+        {
+            ResetCells();
+            Body = newBody;
+        }
+
+        // rotate tetromino and move to keep correct center point
+        protected void RotateAndMove(int x, int y)
+        {
+            var rotatedBody = RotateMatrix(Body);
+            if (CheckValidPos(x, y, rotatedBody))
+            {
+                SetNewBody(rotatedBody);
+                SetPos(x, y);
+                if (rotation == 3)
+                {
+                    rotation = 0;
+                }
+                else
+                {
+                    rotation++;
+                }
+            }
+        }
+
         // check if movement is valid (no tile or boundary in way)
         private bool CanMove(Direction direction)
         {
@@ -102,6 +184,7 @@ namespace Tetris.Core
             }
         }
 
+        // check if body position is valid (no tiles in way)
         private bool CheckValidPos(int newX, int newY)
         {
             ResetCells();
@@ -120,33 +203,51 @@ namespace Tetris.Core
             return true;
         }
 
-        protected void SetCells()
+        private bool CheckValidPos(int newX, int newY, bool[,] newBody)
         {
-            for (int x = 0; x < Width; x++)
+            ResetCells();
+            int w = newBody.GetLength(0);
+            int h = newBody.GetLength(1);
+            for (int x = 0; x < w; x++)
             {
-                for (int y = 0; y < Height; y++)
+                for (int y = 0; y < h; y++)
                 {
-                    if (Body[x, y])
+                    try
                     {
-                        Game.Board.Cells[X + x, Y + y].IsTile = true;
+                        if (newBody[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
+                        {
+                            SetCells();
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        SetCells();
+                        return false;
                     }
                 }
             }
+            SetCells();
+            return true;
         }
 
-        // remove tile from cells
-        private void ResetCells()
+        // transpose matrix (swap x and y)
+        private bool[,] TransposeMatrix(bool[,] matrix)
         {
-            for (int x = 0; x < Width; x++)
+            int w = matrix.GetLength(0);
+            int h = matrix.GetLength(1);
+
+            bool[,] result = new bool[h, w];
+
+            for (int x = 0; x < w; x++)
             {
-                for (int y = 0; y < Height; y++)
+                for (int y = 0; y < h; y++)
                 {
-                    if (Body[x, y])
-                    {
-                        Game.Board.Cells[X + x, Y + y].IsTile = false;
-                    }
+                    result[y, x] = matrix[x, y];
                 }
             }
+
+            return result;
         }
     }
 }

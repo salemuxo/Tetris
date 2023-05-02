@@ -18,12 +18,7 @@ namespace Tetris.Core
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return "I";
+            RotateMatrix(Body);
         }
     }
 
@@ -40,12 +35,6 @@ namespace Tetris.Core
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return "O";
         }
     }
 
@@ -62,12 +51,25 @@ namespace Tetris.Core
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
-        }
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y - 1);
+                    break;
 
-        public override string ToString()
-        {
-            return "T";
+                case 1:
+                    RotateAndMove(X - 1, Y);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y + 1);
+                    break;
+            }
         }
     }
 
@@ -86,11 +88,6 @@ namespace Tetris.Core
         {
             throw new NotImplementedException();
         }
-
-        public override string ToString()
-        {
-            return "J";
-        }
     }
 
     public class L : Tetromino
@@ -108,38 +105,11 @@ namespace Tetris.Core
         {
             throw new NotImplementedException();
         }
-
-        public override string ToString()
-        {
-            return "L";
-        }
     }
 
     public class S : Tetromino
     {
         public S()
-        {
-            Body = new bool[,]
-            {
-                { false, true, true },
-                { true, true, false }
-            };
-        }
-
-        public override void Rotate()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return "S";
-        }
-    }
-
-    public class Z : Tetromino
-    {
-        public Z()
         {
             Body = new bool[,]
             {
@@ -150,12 +120,60 @@ namespace Tetris.Core
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
+        }
+    }
+
+    public class Z : Tetromino
+    {
+        public Z()
+        {
+            Body = new bool[,]
+            {
+                { false, true, true },
+                { true, true, false }
+            };
         }
 
-        public override string ToString()
+        public override void Rotate()
         {
-            return "Z";
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
     }
 }
