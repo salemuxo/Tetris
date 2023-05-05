@@ -17,11 +17,12 @@ namespace Tetris.Core
         // coords of top left corner
         public int X { get; set; }
         public int Y { get; set; }
+        public RLColor Color { get; set; }
         protected int rotation = 1;
 
         public void Initialize()
         {
-            X = 1;
+            X = 4;
             Y = 0;
             SetCells();
         }
@@ -75,7 +76,7 @@ namespace Tetris.Core
                 {
                     if (Body[x, y])
                     {
-                        Game.Board.Cells[X + x, Y + y].IsTile = true;
+                        Game.Board.Cells[X + x, Y + y].SetTile(Color);
                     }
                 }
             }
@@ -92,7 +93,7 @@ namespace Tetris.Core
                     {
                         try
                         {
-                            Game.Board.Cells[X + x, Y + y].IsTile = false;
+                            Game.Board.Cells[X + x, Y + y].RemoveTile();
                         }
                         catch
                         {
@@ -105,7 +106,7 @@ namespace Tetris.Core
         // rotate matrix 90 degrees clockwise
         protected bool[,] RotateMatrix(bool[,] matrix)
         {
-            matrix = TransposeMatrix(matrix);
+            //matrix = TransposeMatrix(matrix);
 
             bool[,] result = new bool[matrix.GetLength(0), matrix.GetLength(1)];
 
@@ -120,6 +121,9 @@ namespace Tetris.Core
                     result[row, maxY - col] = matrix[row, col];
                 }
             }
+
+            result = TransposeMatrix(result);
+
             return result;
         }
 

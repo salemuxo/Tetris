@@ -14,11 +14,35 @@ namespace Tetris.Core
             {
                 { true, true, true, true }
             };
+            Color = Palette.Cyan;
         }
 
         public override void Rotate()
         {
-            RotateMatrix(Body);
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 2, Y - 1);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 2, Y + 2);
+                    break;
+
+                case 2:
+                    RotateAndMove(X + 1, Y - 2);
+                    break;
+
+                case 3:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "I";
         }
     }
 
@@ -31,10 +55,17 @@ namespace Tetris.Core
                 { true, true },
                 { true, true }
             };
+            Color = Palette.Yellow;
         }
 
         public override void Rotate()
         {
+            rotation++;
+        }
+
+        public override string ToString()
+        {
+            return "O";
         }
     }
 
@@ -47,6 +78,7 @@ namespace Tetris.Core
                 { true, true, true },
                 { false, true, false }
             };
+            Color = Palette.Purple;
         }
 
         public override void Rotate()
@@ -55,21 +87,26 @@ namespace Tetris.Core
             switch (rotation)
             {
                 case 0:
-                    RotateAndMove(X + 1, Y - 1);
+                    RotateAndMove(X + 1, Y);
                     break;
 
                 case 1:
-                    RotateAndMove(X - 1, Y);
+                    RotateAndMove(X - 1, Y + 1);
                     break;
 
                 case 2:
-                    RotateAndMove(X, Y);
+                    RotateAndMove(X, Y - 1);
                     break;
 
                 case 3:
-                    RotateAndMove(X, Y + 1);
+                    RotateAndMove(X, Y);
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return "T";
         }
     }
 
@@ -79,14 +116,38 @@ namespace Tetris.Core
         {
             Body = new bool[,]
             {
-                { true, false, false },
-                { true, true, true }
+                { true, true, true },
+                { true, false, false }
             };
+            Color = Palette.Blue;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "J";
         }
     }
 
@@ -96,14 +157,38 @@ namespace Tetris.Core
         {
             Body = new bool[,]
             {
-                { false, false, true },
-                { true, true, true }
+                { true, true, true },
+                { false, false, true }
             };
+            Color = Palette.Orange;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "L";
         }
     }
 
@@ -116,6 +201,7 @@ namespace Tetris.Core
                 { true, true, false },
                 { false, true, true }
             };
+            Color = Palette.Green;
         }
 
         public override void Rotate()
@@ -139,6 +225,11 @@ namespace Tetris.Core
                     RotateAndMove(X, Y);
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return "S";
         }
     }
 
@@ -151,6 +242,7 @@ namespace Tetris.Core
                 { false, true, true },
                 { true, true, false }
             };
+            Color = Palette.Red;
         }
 
         public override void Rotate()
@@ -174,6 +266,11 @@ namespace Tetris.Core
                     RotateAndMove(X, Y);
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return "Z";
         }
     }
 }

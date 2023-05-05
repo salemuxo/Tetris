@@ -6,7 +6,7 @@ namespace Tetris.Systems
     public static class TimeManager
     {
         public static double DeltaTime { get; private set; }
-        public static double UpdateTime { get; private set; }
+        public static double UpdateTime { get; set; }
 
         private static DateTime _previousGameTime;
 
@@ -18,10 +18,13 @@ namespace Tetris.Systems
 
         public static void Update()
         {
-            TimeSpan deltaTime = DateTime.UtcNow - _previousGameTime;
-            _previousGameTime += deltaTime;
+            if (Game.IsPlaying)
+            {
+                TimeSpan deltaTime = DateTime.UtcNow - _previousGameTime;
+                _previousGameTime += deltaTime;
 
-            DeltaTime = deltaTime.TotalMilliseconds;
+                DeltaTime = deltaTime.TotalMilliseconds;
+            }
         }
     }
 }

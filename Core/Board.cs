@@ -26,34 +26,52 @@ namespace Tetris.Core
             elapsedTime += deltaTime;
             if (elapsedTime >= TimeManager.UpdateTime)
             {
-                //TetrominoController.Move(Direction.Down);
+                TetrominoController.Move(Direction.Down);
                 elapsedTime = 0;
             }
         }
 
-        public void Draw(RLConsole boardConsole)
+        public void Draw(RLConsole boardConsole, RLConsole borderConsole)
         {
             foreach (Cell cell in Cells)
             {
                 cell.Draw(boardConsole);
             }
+            //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, RLColor.White);
+            for (int x = 0; x < Width + 2; x++)
+            {
+                borderConsole.Set(x, 0, RLColor.White, RLColor.Black, 176);
+                borderConsole.Set(x, Height + 1, RLColor.White, RLColor.Black, 176);
+            }
+            for (int y = 0; y < Height + 2; y++)
+            {
+                borderConsole.Set(0, y, RLColor.White, RLColor.Black, 176);
+                borderConsole.Set(Width + 1, y, RLColor.White, RLColor.Black, 176);
+            }
         }
 
-        public void CheckLine(int y)
+        public void CheckLines(int minY, int maxY)
         {
-            bool isLine = true;
-            for (int x = 0; x < Width; x++)
+            int lines = 0;
+            for (int y = minY; y < maxY; y++)
             {
-                if (!Cells[x, y].IsTile)
+                bool isLine = true;
+                for (int x = 0; x < Width; x++)
                 {
-                    isLine = false;
+                    if (!Cells[x, y].IsTile)
+                    {
+                        isLine = false;
+                    }
+                }
+
+                if (isLine)
+                {
+                    ClearLine(y);
+                    lines++;
                 }
             }
 
-            if (isLine)
-            {
-                //ClearLine(y);
-            }
+            StatManager.ClearedLines(lines);
         }
 
         // return 2d array of blank cells
@@ -67,6 +85,11 @@ namespace Tetris.Core
                 {
                     cells[x, y] = new Cell(x, y);
                 }
+            }
+
+            for (int x = 0; x < Width - 1; x++)
+            {
+                cells[x, Height - 1].SetTile(Palette.Red);
             }
 
             return cells;
@@ -83,18 +106,25 @@ namespace Tetris.Core
 
         private void MoveAllDown(int maxY)
         {
-            Cell[,] oldCells = Cells;
+            List<Cell> tiles = new List<Cell>();
 
-            for (int x = 0; x < Width; x++)
+            for (int y = 0; y < maxY; y++)
             {
-                for (int y = 0; y < maxY - 1; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    if (oldCells[x, y].IsTile)
+                    if (Cells[x, y].IsTile)
                     {
-                        Cells[x, y].IsTile = false;
-                        Cells[x, y + 1].IsTile = true;
+                        tiles.Add(Cells[x, y].Clone());
+                        Debug.WriteLine($"Cell at ({x}, {y})");
+                        Cells[x, y].RemoveTile();
                     }
                 }
+            }
+
+            foreach (var tile in tiles)
+            {
+                tile.Y++;
+                Cells[tile.X, tile.Y] = tile;
             }
         }
     }

@@ -1,9 +1,8 @@
 ﻿using RLNET;
-using Tetris.Interfaces;
 
 namespace Tetris.Core
 {
-    public class Cell : IDrawable
+    public class Cell
     {
         public bool IsTile { get; set; }
 
@@ -11,17 +10,13 @@ namespace Tetris.Core
         {
             X = x;
             Y = y;
-            Color = RLColor.Red;
-            Symbol = 'T';
-
+            Color = Palette.Grey;
             IsTile = false;
         }
 
-        // IDrawable implementation
         public int X { get; set; }
         public int Y { get; set; }
         public RLColor Color { get; set; }
-        public char Symbol { get; set; }
 
         public void Draw(RLConsole console)
         {
@@ -31,8 +26,25 @@ namespace Tetris.Core
             }
             else
             {
-                console.Set(X, Y, Color, RLColor.Black, 7);
+                console.Set(X, Y, Palette.Grey, RLColor.Black, 7);
             }
+        }
+
+        public void SetTile(RLColor color)
+        {
+            Color = color;
+            IsTile = true;
+        }
+
+        public void RemoveTile()
+        {
+            Color = Palette.Grey;
+            IsTile = false;
+        }
+
+        public Cell Clone()
+        {
+            return this.MemberwiseClone() as Cell;
         }
     }
 }
