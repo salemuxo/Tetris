@@ -48,6 +48,7 @@ namespace Tetris.Systems
                     // hard drop
                     case RLKey.Space:
                         {
+                            TetrominoController.HardDrop();
                             break;
                         }
                     // hold
@@ -55,6 +56,7 @@ namespace Tetris.Systems
                     case RLKey.RShift:
                     case RLKey.C:
                         {
+                            HoldManager.HoldPiece();
                             break;
                         }
                     // pause

@@ -12,7 +12,7 @@ namespace Tetris.Systems
 
         public static void Initialize()
         {
-            UpdateTime = 500;
+            UpdateTime = 400;
             _previousGameTime = DateTime.UtcNow;
         }
 

@@ -57,6 +57,7 @@
     <Compile Include="Core\Tetrominos.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Systems\HoldManager.cs" />
     <Compile Include="Systems\InputHandler.cs" />
     <Compile Include="Systems\StatManager.cs" />
     <Compile Include="Systems\TetrominoController.cs" />

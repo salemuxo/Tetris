@@ -34,7 +34,7 @@ namespace Tetris.Core
             }
             else
             {
-                console.Set(X, Y, Palette.Grey, RLColor.Black, 7);
+                console.Set(X, Y, Color, RLColor.Black, 7);
             }
         }
 

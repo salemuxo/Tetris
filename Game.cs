@@ -71,7 +71,7 @@ namespace Tetris
         {
             TimeManager.Update();
             InputHandler.HandleInput(_rootConsole);
-            Board.Update(TimeManager.DeltaTime);
+            TetrominoController.Update(TimeManager.DeltaTime);
         }
 
         // RLNET Render event handler
@@ -81,6 +81,7 @@ namespace Tetris
             Board.Draw(_boardConsole, _borderConsole);
             TetrominoController.DrawQueue(_queueConsole);
             StatManager.Draw(_statConsole);
+            HoldManager.Draw(_holdConsole);
 
             // blit subconsoles to root console
             RLConsole.Blit(_borderConsole, 0, 0,
@@ -91,6 +92,8 @@ namespace Tetris
             RLConsole.Blit(_queueConsole, 0, 0, _queueWidth, _queueHeight,
                 _rootConsole, 23, 4);
             RLConsole.Blit(_statConsole, 0, 0, _statWidth, _statHeight,
+                _rootConsole, 2, 10);
+            RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
                 _rootConsole, 2, 4);
             _rootConsole.Draw();
         }

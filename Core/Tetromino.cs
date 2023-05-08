@@ -19,6 +19,7 @@ namespace Tetris.Core
         public int Y { get; set; }
         public RLColor Color { get; set; }
         protected int rotation = 1;
+        protected bool isGhost = false;
 
         public void Initialize()
         {
@@ -67,23 +68,44 @@ namespace Tetris.Core
             SetCells();
         }
 
-        // set all cells occupied by tetromino to tile
-        protected void SetCells()
+        public Tetromino Clone()
         {
-            for (int x = 0; x < Width; x++)
+            return this.MemberwiseClone() as Tetromino;
+        }
+
+        // set all cells occupied by tetromino to tile
+        public virtual void SetCells()
+        {
+            if (!isGhost)
             {
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    if (Body[x, y])
+                    for (int y = 0; y < Height; y++)
                     {
-                        Game.Board.Cells[X + x, Y + y].SetTile(Color);
+                        if (Body[x, y])
+                        {
+                            Game.Board.Cells[X + x, Y + y].SetTile(Color);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    for (int y = 0; y < Height; y++)
+                    {
+                        if (Body[x, y])
+                        {
+                            Game.Board.Cells[X + x, Y + y].Color = Color;
+                        }
                     }
                 }
             }
         }
 
         // remove tile from cells
-        protected void ResetCells()
+        public virtual void ResetCells()
         {
             for (int x = 0; x < Width; x++)
             {
@@ -97,10 +119,18 @@ namespace Tetris.Core
                         }
                         catch
                         {
+                            Debug.WriteLine("Can't reset");
                         }
                     }
                 }
             }
+        }
+
+        public Tetromino CreateGhost()
+        {
+            var ghostTetromino = Clone();
+            ghostTetromino.isGhost = true;
+            return ghostTetromino;
         }
 
         // rotate matrix 90 degrees clockwise
@@ -196,7 +226,15 @@ namespace Tetris.Core
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    if (Body[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
+                    try
+                    {
+                        if (Body[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
+                        {
+                            SetCells();
+                            return false;
+                        }
+                    }
+                    catch
                     {
                         SetCells();
                         return false;
@@ -207,6 +245,7 @@ namespace Tetris.Core
             return true;
         }
 
+        // check if new body and position is valid
         private bool CheckValidPos(int newX, int newY, bool[,] newBody)
         {
             ResetCells();
@@ -252,6 +291,22 @@ namespace Tetris.Core
             }
 
             return result;
+        }
+
+        public int GetLowestY()
+        {
+            int y = 0;
+            while (true)
+            {
+                if (CheckValidPos(X, y))
+                {
+                    y++;
+                }
+                else
+                {
+                    return y - 1;
+                }
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using RLNET;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Tetris.Systems;
 
 namespace Tetris.Core
@@ -16,18 +18,7 @@ namespace Tetris.Core
             Cells = CreateCells();
         }
 
-        private double elapsedTime = 0;
-
-        public void Update(double deltaTime)
-        {
-            elapsedTime += deltaTime;
-            if (elapsedTime >= TimeManager.UpdateTime)
-            {
-                //TetrominoController.Move(Direction.Down);
-                elapsedTime = 0;
-            }
-        }
-
+        // draw board and border
         public void Draw(RLConsole boardConsole, RLConsole borderConsole)
         {
             foreach (Cell cell in Cells)
@@ -47,6 +38,7 @@ namespace Tetris.Core
             }
         }
 
+        // check for cleared lines, clear, add score
         public void CheckLines(int minY, int maxY)
         {
             int lines = 0;
@@ -84,14 +76,10 @@ namespace Tetris.Core
                 }
             }
 
-            for (int x = 0; x < Width - 1; x++)
-            {
-                cells[x, Height - 1].SetTile(Palette.Red);
-            }
-
             return cells;
         }
 
+        // called when line is filled, removes tiles from line and moves above tiles down
         private void ClearLine(int y)
         {
             for (int x = 0; x < Width; x++)
@@ -101,6 +89,7 @@ namespace Tetris.Core
             MoveAllDown(y);
         }
 
+        // move all tiles above maxY down 1
         private void MoveAllDown(int maxY)
         {
             List<Cell> tiles = new List<Cell>();
@@ -109,10 +98,10 @@ namespace Tetris.Core
             {
                 for (int x = 0; x < Width; x++)
                 {
+                    // if tile, add clone to list and remove tile
                     if (Cells[x, y].IsTile)
                     {
                         tiles.Add(Cells[x, y].Clone());
-                        Debug.WriteLine($"Cell at ({x}, {y})");
                         Cells[x, y].RemoveTile();
                     }
                 }

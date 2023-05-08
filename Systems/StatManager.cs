@@ -51,13 +51,13 @@ namespace Tetris.Systems
 
         public static void Draw(RLConsole console)
         {
-            console.Print(0, 0, "Score", RLColor.White);
+            console.Print(0, 0, "SCORE", RLColor.White);
             console.Print(0, 1, Score.ToString(), RLColor.White);
 
-            console.Print(0, 3, "Level", RLColor.White);
+            console.Print(0, 3, "LEVEL", RLColor.White);
             console.Print(0, 4, Level.ToString(), RLColor.White);
 
-            console.Print(0, 6, "Lines", RLColor.White);
+            console.Print(0, 6, "LINES", RLColor.White);
             console.Print(0, 7, Lines.ToString(), RLColor.White);
         }
 

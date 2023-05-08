@@ -7,14 +7,27 @@ namespace Tetris.Systems
 {
     public static class TetrominoController
     {
-        private static Tetromino Tetromino;
+        private static Tetromino FallingTetromino;
+        private static Tetromino GhostTetromino;
         private static Queue<Tetromino> Queue;
+
+        private static double elapsedTime = 0;
+
+        public static void Update(double deltaTime)
+        {
+            elapsedTime += deltaTime;
+            if (elapsedTime >= TimeManager.UpdateTime)
+            {
+                Move(Direction.Down);
+                elapsedTime = 0;
+            }
+        }
 
         // create queue from tetromino bag and get first tetromino from queue
         public static void Initialize()
         {
             Queue = new Queue<Tetromino>(GetTetrominoBag());
-            Tetromino = GetNextTetromino();
+            GetNextTetromino();
         }
 
         // if game isnt paused, move falling tetromino in direction
@@ -22,7 +35,8 @@ namespace Tetris.Systems
         {
             if (Game.IsPlaying)
             {
-                Tetromino.Move(direction);
+                FallingTetromino.Move(direction);
+                SetGhost();
             }
         }
 
@@ -31,16 +45,23 @@ namespace Tetris.Systems
         {
             if (Game.IsPlaying)
             {
-                Tetromino.Rotate();
+                FallingTetromino.Rotate();
+                RotateGhost();
             }
+        }
+
+        public static void HardDrop()
+        {
+            FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.GetLowestY());
+            NoMoveDown();
         }
 
         // if tetromino couldn't move down, check for full lines and get next tetromino
         public static void NoMoveDown()
         {
-            Game.Board.CheckLines(Tetromino.Y, Tetromino.Y + Tetromino.Height);
-
-            CycleTetromino();
+            Game.Board.CheckLines(FallingTetromino.Y, FallingTetromino.Y + FallingTetromino.Height);
+            HoldManager.HasHeld = false;
+            GetNextTetromino();
         }
 
         // draw queue to queue console
@@ -57,33 +78,43 @@ namespace Tetris.Systems
                 }
                 catch
                 {
-                    Debug.WriteLine("New bag..");
+                    Debug.WriteLine("New bag...");
                     GetTetrominoBag().ForEach(x => Queue.Enqueue(x));
                 }
             }
         }
 
-        // if there are tetrominos in queue, get next one, otherwise get new bag
-        private static void CycleTetromino()
+        public static Tetromino HoldTetromino(Tetromino heldTetromino)
         {
-            if (Queue.Count > 0)
+            var holdTetromino = FallingTetromino;
+            FallingTetromino.ResetCells();
+
+            if (heldTetromino == null)
             {
-                Debug.WriteLine("Cycling...");
-                Tetromino = GetNextTetromino();
+                GetNextTetromino();
             }
             else
             {
-                Debug.WriteLine("New bag...");
-                Initialize();
+                SetFallingTetromino(heldTetromino);
             }
+
+            return holdTetromino;
         }
 
         // get next tetromino in queue and initialize
-        private static Tetromino GetNextTetromino()
+        private static void GetNextTetromino()
         {
             var nextTetromino = Queue.Dequeue();
             nextTetromino.Initialize();
-            return nextTetromino;
+            FallingTetromino = nextTetromino;
+            GhostTetromino = nextTetromino.CreateGhost();
+        }
+
+        private static void SetFallingTetromino(Tetromino tetromino)
+        {
+            tetromino.Initialize();
+            FallingTetromino = tetromino;
+            GhostTetromino = tetromino.CreateGhost();
         }
 
         // get bag of all tetrominos in random order
@@ -100,7 +131,7 @@ namespace Tetris.Systems
             return tetrominos;
         }
 
-        // fisher-yates shuffle list
+        // fisher-yates shuffle algorithm for list
         private static void Shuffle<T>(List<T> list)
         {
             int n = list.Count;
@@ -109,6 +140,24 @@ namespace Tetris.Systems
                 int r = i + Game.Random.Next(n - i);
                 (list[i], list[r]) = (list[r], list[i]);
             }
+        }
+
+        private static void RotateGhost()
+        {
+            ResetGhost();
+            GhostTetromino.Rotate();
+            SetGhost();
+        }
+
+        private static void ResetGhost()
+        {
+            GhostTetromino.SetPos(FallingTetromino.X, FallingTetromino.Y);
+        }
+
+        private static void SetGhost()
+        {
+            GhostTetromino.SetPos(FallingTetromino.X, FallingTetromino.GetLowestY());
+            FallingTetromino.SetCells();
         }
     }
 }
