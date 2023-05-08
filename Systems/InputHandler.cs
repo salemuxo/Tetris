@@ -15,36 +15,53 @@ namespace Tetris.Systems
         private static void HandleKeyInput(RLRootConsole rootConsole)
         {
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
-
             if (keyPress != null)
             {
+                //Debug.WriteLine(keyPress.Key);
                 switch (keyPress.Key)
                 {
+                    // rotate clockwise
                     case RLKey.Up:
+                    case RLKey.X:
                         {
+                            TetrominoController.Rotate();
                             break;
                         }
+                    // move left
                     case RLKey.Left:
                         {
                             TetrominoController.Move(Direction.Left);
                             break;
                         }
+                    // move down
                     case RLKey.Down:
                         {
                             TetrominoController.Move(Direction.Down);
                             break;
                         }
+                    // move right
                     case RLKey.Right:
                         {
                             TetrominoController.Move(Direction.Right);
                             break;
                         }
+                    // hard drop
                     case RLKey.Space:
                         {
                             break;
                         }
-                    case RLKey.Escape:
+                    // hold
+                    case RLKey.LShift:
+                    case RLKey.RShift:
+                    case RLKey.C:
                         {
+                            break;
+                        }
+                    // pause
+                    case RLKey.Escape:
+                    case RLKey.F1:
+                        {
+                            Game.IsPlaying = !Game.IsPlaying;
                             break;
                         }
                 }

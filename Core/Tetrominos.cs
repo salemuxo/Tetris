@@ -10,43 +10,34 @@ namespace Tetris.Core
     {
         public I()
         {
-            bodies = new List<bool[,]>()
+            Body = new bool[,]
             {
-                new bool[,]
-                {
-                    { false, false, false, false },
-                    { true, true, true, true },
-                    { false, false, false, false },
-                    { false, false, false, false }
-                },
-                new bool [,]
-                {
-                    { false, false, true, false },
-                    { false, false, true, false },
-                    { false, false, true, false },
-                    { false, false, true, false }
-                },
-                new bool[,]
-                {
-                    { false, false, false, false },
-                    { false, false, false, false },
-                    { true, true, true, true },
-                    { false, false, false, false }
-                },
-                new bool [,]
-                {
-                    { false, true, false, false },
-                    { false, true, false, false },
-                    { false, true, false, false },
-                    { false, true, false, false }
-                }
+                { true, true, true, true }
             };
-            Body = bodies[rotation];
+            Color = Palette.Cyan;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 2, Y - 1);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 2, Y + 2);
+                    break;
+
+                case 2:
+                    RotateAndMove(X + 1, Y - 2);
+                    break;
+
+                case 3:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+            }
         }
 
         public override string ToString()
@@ -64,11 +55,12 @@ namespace Tetris.Core
                 { true, true },
                 { true, true }
             };
+            Color = Palette.Yellow;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            rotation++;
         }
 
         public override string ToString()
@@ -81,40 +73,35 @@ namespace Tetris.Core
     {
         public T()
         {
-            bodies = new List<bool[,]>()
+            Body = new bool[,]
             {
-                new bool[,]
-                {
-                    { false, true, false },
-                    { true, true, true },
-                    { false, false, false }
-                },
-                new bool[,]
-                {
-                    { false, true, false },
-                    { false, true, true },
-                    { false, true, false }
-                },
-                new bool[,]
-                {
-                    { false, false, false },
-                    { true, true, true },
-                    { false, true, false }
-                },
-                new bool[,]
-                {
-                    { false, true, false },
-                    { true, true, false },
-                    { false, true, false }
-                }
+                { true, true, true },
+                { false, true, false }
             };
-
-            Body = bodies[rotation];
+            Color = Palette.Purple;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
 
         public override string ToString()
@@ -123,44 +110,39 @@ namespace Tetris.Core
         }
     }
 
-    public class L : Tetromino
+    public class J : Tetromino
     {
-        public L()
+        public J()
         {
-            bodies = new List<bool[,]>()
+            Body = new bool[,]
             {
-                new bool[,]
-                {
-                    { true, false, false},
-                    { true, true, true },
-                    { false, false, false }
-                },
-                new bool[,]
-                {
-                    { false, true, true },
-                    { false, true, false },
-                    { false, true, false }
-                },
-                new bool[,]
-                {
-                    { false, false, false },
-                    { true, true, true },
-                    { false, false, true }
-                },
-                new bool[,]
-                {
-                    { false, true, false },
-                    { false, true, false },
-                    { true, true, false }
-                }
+                { true, true, true },
+                { true, false, false }
             };
-
-            Body = bodies[rotation];
+            Color = Palette.Blue;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
 
         public override string ToString()
@@ -169,44 +151,39 @@ namespace Tetris.Core
         }
     }
 
-    public class J : Tetromino
+    public class L : Tetromino
     {
-        public J()
+        public L()
         {
-            bodies = new List<bool[,]>
+            Body = new bool[,]
             {
-                new bool[,]
-                {
-                    { false, false, true},
-                    { true, true, true },
-                    { false, false, false }
-                },
-                new bool[,]
-                {
-                    { false, true, false },
-                    { false, true, false },
-                    { false, true, true }
-                },
-                new bool[,]
-                {
-                    { false, false, false },
-                    { true, true, true },
-                    { true, false , false }
-                },
-                new bool[,]
-                {
-                    { true, true, false },
-                    { false, true, false },
-                    { false, true, false }
-                }
+                { true, true, true },
+                { false, false, true }
             };
-
-            Body = bodies[rotation];
+            Color = Palette.Orange;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
 
         public override string ToString()
@@ -219,46 +196,35 @@ namespace Tetris.Core
     {
         public S()
         {
-            bodies = new List<bool[,]>()
-            {
-                new bool[,]
-                {
-                    { false, true, true },
-                    { true, true, false },
-                    { false, false, false }
-                },
-                new bool[,]
-                {
-                    { false, true, false },
-                    { false, true, true },
-                    { false, false, true }
-                },
-                new bool[,]
-                {
-                    { false, false, false },
-                    { false, true, true },
-                    { true, true, false }
-                },
-                new bool[,]
-                {
-                    { true, false, false },
-                    { true, true, false },
-                    { false, true, false }
-                }
-            };
-
-            Body = bodies[rotation];
-
             Body = new bool[,]
             {
-                { false, true, true },
-                { true, true, false }
+                { true, true, false },
+                { false, true, true }
             };
+            Color = Palette.Green;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
 
         public override string ToString()
@@ -271,46 +237,35 @@ namespace Tetris.Core
     {
         public Z()
         {
-            bodies = new List<bool[,]>()
-            {
-                new bool[,]
-                {
-                    { true, true, false },
-                    { false, true, true },
-                    { false, false, false }
-                },
-                new bool[,]
-                {
-                    { false, false, true },
-                    { false, true, true },
-                    { false, true, false }
-                },
-                new bool[,]
-                {
-                    { false, false, false },
-                    { true, true, false },
-                    { false, true, true }
-                },
-                new bool[,]
-                {
-                    { false, true, false},
-                    { true, true, false },
-                    { true, false, false }
-                }
-            };
-
-            Body = bodies[rotation];
-
             Body = new bool[,]
             {
-                { true, true, false },
-                { false, true, true }
+                { false, true, true },
+                { true, true, false }
             };
+            Color = Palette.Red;
         }
 
         public override void Rotate()
         {
-            throw new NotImplementedException();
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateAndMove(X + 1, Y);
+                    break;
+
+                case 1:
+                    RotateAndMove(X - 1, Y + 1);
+                    break;
+
+                case 2:
+                    RotateAndMove(X, Y - 1);
+                    break;
+
+                case 3:
+                    RotateAndMove(X, Y);
+                    break;
+            }
         }
 
         public override string ToString()

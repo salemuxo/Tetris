@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using RLNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,22 +11,18 @@ namespace Tetris.Core
     public abstract class Tetromino
     {
         public bool[,] Body { get; protected set; }
-        public int Width { get; protected set; }
-        public int Height { get; protected set; }
+        public int Width => Body.GetLength(0);
+        public int Height => Body.GetLength(1);
 
         // coords of top left corner
         public int X { get; set; }
         public int Y { get; set; }
-
-        protected int rotation = 0;
-        protected List<bool[,]> bodies;
+        public RLColor Color { get; set; }
+        protected int rotation = 1;
 
         public void Initialize()
         {
-            Width = Body.GetLength(0);
-            Height = Body.GetLength(1);
-            SetSize();
-            X = 1;
+            X = 4;
             Y = 0;
             SetCells();
         }
@@ -56,18 +53,103 @@ namespace Tetris.Core
             else if (direction == Direction.Down)
             {
                 SetCells();
-                TetrominoController.CycleTetromino();
+                TetrominoController.NoMoveDown();
             }
         }
 
         public abstract void Rotate();
 
-        private void SetPos(int x, int y)
+        public void SetPos(int x, int y)
         {
             ResetCells();
             X = x;
             Y = y;
             SetCells();
+        }
+
+        // set all cells occupied by tetromino to tile
+        protected void SetCells()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Body[x, y])
+                    {
+                        Game.Board.Cells[X + x, Y + y].SetTile(Color);
+                    }
+                }
+            }
+        }
+
+        // remove tile from cells
+        protected void ResetCells()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Body[x, y])
+                    {
+                        try
+                        {
+                            Game.Board.Cells[X + x, Y + y].RemoveTile();
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+        }
+
+        // rotate matrix 90 degrees clockwise
+        protected bool[,] RotateMatrix(bool[,] matrix)
+        {
+            //matrix = TransposeMatrix(matrix);
+
+            bool[,] result = new bool[matrix.GetLength(0), matrix.GetLength(1)];
+
+            int maxX = matrix.GetUpperBound(0);
+            int maxY = matrix.GetUpperBound(1);
+
+            for (int row = 0; row <= maxX; row++)
+            {
+                for (int col = 0; col <= (maxY / 2); col++)
+                {
+                    result[row, col] = matrix[row, maxY - col];
+                    result[row, maxY - col] = matrix[row, col];
+                }
+            }
+
+            result = TransposeMatrix(result);
+
+            return result;
+        }
+
+        protected void SetNewBody(bool[,] newBody)
+        {
+            ResetCells();
+            Body = newBody;
+        }
+
+        // rotate tetromino and move to keep correct center point
+        protected void RotateAndMove(int x, int y)
+        {
+            var rotatedBody = RotateMatrix(Body);
+            if (CheckValidPos(x, y, rotatedBody))
+            {
+                SetNewBody(rotatedBody);
+                SetPos(x, y);
+                if (rotation == 3)
+                {
+                    rotation = 0;
+                }
+                else
+                {
+                    rotation++;
+                }
+            }
         }
 
         // check if movement is valid (no tile or boundary in way)
@@ -77,7 +159,7 @@ namespace Tetris.Core
             {
                 case Direction.Left:
                     {
-                        if (X > 0 && !IsTileOnSide(direction))
+                        if (X > 0 && CheckValidPos(X - 1, Y))
                         {
                             return true;
                         }
@@ -85,7 +167,7 @@ namespace Tetris.Core
                     }
                 case Direction.Down:
                     {
-                        if (Y + Height < Game.Board.Height && !IsTileOnSide(direction))
+                        if (Y + Height < Game.Board.Height && CheckValidPos(X, Y + 1))
                         {
                             return true;
                         }
@@ -93,7 +175,7 @@ namespace Tetris.Core
                     }
                 case Direction.Right:
                     {
-                        if (X + Width < Game.Board.Width && !IsTileOnSide(direction))
+                        if (X + Width < Game.Board.Width && CheckValidPos(X + 1, Y))
                         {
                             return true;
                         }
@@ -106,116 +188,70 @@ namespace Tetris.Core
             }
         }
 
-        // check for cell containing tile on given side of tetromino
-        private bool IsTileOnSide(Direction direction)
+        // check if body position is valid (no tiles in way)
+        private bool CheckValidPos(int newX, int newY)
         {
-            switch (direction)
-            {
-                case Direction.Left:
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            if (Game.Board.Cells[X - 1, Y + y].IsTile
-                                && Game.Board.Cells[X, Y + y].IsTile)
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                case Direction.Down:
-                    {
-                        for (int x = 0; x < Width; x++)
-                        {
-                            if (Game.Board.Cells[X + x, Y + Height].IsTile
-                                && Game.Board.Cells[X + x, Y + Height - 1].IsTile)
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                case Direction.Right:
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            if (Game.Board.Cells[X + Width, Y + y].IsTile
-                                && Game.Board.Cells[X + Width - 1, Y + y].IsTile)
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
-        protected void SetCells()
-        {
+            ResetCells();
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    if (Body[x, y])
+                    if (Body[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
                     {
-                        Game.Board.Cells[X + x, Y + y].IsTile = true;
+                        SetCells();
+                        return false;
                     }
                 }
             }
+            SetCells();
+            return true;
         }
 
-        // remove tile from cells
-        private void ResetCells()
+        private bool CheckValidPos(int newX, int newY, bool[,] newBody)
         {
-            for (int x = 0; x < Width; x++)
+            ResetCells();
+            int w = newBody.GetLength(0);
+            int h = newBody.GetLength(1);
+            for (int x = 0; x < w; x++)
             {
-                for (int y = 0; y < Height; y++)
+                for (int y = 0; y < h; y++)
                 {
-                    Game.Board.Cells[X + x, Y + y].IsTile = false;
+                    try
+                    {
+                        if (newBody[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
+                        {
+                            SetCells();
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        SetCells();
+                        return false;
+                    }
                 }
             }
+            SetCells();
+            return true;
         }
 
-        private void SetSize()
+        // transpose matrix (swap x and y)
+        private bool[,] TransposeMatrix(bool[,] matrix)
         {
-            int height = Height;
-            int width = Width;
+            int w = matrix.GetLength(0);
+            int h = matrix.GetLength(1);
 
-            for (int y = 0; y < height; y++)
+            bool[,] result = new bool[h, w];
+
+            for (int x = 0; x < w; x++)
             {
-                if (GetRow(Body, y).All(cell => cell == false))
+                for (int y = 0; y < h; y++)
                 {
-                    Debug.WriteLine($"Row {y} is blank");
-                    Height--;
+                    result[y, x] = matrix[x, y];
                 }
             }
-            for (int x = 0; x < width; x++)
-            {
-                if (GetColumn(Body, x).All(cell => cell == false))
-                {
-                    Debug.WriteLine($"Column {x} is blank");
-                    Width--;
-                }
-            }
-            Debug.WriteLine($"{Width}, {Height}");
-        }
 
-        private bool[] GetRow(bool[,] matrix, int columnNumber)
-        {
-            return Enumerable.Range(0, matrix.GetLength(0))
-                    .Select(x => matrix[x, columnNumber])
-                    .ToArray();
-        }
-
-        private bool[] GetColumn(bool[,] matrix, int rowNumber)
-        {
-            return Enumerable.Range(0, matrix.GetLength(1))
-                    .Select(x => matrix[rowNumber, x])
-                    .ToArray();
+            return result;
         }
     }
 }
