@@ -14,21 +14,17 @@ namespace Tetris.Systems
         public static int Score { get; private set; }
         public static int Lines { get; private set; }
 
-        private static int Width;
-        private static int Height;
-
-        public static void Initialize(int w, int h)
+        public static void Initialize()
         {
             Level = 1;
             Score = 0;
-            Width = w;
-            Height = h;
         }
 
         public static void ClearedLines(int lines)
         {
-            Lines += lines;
+            int oldLines = Lines;
 
+            Lines += lines;
             switch (lines)
             {
                 case 1:
@@ -47,6 +43,11 @@ namespace Tetris.Systems
                     Score += 800 * Level;
                     break;
             }
+            int nearestLevel = oldLines.RoundUp();
+            if (oldLines < nearestLevel && Lines > nearestLevel)
+            {
+                IncreaseLevel();
+            }
         }
 
         public static void Draw(RLConsole console)
@@ -64,7 +65,7 @@ namespace Tetris.Systems
         private static void IncreaseLevel()
         {
             Level++;
-            TimeManager.UpdateTime *= .9;
+            TimeManager.SetUpdateTime();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Tetris.Systems
@@ -12,7 +13,7 @@ namespace Tetris.Systems
 
         public static void Initialize()
         {
-            UpdateTime = 400;
+            SetUpdateTime();
             _previousGameTime = DateTime.UtcNow;
         }
 
@@ -25,6 +26,12 @@ namespace Tetris.Systems
 
                 DeltaTime = deltaTime.TotalMilliseconds;
             }
+        }
+
+        public static void SetUpdateTime()
+        {
+            UpdateTime = Math.Pow(0.8 - ((StatManager.Level - 1) * 0.007), StatManager.Level - 1) * 1000;
+            Debug.WriteLine(UpdateTime);
         }
     }
 }

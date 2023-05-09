@@ -4,8 +4,11 @@ namespace Tetris.Core
 {
     public class Cell
     {
-        public bool IsTile { get; set; }
-        public bool IsBorder { get; set; }
+        public bool IsTile { get; private set; }
+        public bool IsGhost { get; private set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public RLColor Color { get; set; }
 
         public Cell(int x, int y)
         {
@@ -13,24 +16,18 @@ namespace Tetris.Core
             Y = y;
             Color = Palette.Grey;
             IsTile = false;
-            IsBorder = false;
+            IsGhost = false;
         }
-
-        public void SetBorder()
-        {
-            IsBorder = true;
-            IsTile = true;
-        }
-
-        public int X { get; set; }
-        public int Y { get; set; }
-        public RLColor Color { get; set; }
 
         public void Draw(RLConsole console)
         {
             if (IsTile)
             {
                 console.Set(X, Y, Color, RLColor.Black, 8);
+            }
+            else if (IsGhost)
+            {
+                console.Set(X, Y, Color, RLColor.Black, 9);
             }
             else
             {
@@ -44,10 +41,35 @@ namespace Tetris.Core
             IsTile = true;
         }
 
+        public void SetGhost(RLColor color)
+        {
+            Color = color;
+            IsGhost = true;
+        }
+
         public void RemoveTile()
+        {
+            if (!IsGhost)
+            {
+                Color = Palette.Grey;
+            }
+            IsTile = false;
+        }
+
+        public void RemoveGhost()
+        {
+            if (!IsTile)
+            {
+                Color = Palette.Grey;
+            }
+            IsGhost = false;
+        }
+
+        public void ClearCell()
         {
             Color = Palette.Grey;
             IsTile = false;
+            IsGhost = false;
         }
 
         public Cell Clone()

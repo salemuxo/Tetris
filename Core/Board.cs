@@ -84,7 +84,7 @@ namespace Tetris.Core
         {
             for (int x = 0; x < Width; x++)
             {
-                Cells[x, y].IsTile = false;
+                Cells[x, y].ClearCell();
             }
             MoveAllDown(y);
         }
@@ -102,7 +102,7 @@ namespace Tetris.Core
                     if (Cells[x, y].IsTile)
                     {
                         tiles.Add(Cells[x, y].Clone());
-                        Cells[x, y].RemoveTile();
+                        Cells[x, y].ClearCell();
                     }
                 }
             }

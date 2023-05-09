@@ -89,6 +89,7 @@ namespace Tetris.Core
                     }
                 }
             }
+            // ghost set
             else
             {
                 for (int x = 0; x < Width; x++)
@@ -97,7 +98,7 @@ namespace Tetris.Core
                     {
                         if (Body[x, y])
                         {
-                            Game.Board.Cells[X + x, Y + y].Color = Color;
+                            Game.Board.Cells[X + x, Y + y].SetGhost(Color);
                         }
                     }
                 }
@@ -107,29 +108,55 @@ namespace Tetris.Core
         // remove tile from cells
         public virtual void ResetCells()
         {
-            for (int x = 0; x < Width; x++)
+            if (!isGhost)
             {
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    if (Body[x, y])
+                    for (int y = 0; y < Height; y++)
                     {
-                        try
+                        if (Body[x, y])
                         {
-                            Game.Board.Cells[X + x, Y + y].RemoveTile();
+                            try
+                            {
+                                Game.Board.Cells[X + x, Y + y].RemoveTile();
+                            }
+                            catch
+                            {
+                                Debug.WriteLine("Can't reset");
+                            }
                         }
-                        catch
+                    }
+                }
+            }
+            // ghost reset
+            else
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    for (int y = 0; y < Height; y++)
+                    {
+                        if (Body[x, y])
                         {
-                            Debug.WriteLine("Can't reset");
+                            try
+                            {
+                                Game.Board.Cells[X + x, Y + y].RemoveGhost();
+                            }
+                            catch
+                            {
+                                Debug.WriteLine("Can't reset");
+                            }
                         }
                     }
                 }
             }
         }
 
+        // create ghost piece from this
         public Tetromino CreateGhost()
         {
             var ghostTetromino = Clone();
             ghostTetromino.isGhost = true;
+            ghostTetromino.SetPos(X, GetLowestY());
             return ghostTetromino;
         }
 
@@ -295,18 +322,27 @@ namespace Tetris.Core
 
         public int GetLowestY()
         {
-            int y = 0;
-            while (true)
+            for (int y = Game.Board.Height; y > 0; y--)
             {
                 if (CheckValidPos(X, y))
                 {
-                    y++;
-                }
-                else
-                {
-                    return y - 1;
+                    return y;
                 }
             }
+
+            return -1;
+            //int y = 0;
+            //while (true)
+            //{
+            //    if (CheckValidPos(X, y))
+            //    {
+            //        y++;
+            //    }
+            //    else
+            //    {
+            //        return y - 1;
+            //    }
+            //}
         }
     }
 }

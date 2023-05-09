@@ -46,7 +46,7 @@ namespace Tetris
             // initialize systems
             TimeManager.Initialize();
             TetrominoController.Initialize();
-            StatManager.Initialize(_statWidth, _statHeight);
+            StatManager.Initialize();
 
             // create root console
             _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,

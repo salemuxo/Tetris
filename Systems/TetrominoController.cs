@@ -7,8 +7,7 @@ namespace Tetris.Systems
 {
     public static class TetrominoController
     {
-        private static Tetromino FallingTetromino;
-        private static Tetromino GhostTetromino;
+        public static Tetromino FallingTetromino { get; private set; }
         private static Queue<Tetromino> Queue;
 
         private static double elapsedTime = 0;
@@ -36,7 +35,10 @@ namespace Tetris.Systems
             if (Game.IsPlaying)
             {
                 FallingTetromino.Move(direction);
-                SetGhost();
+                if (direction != Direction.Down)
+                {
+                    GhostManager.Move();
+                }
             }
         }
 
@@ -46,10 +48,11 @@ namespace Tetris.Systems
             if (Game.IsPlaying)
             {
                 FallingTetromino.Rotate();
-                RotateGhost();
+                GhostManager.Set();
             }
         }
 
+        // instantly drop tetromino to lowest point
         public static void HardDrop()
         {
             FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.GetLowestY());
@@ -84,6 +87,7 @@ namespace Tetris.Systems
             }
         }
 
+        // if hold is empty, put falling in hold and get next, otherwise swap falling and held
         public static Tetromino HoldTetromino(Tetromino heldTetromino)
         {
             var holdTetromino = FallingTetromino;
@@ -107,14 +111,15 @@ namespace Tetris.Systems
             var nextTetromino = Queue.Dequeue();
             nextTetromino.Initialize();
             FallingTetromino = nextTetromino;
-            GhostTetromino = nextTetromino.CreateGhost();
+            GhostManager.Set();
         }
 
+        // set falling tetromino to specific tetromino
         private static void SetFallingTetromino(Tetromino tetromino)
         {
             tetromino.Initialize();
             FallingTetromino = tetromino;
-            GhostTetromino = tetromino.CreateGhost();
+            GhostManager.Set();
         }
 
         // get bag of all tetrominos in random order
@@ -140,24 +145,6 @@ namespace Tetris.Systems
                 int r = i + Game.Random.Next(n - i);
                 (list[i], list[r]) = (list[r], list[i]);
             }
-        }
-
-        private static void RotateGhost()
-        {
-            ResetGhost();
-            GhostTetromino.Rotate();
-            SetGhost();
-        }
-
-        private static void ResetGhost()
-        {
-            GhostTetromino.SetPos(FallingTetromino.X, FallingTetromino.Y);
-        }
-
-        private static void SetGhost()
-        {
-            GhostTetromino.SetPos(FallingTetromino.X, FallingTetromino.GetLowestY());
-            FallingTetromino.SetCells();
         }
     }
 }
