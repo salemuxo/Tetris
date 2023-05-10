@@ -9,7 +9,7 @@ namespace Tetris.Core
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public Cell[,] Cells { get; set; }
+        public Grid<Cell> Cells { get; set; }
 
         public Board(int width, int height)
         {
@@ -21,9 +21,12 @@ namespace Tetris.Core
         // draw board and border
         public void Draw(RLConsole boardConsole, RLConsole borderConsole)
         {
-            foreach (Cell cell in Cells)
+            for (int x = 0; x < Width; x++)
             {
-                cell.Draw(boardConsole);
+                for (int y = 0; y < Height; y++)
+                {
+                    Cells[x, y].Draw(boardConsole);
+                }
             }
             //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, RLColor.White);
             for (int x = 0; x < Width + 2; x++)
@@ -64,9 +67,9 @@ namespace Tetris.Core
         }
 
         // return 2d array of blank cells
-        private Cell[,] CreateCells()
+        private Grid<Cell> CreateCells()
         {
-            Cell[,] cells = new Cell[Width, Height];
+            Grid<Cell> cells = new Grid<Cell>(Width, Height * 2, Height);
 
             for (int x = 0; x < Width; x++)
             {

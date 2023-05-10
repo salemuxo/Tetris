@@ -1,12 +1,4 @@
-﻿using RLNET;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tetris.Core
+﻿namespace Tetris.Core
 {
     public class I : Tetromino
     {
@@ -16,30 +8,8 @@ namespace Tetris.Core
             {
                 { true, true, true, true }
             };
+            SetRotationOffsets(2, -1, -2, 2, 1, -2, -1, 1);
             Color = Palette.Cyan;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 2, Y - 1);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 2, Y + 2);
-                    break;
-
-                case 2:
-                    RotateAndMove(X + 1, Y - 2);
-                    break;
-
-                case 3:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-            }
         }
 
         public override string ToString()
@@ -57,12 +27,8 @@ namespace Tetris.Core
                 { true, true },
                 { true, true }
             };
+            SetRotationOffsets(0, 0, 0, 0, 0, 0, 0, 0);
             Color = Palette.Yellow;
-        }
-
-        public override void Rotate()
-        {
-            rotation++;
         }
 
         public override string ToString()
@@ -80,30 +46,8 @@ namespace Tetris.Core
                 { true, true, true },
                 { false, true, false }
             };
+            SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Purple;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 1, Y);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-
-                case 2:
-                    RotateAndMove(X, Y - 1);
-                    break;
-
-                case 3:
-                    RotateAndMove(X, Y);
-                    break;
-            }
         }
 
         public override string ToString()
@@ -121,30 +65,8 @@ namespace Tetris.Core
                 { true, true, true },
                 { true, false, false }
             };
+            SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Blue;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 1, Y);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-
-                case 2:
-                    RotateAndMove(X, Y - 1);
-                    break;
-
-                case 3:
-                    RotateAndMove(X, Y);
-                    break;
-            }
         }
 
         public override string ToString()
@@ -162,30 +84,8 @@ namespace Tetris.Core
                 { true, true, true },
                 { false, false, true }
             };
+            SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Orange;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 1, Y);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-
-                case 2:
-                    RotateAndMove(X, Y - 1);
-                    break;
-
-                case 3:
-                    RotateAndMove(X, Y);
-                    break;
-            }
         }
 
         public override string ToString()
@@ -203,30 +103,8 @@ namespace Tetris.Core
                 { true, true, false },
                 { false, true, true }
             };
+            SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Green;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 1, Y);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-
-                case 2:
-                    RotateAndMove(X, Y - 1);
-                    break;
-
-                case 3:
-                    RotateAndMove(X, Y);
-                    break;
-            }
         }
 
         public override string ToString()
@@ -244,30 +122,8 @@ namespace Tetris.Core
                 { false, true, true },
                 { true, true, false }
             };
+            SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Red;
-        }
-
-        public override void Rotate()
-        {
-            ResetCells();
-            switch (rotation)
-            {
-                case 0:
-                    RotateAndMove(X + 1, Y);
-                    break;
-
-                case 1:
-                    RotateAndMove(X - 1, Y + 1);
-                    break;
-
-                case 2:
-                    RotateAndMove(X, Y - 1);
-                    break;
-
-                case 3:
-                    RotateAndMove(X, Y);
-                    break;
-            }
         }
 
         public override string ToString()

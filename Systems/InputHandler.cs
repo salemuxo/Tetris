@@ -20,11 +20,18 @@ namespace Tetris.Systems
                 //Debug.WriteLine(keyPress.Key);
                 switch (keyPress.Key)
                 {
+                    // rotate counter clockwise
+                    case RLKey.LControl:
+                    case RLKey.Z:
+                        {
+                            TetrominoController.RotateCCW();
+                            break;
+                        }
                     // rotate clockwise
                     case RLKey.Up:
                     case RLKey.X:
                         {
-                            TetrominoController.Rotate();
+                            TetrominoController.RotateCW();
                             break;
                         }
                     // move left

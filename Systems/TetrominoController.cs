@@ -17,7 +17,7 @@ namespace Tetris.Systems
             elapsedTime += deltaTime;
             if (elapsedTime >= TimeManager.UpdateTime)
             {
-                Move(Direction.Down);
+                //Move(Direction.Down);
                 elapsedTime = 0;
             }
         }
@@ -43,11 +43,21 @@ namespace Tetris.Systems
         }
 
         // if game isnt paused, rotate falling tetromino 90 CW
-        public static void Rotate()
+        public static void RotateCW()
         {
             if (Game.IsPlaying)
             {
-                FallingTetromino.Rotate();
+                FallingTetromino.RotateCW();
+                GhostManager.Set();
+            }
+        }
+
+        // if game isnt paused, rotate falling tetromino 90 CCW
+        public static void RotateCCW()
+        {
+            if (Game.IsPlaying)
+            {
+                FallingTetromino.RotateCCW();
                 GhostManager.Set();
             }
         }

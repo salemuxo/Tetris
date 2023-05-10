@@ -21,6 +21,9 @@ namespace Tetris.Core
         protected int rotation = 1;
         protected bool isGhost = false;
 
+        // rotation offsets
+        private readonly int[,] offsets = new int[4, 2];
+
         public void Initialize()
         {
             X = 4;
@@ -58,7 +61,51 @@ namespace Tetris.Core
             }
         }
 
-        public abstract void Rotate();
+        public void RotateCW()
+        {
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateCWAndMove(X + offsets[0, 0], Y + offsets[0, 1]);
+                    break;
+
+                case 1:
+                    RotateCWAndMove(X + offsets[1, 0], Y + offsets[1, 1]);
+                    break;
+
+                case 2:
+                    RotateCWAndMove(X + offsets[2, 0], Y + offsets[2, 1]);
+                    break;
+
+                case 3:
+                    RotateCWAndMove(X + offsets[3, 0], Y + offsets[3, 1]);
+                    break;
+            }
+        }
+
+        public void RotateCCW()
+        {
+            ResetCells();
+            switch (rotation)
+            {
+                case 0:
+                    RotateCCWAndMove(X - offsets[3, 0], Y - offsets[3, 1]);
+                    break;
+
+                case 1:
+                    RotateCCWAndMove(X - offsets[0, 0], Y - offsets[0, 1]);
+                    break;
+
+                case 2:
+                    RotateCCWAndMove(X - offsets[1, 0], Y - offsets[1, 1]);
+                    break;
+
+                case 3:
+                    RotateCCWAndMove(X - offsets[2, 0], Y - offsets[2, 1]);
+                    break;
+            }
+        }
 
         public void SetPos(int x, int y)
         {
@@ -160,11 +207,22 @@ namespace Tetris.Core
             return ghostTetromino;
         }
 
-        // rotate matrix 90 degrees clockwise
-        protected bool[,] RotateMatrix(bool[,] matrix)
+        protected void SetRotationOffsets(
+            int aX, int aY, int bX, int bY, int cX, int cY, int dX, int dY)
         {
-            //matrix = TransposeMatrix(matrix);
+            offsets[0, 0] = aX;
+            offsets[0, 1] = aY;
+            offsets[1, 0] = bX;
+            offsets[1, 1] = bY;
+            offsets[2, 0] = cX;
+            offsets[2, 1] = cY;
+            offsets[3, 0] = dX;
+            offsets[3, 1] = dY;
+        }
 
+        // rotate matrix 90 degrees clockwise
+        private bool[,] RotateMatrixCW(bool[,] matrix)
+        {
             bool[,] result = new bool[matrix.GetLength(0), matrix.GetLength(1)];
 
             int maxX = matrix.GetUpperBound(0);
@@ -184,16 +242,38 @@ namespace Tetris.Core
             return result;
         }
 
-        protected void SetNewBody(bool[,] newBody)
+        // rotate matrix 90 degrees counter clockwise
+        private bool[,] RotateMatrixCCW(bool[,] matrix)
+        {
+            matrix = TransposeMatrix(matrix);
+
+            bool[,] result = new bool[matrix.GetLength(0), matrix.GetLength(1)];
+
+            int maxX = matrix.GetUpperBound(0);
+            int maxY = matrix.GetUpperBound(1);
+
+            for (int row = 0; row <= maxX; row++)
+            {
+                for (int col = 0; col <= (maxY / 2); col++)
+                {
+                    result[row, col] = matrix[row, maxY - col];
+                    result[row, maxY - col] = matrix[row, col];
+                }
+            }
+
+            return result;
+        }
+
+        private void SetNewBody(bool[,] newBody)
         {
             ResetCells();
             Body = newBody;
         }
 
         // rotate tetromino and move to keep correct center point
-        protected void RotateAndMove(int x, int y)
+        protected void RotateCWAndMove(int x, int y)
         {
-            var rotatedBody = RotateMatrix(Body);
+            var rotatedBody = RotateMatrixCW(Body);
             if (CheckValidPos(x, y, rotatedBody))
             {
                 SetNewBody(rotatedBody);
@@ -205,6 +285,25 @@ namespace Tetris.Core
                 else
                 {
                     rotation++;
+                }
+            }
+        }
+
+        // rotate tetromino and move to keep correct center point
+        protected void RotateCCWAndMove(int x, int y)
+        {
+            var rotatedBody = RotateMatrixCCW(Body);
+            if (CheckValidPos(x, y, rotatedBody))
+            {
+                SetNewBody(rotatedBody);
+                SetPos(x, y);
+                if (rotation == 0)
+                {
+                    rotation = 3;
+                }
+                else
+                {
+                    rotation--;
                 }
             }
         }
@@ -331,18 +430,6 @@ namespace Tetris.Core
             }
 
             return -1;
-            //int y = 0;
-            //while (true)
-            //{
-            //    if (CheckValidPos(X, y))
-            //    {
-            //        y++;
-            //    }
-            //    else
-            //    {
-            //        return y - 1;
-            //    }
-            //}
         }
     }
 }
