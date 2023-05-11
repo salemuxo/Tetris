@@ -24,38 +24,38 @@ namespace Tetris.Systems
                     case RLKey.LControl:
                     case RLKey.Z:
                         {
-                            TetrominoController.RotateCCW();
+                            Game.TetrominoController.RotateCCW();
                             break;
                         }
                     // rotate clockwise
                     case RLKey.Up:
                     case RLKey.X:
                         {
-                            TetrominoController.RotateCW();
+                            Game.TetrominoController.RotateCW();
                             break;
                         }
                     // move left
                     case RLKey.Left:
                         {
-                            TetrominoController.Move(Direction.Left);
+                            Game.TetrominoController.Move(Direction.Left);
                             break;
                         }
                     // move down
                     case RLKey.Down:
                         {
-                            TetrominoController.Move(Direction.Down);
+                            Game.TetrominoController.Move(Direction.Down);
                             break;
                         }
                     // move right
                     case RLKey.Right:
                         {
-                            TetrominoController.Move(Direction.Right);
+                            Game.TetrominoController.Move(Direction.Right);
                             break;
                         }
                     // hard drop
                     case RLKey.Space:
                         {
-                            TetrominoController.HardDrop();
+                            Game.TetrominoController.HardDrop();
                             break;
                         }
                     // hold
@@ -63,7 +63,7 @@ namespace Tetris.Systems
                     case RLKey.RShift:
                     case RLKey.C:
                         {
-                            HoldManager.HoldPiece();
+                            Game.HoldManager.HoldPiece();
                             break;
                         }
                     // pause

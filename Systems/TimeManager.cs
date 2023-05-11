@@ -4,20 +4,20 @@ using System.Threading.Tasks;
 
 namespace Tetris.Systems
 {
-    public static class TimeManager
+    public class TimeManager
     {
-        public static double DeltaTime { get; private set; }
-        public static double UpdateTime { get; set; }
+        public double DeltaTime { get; private set; }
+        public double UpdateTime { get; set; }
 
-        private static DateTime _previousGameTime;
+        private DateTime _previousGameTime;
 
-        public static void Initialize()
+        public TimeManager()
         {
             SetUpdateTime();
             _previousGameTime = DateTime.UtcNow;
         }
 
-        public static void Update()
+        public void Update()
         {
             if (Game.IsPlaying)
             {
@@ -28,9 +28,9 @@ namespace Tetris.Systems
             }
         }
 
-        public static void SetUpdateTime()
+        public void SetUpdateTime()
         {
-            UpdateTime = Math.Pow(0.8 - ((StatManager.Level - 1) * 0.007), StatManager.Level - 1) * 1000;
+            UpdateTime = Math.Pow(0.8 - ((Game.StatManager.Level - 1) * 0.007), Game.StatManager.Level - 1) * 1000;
             Debug.WriteLine(UpdateTime);
         }
     }

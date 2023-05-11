@@ -57,7 +57,7 @@ namespace Tetris.Core
             else if (direction == Direction.Down)
             {
                 SetCells();
-                TetrominoController.NoMoveDown();
+                Game.TetrominoController.NoMoveDown();
             }
         }
 
@@ -345,7 +345,7 @@ namespace Tetris.Core
         }
 
         // check if body position is valid (no tiles in way)
-        private bool CheckValidPos(int newX, int newY)
+        public bool CheckValidPos(int newX, int newY)
         {
             ResetCells();
             for (int x = 0; x < Width; x++)
@@ -362,6 +362,7 @@ namespace Tetris.Core
                     }
                     catch
                     {
+                        Debug.WriteLine("Invalid position");
                         SetCells();
                         return false;
                     }
@@ -379,9 +380,9 @@ namespace Tetris.Core
             int h = newBody.GetLength(1);
             for (int x = 0; x < w; x++)
             {
-                for (int y = 0; y < h; y++)
+                try
                 {
-                    try
+                    for (int y = 0; y < h; y++)
                     {
                         if (newBody[x, y] && Game.Board.Cells[newX + x, newY + y].IsTile)
                         {
@@ -389,11 +390,12 @@ namespace Tetris.Core
                             return false;
                         }
                     }
-                    catch
-                    {
-                        SetCells();
-                        return false;
-                    }
+                }
+                catch
+                {
+                    Debug.WriteLine("Invalid position");
+                    SetCells();
+                    return false;
                 }
             }
             SetCells();
@@ -421,7 +423,7 @@ namespace Tetris.Core
 
         public int GetLowestY()
         {
-            for (int y = Game.Board.Height; y > 0; y--)
+            for (int y = Game.Board.Height - Height; y > Y; y--)
             {
                 if (CheckValidPos(X, y))
                 {

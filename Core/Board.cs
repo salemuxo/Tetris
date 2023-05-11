@@ -9,7 +9,7 @@ namespace Tetris.Core
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public Grid<Cell> Cells { get; set; }
+        public Cell[,] Cells { get; set; }
 
         public Board(int width, int height)
         {
@@ -63,13 +63,13 @@ namespace Tetris.Core
                 }
             }
 
-            StatManager.ClearedLines(lines);
+            Game.StatManager.ClearedLines(lines);
         }
 
         // return 2d array of blank cells
-        private Grid<Cell> CreateCells()
+        private Cell[,] CreateCells()
         {
-            Grid<Cell> cells = new Grid<Cell>(Width, Height * 2, Height);
+            Cell[,] cells = new Cell[Width, Height];
 
             for (int x = 0; x < Width; x++)
             {

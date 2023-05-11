@@ -8,19 +8,19 @@ using Tetris.Core;
 
 namespace Tetris.Systems
 {
-    public static class StatManager
+    public class StatManager
     {
-        public static int Level { get; private set; }
-        public static int Score { get; private set; }
-        public static int Lines { get; private set; }
+        public int Level { get; private set; }
+        public int Score { get; private set; }
+        public int Lines { get; private set; }
 
-        public static void Initialize()
+        public StatManager()
         {
             Level = 1;
             Score = 0;
         }
 
-        public static void ClearedLines(int lines)
+        public void ClearedLines(int lines)
         {
             int oldLines = Lines;
 
@@ -50,7 +50,7 @@ namespace Tetris.Systems
             }
         }
 
-        public static void Draw(RLConsole console)
+        public void Draw(RLConsole console)
         {
             console.Print(0, 0, "SCORE", RLColor.White);
             console.Print(0, 1, Score.ToString(), RLColor.White);
@@ -62,10 +62,10 @@ namespace Tetris.Systems
             console.Print(0, 7, Lines.ToString(), RLColor.White);
         }
 
-        private static void IncreaseLevel()
+        private void IncreaseLevel()
         {
             Level++;
-            TimeManager.SetUpdateTime();
+            Game.TimeManager.SetUpdateTime();
         }
     }
 }

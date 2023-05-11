@@ -53,7 +53,6 @@
     <Compile Include="Core\Cell.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\ExtensionMethods.cs" />
-    <Compile Include="Core\Grid.cs" />
     <Compile Include="Core\Palette.cs" />
     <Compile Include="Core\Tetromino.cs" />
     <Compile Include="Core\Tetrominos.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Systems\GhostManager.cs" />
     <Compile Include="Systems\HoldManager.cs" />
     <Compile Include="Systems\InputHandler.cs" />
+    <Compile Include="Systems\MessageLog.cs" />
     <Compile Include="Systems\StatManager.cs" />
     <Compile Include="Systems\TetrominoController.cs" />
     <Compile Include="Systems\TimeManager.cs" />

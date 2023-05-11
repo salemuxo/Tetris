@@ -7,21 +7,26 @@ using Tetris.Core;
 
 namespace Tetris.Systems
 {
-    public static class GhostManager
+    public class GhostManager
     {
-        private static Tetromino GhostTetromino;
+        private Tetromino GhostTetromino;
 
-        public static void Set()
+        public void Set()
         {
             GhostTetromino?.ResetCells();
-            GhostTetromino = TetrominoController.FallingTetromino.CreateGhost();
+            GhostTetromino = Game.TetrominoController.FallingTetromino.CreateGhost();
             Move();
         }
 
-        public static void Move()
+        public void Move()
         {
-            GhostTetromino.SetPos(TetrominoController.FallingTetromino.X,
-                TetrominoController.FallingTetromino.GetLowestY());
+            var lowestY = Game.TetrominoController.FallingTetromino.GetLowestY();
+
+            if (lowestY != -1)
+            {
+                GhostTetromino.SetPos(Game.TetrominoController.FallingTetromino.X,
+                lowestY);
+            }
         }
     }
 }

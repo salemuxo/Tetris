@@ -4,12 +4,12 @@ using Tetris.Core;
 
 namespace Tetris.Systems
 {
-    public static class HoldManager
+    public class HoldManager
     {
-        public static bool HasHeld { get; set; } = false;
-        private static Tetromino heldTetromino;
+        public bool HasHeld { get; set; } = false;
+        private Tetromino heldTetromino;
 
-        public static void Draw(RLConsole console)
+        public void Draw(RLConsole console)
         {
             console.Print(0, 0, "HOLD", RLColor.White);
             if (heldTetromino != null)
@@ -18,12 +18,12 @@ namespace Tetris.Systems
             }
         }
 
-        public static void HoldPiece()
+        public void HoldPiece()
         {
             if (!HasHeld)
             {
                 HasHeld = true;
-                heldTetromino = TetrominoController.HoldTetromino(heldTetromino);
+                heldTetromino = Game.TetrominoController.HoldTetromino(heldTetromino);
             }
         }
     }

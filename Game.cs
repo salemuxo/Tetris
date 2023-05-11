@@ -33,7 +33,16 @@ namespace Tetris
         private const int _queueHeight = 4;
         private static RLConsole _queueConsole;
 
+        private const int _logWidth = 8;
+        private const int _logHeight = 10;
+        private static RLConsole _logConsole;
+
         public static Board Board { get; private set; }
+        public static GhostManager GhostManager { get; private set; }
+        public static TetrominoController TetrominoController { get; private set; }
+        public static HoldManager HoldManager { get; private set; }
+        public static StatManager StatManager { get; private set; }
+        public static TimeManager TimeManager { get; private set; }
         public static Random Random { get; private set; }
         public static bool IsPlaying { get; set; }
 
@@ -44,9 +53,11 @@ namespace Tetris
             IsPlaying = true;
 
             // initialize systems
-            TimeManager.Initialize();
-            TetrominoController.Initialize();
-            StatManager.Initialize();
+            GhostManager = new GhostManager();
+            StatManager = new StatManager();
+            TimeManager = new TimeManager();
+            HoldManager = new HoldManager();
+            TetrominoController = new TetrominoController();
 
             // create root console
             _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
@@ -58,11 +69,13 @@ namespace Tetris
             _holdConsole = new RLConsole(_holdWidth, _holdHeight);
             _statConsole = new RLConsole(_statWidth, _statHeight);
             _queueConsole = new RLConsole(_queueWidth, _queueHeight);
+            _logConsole = new RLConsole(_logWidth, _logHeight);
 
             // set up event handlers
             _rootConsole.Update += OnRootConsoleUpdate;
             _rootConsole.Render += OnRootConsoleRender;
 
+            TetrominoController.Start();
             _rootConsole.Run();
         }
 
@@ -77,6 +90,7 @@ namespace Tetris
         // RLNET Render event handler
         private static void OnRootConsoleRender(object sender, UpdateEventArgs e)
         {
+            _logConsole.Print(0, 0, "12345678", RLColor.White);
             // draw to subconsoles
             Board.Draw(_boardConsole, _borderConsole);
             TetrominoController.DrawQueue(_queueConsole);
@@ -90,11 +104,13 @@ namespace Tetris
             RLConsole.Blit(_boardConsole, 0, 0, _boardWidth, _boardHeight,
                 _rootConsole, 10, 5);
             RLConsole.Blit(_queueConsole, 0, 0, _queueWidth, _queueHeight,
-                _rootConsole, 23, 4);
+                _rootConsole, 22, 4);
             RLConsole.Blit(_statConsole, 0, 0, _statWidth, _statHeight,
                 _rootConsole, 2, 10);
             RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
                 _rootConsole, 2, 4);
+            RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
+                _rootConsole, 22, 9);
             _rootConsole.Draw();
         }
     }

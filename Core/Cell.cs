@@ -18,8 +18,6 @@ namespace Tetris.Core
             Color = Palette.Grey;
             IsTile = false;
             IsGhost = false;
-
-            Debug.WriteLine($"Created cell at ({X}, {Y})");
         }
 
         public void Draw(RLConsole console)
