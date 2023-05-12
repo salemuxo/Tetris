@@ -73,6 +73,10 @@ namespace Tetris.Systems
                             Game.IsPlaying = !Game.IsPlaying;
                             break;
                         }
+                    case RLKey.R:
+                        {
+                            break;
+                        }
                 }
             }
         }

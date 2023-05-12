@@ -9,22 +9,22 @@ namespace Tetris.Systems
 {
     public class GhostManager
     {
-        private Tetromino GhostTetromino;
+        private Tetromino _ghost;
 
         public void Set()
         {
-            GhostTetromino?.ResetCells();
-            GhostTetromino = Game.TetrominoController.FallingTetromino.CreateGhost();
+            _ghost?.ResetCells();
+            _ghost = Game.TetrominoController.FallingTetromino.CreateGhost();
             Move();
         }
 
         public void Move()
         {
-            var lowestY = Game.TetrominoController.FallingTetromino.GetLowestY();
+            var lowestY = Game.TetrominoController.FallingTetromino.LowestY;
 
             if (lowestY != -1)
             {
-                GhostTetromino.SetPos(Game.TetrominoController.FallingTetromino.X,
+                _ghost.SetPos(Game.TetrominoController.FallingTetromino.X,
                 lowestY);
             }
         }

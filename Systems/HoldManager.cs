@@ -7,14 +7,14 @@ namespace Tetris.Systems
     public class HoldManager
     {
         public bool HasHeld { get; set; } = false;
-        private Tetromino heldTetromino;
+        private Tetromino _heldTetromino;
 
         public void Draw(RLConsole console)
         {
             console.Print(0, 0, "HOLD", RLColor.White);
-            if (heldTetromino != null)
+            if (_heldTetromino != null)
             {
-                console.Print(0, 1, heldTetromino.ToString(), heldTetromino.Color);
+                console.Print(0, 1, _heldTetromino.ToString(), _heldTetromino.Color);
             }
         }
 
@@ -23,7 +23,7 @@ namespace Tetris.Systems
             if (!HasHeld)
             {
                 HasHeld = true;
-                heldTetromino = Game.TetrominoController.HoldTetromino(heldTetromino);
+                _heldTetromino = Game.TetrominoController.HoldTetromino(_heldTetromino);
             }
         }
     }

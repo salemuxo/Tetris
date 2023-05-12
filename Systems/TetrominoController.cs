@@ -8,7 +8,7 @@ namespace Tetris.Systems
     public class TetrominoController
     {
         public Tetromino FallingTetromino { get; private set; }
-        private Queue<Tetromino> Queue;
+        private Queue<Tetromino> _queue;
 
         private double elapsedTime = 0;
 
@@ -25,7 +25,7 @@ namespace Tetris.Systems
         // create queue from tetromino bag and get first tetromino from queue
         public TetrominoController()
         {
-            Queue = new Queue<Tetromino>(GetTetrominoBag());
+            _queue = new Queue<Tetromino>(GetTetrominoBag());
         }
 
         public void Start()
@@ -69,7 +69,7 @@ namespace Tetris.Systems
         // instantly drop tetromino to lowest point
         public void HardDrop()
         {
-            FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.GetLowestY());
+            FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.LowestY);
             NoMoveDown();
         }
 
@@ -84,7 +84,7 @@ namespace Tetris.Systems
         // draw queue to queue console
         public void DrawQueue(RLConsole queueConsole)
         {
-            var queueArray = Queue.ToArray();
+            var queueArray = _queue.ToArray();
             queueConsole.Print(0, 0, "NEXT", RLColor.White);
             for (int i = 0; i <= 3; i++)
             {
@@ -96,7 +96,7 @@ namespace Tetris.Systems
                 catch
                 {
                     Debug.WriteLine("New bag...");
-                    GetTetrominoBag().ForEach(x => Queue.Enqueue(x));
+                    GetTetrominoBag().ForEach(x => _queue.Enqueue(x));
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace Tetris.Systems
         // get next tetromino in queue and initialize
         private void GetNextTetromino()
         {
-            var nextTetromino = Queue.Dequeue();
+            var nextTetromino = _queue.Dequeue();
             nextTetromino.Initialize();
 
             //if (!nextTetromino.CheckValidPos(4, 0))

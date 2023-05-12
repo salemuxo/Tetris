@@ -29,18 +29,22 @@ namespace Tetris.Systems
             {
                 case 1:
                     Score += 100 * Level;
+                    Game.MessageLog.Add($"Single +{100 * Level}", Palette.Red);
                     break;
 
                 case 2:
                     Score += 300 * Level;
+                    Game.MessageLog.Add($"Double +{300 * Level}", Palette.Blue);
                     break;
 
                 case 3:
                     Score += 500 * Level;
+                    Game.MessageLog.Add($"Triple +{500 * Level}", Palette.Green);
                     break;
 
                 case 4:
                     Score += 800 * Level;
+                    Game.MessageLog.Add($"Tetris +{800 * Level}", Palette.Purple);
                     break;
             }
             int nearestLevel = oldLines.RoundUp();
@@ -66,6 +70,7 @@ namespace Tetris.Systems
         {
             Level++;
             Game.TimeManager.SetUpdateTime();
+            Game.MessageLog.Add($"Leveled up to level {Level}", Palette.Cyan);
         }
     }
 }

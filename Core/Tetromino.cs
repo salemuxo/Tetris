@@ -17,12 +17,32 @@ namespace Tetris.Core
         // coords of top left corner
         public int X { get; set; }
         public int Y { get; set; }
+
+        public int LowestY
+        {
+            get
+            {
+                int y = 0;
+                while (true)
+                {
+                    if (CheckValidPos(X, y))
+                    {
+                        y++;
+                    }
+                    else
+                    {
+                        return y - 1;
+                    }
+                }
+            }
+        }
         public RLColor Color { get; set; }
-        protected int rotation = 1;
-        protected bool isGhost = false;
+
+        protected int _rotation = 1;
+        protected bool _isGhost = false;
 
         // rotation offsets
-        private readonly int[,] offsets = new int[4, 2];
+        private readonly int[,] _offsets = new int[4, 2];
 
         public void Initialize()
         {
@@ -64,22 +84,22 @@ namespace Tetris.Core
         public void RotateCW()
         {
             ResetCells();
-            switch (rotation)
+            switch (_rotation)
             {
                 case 0:
-                    RotateCWAndMove(X + offsets[0, 0], Y + offsets[0, 1]);
+                    RotateCWAndMove(X + _offsets[0, 0], Y + _offsets[0, 1]);
                     break;
 
                 case 1:
-                    RotateCWAndMove(X + offsets[1, 0], Y + offsets[1, 1]);
+                    RotateCWAndMove(X + _offsets[1, 0], Y + _offsets[1, 1]);
                     break;
 
                 case 2:
-                    RotateCWAndMove(X + offsets[2, 0], Y + offsets[2, 1]);
+                    RotateCWAndMove(X + _offsets[2, 0], Y + _offsets[2, 1]);
                     break;
 
                 case 3:
-                    RotateCWAndMove(X + offsets[3, 0], Y + offsets[3, 1]);
+                    RotateCWAndMove(X + _offsets[3, 0], Y + _offsets[3, 1]);
                     break;
             }
         }
@@ -87,22 +107,22 @@ namespace Tetris.Core
         public void RotateCCW()
         {
             ResetCells();
-            switch (rotation)
+            switch (_rotation)
             {
                 case 0:
-                    RotateCCWAndMove(X - offsets[3, 0], Y - offsets[3, 1]);
+                    RotateCCWAndMove(X - _offsets[3, 0], Y - _offsets[3, 1]);
                     break;
 
                 case 1:
-                    RotateCCWAndMove(X - offsets[0, 0], Y - offsets[0, 1]);
+                    RotateCCWAndMove(X - _offsets[0, 0], Y - _offsets[0, 1]);
                     break;
 
                 case 2:
-                    RotateCCWAndMove(X - offsets[1, 0], Y - offsets[1, 1]);
+                    RotateCCWAndMove(X - _offsets[1, 0], Y - _offsets[1, 1]);
                     break;
 
                 case 3:
-                    RotateCCWAndMove(X - offsets[2, 0], Y - offsets[2, 1]);
+                    RotateCCWAndMove(X - _offsets[2, 0], Y - _offsets[2, 1]);
                     break;
             }
         }
@@ -123,7 +143,7 @@ namespace Tetris.Core
         // set all cells occupied by tetromino to tile
         public virtual void SetCells()
         {
-            if (!isGhost)
+            if (!_isGhost)
             {
                 for (int x = 0; x < Width; x++)
                 {
@@ -155,7 +175,7 @@ namespace Tetris.Core
         // remove tile from cells
         public virtual void ResetCells()
         {
-            if (!isGhost)
+            if (!_isGhost)
             {
                 for (int x = 0; x < Width; x++)
                 {
@@ -202,22 +222,22 @@ namespace Tetris.Core
         public Tetromino CreateGhost()
         {
             var ghostTetromino = Clone();
-            ghostTetromino.isGhost = true;
-            ghostTetromino.SetPos(X, GetLowestY());
+            ghostTetromino._isGhost = true;
+            ghostTetromino.SetPos(X, LowestY);
             return ghostTetromino;
         }
 
         protected void SetRotationOffsets(
             int aX, int aY, int bX, int bY, int cX, int cY, int dX, int dY)
         {
-            offsets[0, 0] = aX;
-            offsets[0, 1] = aY;
-            offsets[1, 0] = bX;
-            offsets[1, 1] = bY;
-            offsets[2, 0] = cX;
-            offsets[2, 1] = cY;
-            offsets[3, 0] = dX;
-            offsets[3, 1] = dY;
+            _offsets[0, 0] = aX;
+            _offsets[0, 1] = aY;
+            _offsets[1, 0] = bX;
+            _offsets[1, 1] = bY;
+            _offsets[2, 0] = cX;
+            _offsets[2, 1] = cY;
+            _offsets[3, 0] = dX;
+            _offsets[3, 1] = dY;
         }
 
         // rotate matrix 90 degrees clockwise
@@ -278,13 +298,13 @@ namespace Tetris.Core
             {
                 SetNewBody(rotatedBody);
                 SetPos(x, y);
-                if (rotation == 3)
+                if (_rotation == 3)
                 {
-                    rotation = 0;
+                    _rotation = 0;
                 }
                 else
                 {
-                    rotation++;
+                    _rotation++;
                 }
             }
         }
@@ -297,13 +317,13 @@ namespace Tetris.Core
             {
                 SetNewBody(rotatedBody);
                 SetPos(x, y);
-                if (rotation == 0)
+                if (_rotation == 0)
                 {
-                    rotation = 3;
+                    _rotation = 3;
                 }
                 else
                 {
-                    rotation--;
+                    _rotation--;
                 }
             }
         }
@@ -419,19 +439,6 @@ namespace Tetris.Core
             }
 
             return result;
-        }
-
-        public int GetLowestY()
-        {
-            for (int y = Game.Board.Height - Height; y > Y; y--)
-            {
-                if (CheckValidPos(X, y))
-                {
-                    return y;
-                }
-            }
-
-            return -1;
         }
     }
 }

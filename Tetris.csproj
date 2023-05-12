@@ -53,6 +53,7 @@
     <Compile Include="Core\Cell.cs" />
     <Compile Include="Core\Enums.cs" />
     <Compile Include="Core\ExtensionMethods.cs" />
+    <Compile Include="Core\Message.cs" />
     <Compile Include="Core\Palette.cs" />
     <Compile Include="Core\Tetromino.cs" />
     <Compile Include="Core\Tetrominos.cs" />

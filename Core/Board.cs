@@ -21,13 +21,21 @@ namespace Tetris.Core
         // draw board and border
         public void Draw(RLConsole boardConsole, RLConsole borderConsole)
         {
-            for (int x = 0; x < Width; x++)
+            if (Game.IsPlaying)
             {
-                for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    Cells[x, y].Draw(boardConsole);
+                    for (int y = 0; y < Height; y++)
+                    {
+                        Cells[x, y].Draw(boardConsole);
+                    }
                 }
             }
+            else
+            {
+                boardConsole.Print(0, 0, "GAME OVER!", RLColor.Red);
+            }
+
             //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, RLColor.White);
             for (int x = 0; x < Width + 2; x++)
             {
