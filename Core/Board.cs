@@ -33,7 +33,8 @@ namespace Tetris.Core
             }
             else
             {
-                boardConsole.Print(0, 0, "GAME OVER!", RLColor.Red);
+                boardConsole.Clear();
+                boardConsole.Print(0, 0, "Game Paused", Palette.Purple);
             }
 
             //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, RLColor.White);

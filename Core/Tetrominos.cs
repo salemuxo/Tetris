@@ -6,7 +6,10 @@
         {
             Body = new bool[,]
             {
-                { true, true, true, true }
+                { true },
+                { true },
+                { true },
+                { true }
             };
             SetRotationOffsets(2, -1, -2, 2, 1, -2, -1, 1);
             Color = Palette.Cyan;
@@ -43,8 +46,9 @@
         {
             Body = new bool[,]
             {
-                { true, true, true },
-                { false, true, false }
+                { false, true },
+                { true, true },
+                { false, true }
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Purple;
@@ -62,8 +66,9 @@
         {
             Body = new bool[,]
             {
-                { true, true, true },
-                { true, false, false }
+                { true, true },
+                { false, true },
+                { false, true }
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Blue;
@@ -81,8 +86,9 @@
         {
             Body = new bool[,]
             {
-                { true, true, true },
-                { false, false, true }
+                { false, true },
+                { false, true },
+                { true, true }
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Orange;
@@ -100,8 +106,9 @@
         {
             Body = new bool[,]
             {
-                { true, true, false },
-                { false, true, true }
+                { false, true },
+                { true, true },
+                { true, false }
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Green;
@@ -119,10 +126,12 @@
         {
             Body = new bool[,]
             {
-                { false, true, true },
-                { true, true, false }
+                { true, false },
+                { true, true },
+                { false, true }
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
+
             Color = Palette.Red;
         }
 

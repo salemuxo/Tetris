@@ -38,7 +38,7 @@ namespace Tetris.Core
         }
         public RLColor Color { get; set; }
 
-        protected int _rotation = 1;
+        protected int _rotation = 0;
         protected bool _isGhost = false;
 
         // rotation offsets
@@ -294,10 +294,13 @@ namespace Tetris.Core
         protected void RotateCWAndMove(int x, int y)
         {
             var rotatedBody = RotateMatrixCW(Body);
-            if (CheckValidPos(x, y, rotatedBody))
+            var kickInfo = CheckKicksCW(x, y, rotatedBody);
+
+            if (kickInfo.canRotate)
             {
                 SetNewBody(rotatedBody);
-                SetPos(x, y);
+                SetPos(kickInfo.x, kickInfo.y);
+
                 if (_rotation == 3)
                 {
                     _rotation = 0;
@@ -313,10 +316,13 @@ namespace Tetris.Core
         protected void RotateCCWAndMove(int x, int y)
         {
             var rotatedBody = RotateMatrixCCW(Body);
-            if (CheckValidPos(x, y, rotatedBody))
+            var kickInfo = CheckKicksCCW(x, y, rotatedBody);
+
+            if (kickInfo.canRotate)
             {
                 SetNewBody(rotatedBody);
-                SetPos(x, y);
+                SetPos(kickInfo.x, kickInfo.y);
+
                 if (_rotation == 0)
                 {
                     _rotation = 3;
@@ -439,6 +445,266 @@ namespace Tetris.Core
             }
 
             return result;
+        }
+
+        // CW check for wall kick, return whether rotation is possible and coords after kick
+        private (bool canRotate, int x, int y) CheckKicksCW(int x, int y, bool[,] newBody)
+        {
+            bool canRotate = true;
+            int newX = x;
+            int newY = y;
+
+            switch (_rotation)
+            {
+                case 0:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x - 1, y, newBody))
+                        {
+                            newX = x - 1;
+                        }
+                        else if (CheckValidPos(x - 1, y - 1, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y - 1;
+                        }
+                        else if (CheckValidPos(x, y + 2, newBody))
+                        {
+                            newY = y + 2;
+                        }
+                        else if (CheckValidPos(x - 1, y + 2, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y + 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x + 1, y, newBody))
+                        {
+                            newX = x + 1;
+                        }
+                        else if (CheckValidPos(x + 1, y + 1, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y + 1;
+                        }
+                        else if (CheckValidPos(x, y - 2, newBody))
+                        {
+                            newY = y - 2;
+                        }
+                        else if (CheckValidPos(x + 1, y - 2, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y - 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x + 1, y, newBody))
+                        {
+                            newX = x + 1;
+                        }
+                        else if (CheckValidPos(x + 1, y - 1, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y - 1;
+                        }
+                        else if (CheckValidPos(x, y + 2, newBody))
+                        {
+                            newY = y + 2;
+                        }
+                        else if (CheckValidPos(x + 1, y + 2, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y + 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x - 1, y, newBody))
+                        {
+                            newX = x - 1;
+                        }
+                        else if (CheckValidPos(x - 1, y + 1, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y + 1;
+                        }
+                        else if (CheckValidPos(x, y - 2, newBody))
+                        {
+                            newY = y - 2;
+                        }
+                        else if (CheckValidPos(x - 1, y - 2, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y - 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+            }
+
+            return (canRotate, newX, newY);
+        }
+
+        // CW check for wall kick, return whether rotation is possible and coords after kick
+        private (bool canRotate, int x, int y) CheckKicksCCW(int x, int y, bool[,] newBody)
+        {
+            bool canRotate = true;
+            int newX = x;
+            int newY = y;
+
+            switch (_rotation)
+            {
+                case 0:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x + 1, y, newBody))
+                        {
+                            newX = x + 1;
+                        }
+                        else if (CheckValidPos(x + 1, y - 1, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y - 1;
+                        }
+                        else if (CheckValidPos(x, y + 2, newBody))
+                        {
+                            newY = y + 2;
+                        }
+                        else if (CheckValidPos(x + 1, y + 2, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y + 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x + 1, y, newBody))
+                        {
+                            newX = x + 1;
+                        }
+                        else if (CheckValidPos(x + 1, y + 1, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y + 1;
+                        }
+                        else if (CheckValidPos(x, y - 2, newBody))
+                        {
+                            newY = y - 2;
+                        }
+                        else if (CheckValidPos(x + 1, y - 2, newBody))
+                        {
+                            newX = x + 1;
+                            newY = y - 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x - 1, y, newBody))
+                        {
+                            newX = x - 1;
+                        }
+                        else if (CheckValidPos(x - 1, y - 1, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y - 1;
+                        }
+                        else if (CheckValidPos(x, y + 2, newBody))
+                        {
+                            newY = y + 2;
+                        }
+                        else if (CheckValidPos(x - 1, y + 2, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y + 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        if (CheckValidPos(x, y, newBody))
+                        {
+                        }
+                        else if (CheckValidPos(x - 1, y, newBody))
+                        {
+                            newX = x - 1;
+                        }
+                        else if (CheckValidPos(x - 1, y + 1, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y + 1;
+                        }
+                        else if (CheckValidPos(x, y - 2, newBody))
+                        {
+                            newY = y - 2;
+                        }
+                        else if (CheckValidPos(x - 1, y - 2, newBody))
+                        {
+                            newX = x - 1;
+                            newY = y - 2;
+                        }
+                        else
+                        {
+                            canRotate = false;
+                        }
+                        break;
+                    }
+            }
+
+            return (canRotate, newX, newY);
         }
     }
 }

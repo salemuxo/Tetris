@@ -69,8 +69,11 @@ namespace Tetris.Systems
         // instantly drop tetromino to lowest point
         public void HardDrop()
         {
+            int droppedTiles = FallingTetromino.LowestY - FallingTetromino.Y;
             FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.LowestY);
             NoMoveDown();
+
+            Game.StatManager.HardDrop(droppedTiles);
         }
 
         // if tetromino couldn't move down, check for full lines and get next tetromino

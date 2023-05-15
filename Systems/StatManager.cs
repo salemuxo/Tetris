@@ -54,6 +54,12 @@ namespace Tetris.Systems
             }
         }
 
+        public void HardDrop(int cells)
+        {
+            Score += 2 * cells;
+            Game.MessageLog.Add($"Drop +{2 * cells}");
+        }
+
         public void Draw(RLConsole console)
         {
             console.Print(0, 0, "SCORE", RLColor.White);
