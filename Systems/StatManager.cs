@@ -11,7 +11,7 @@ namespace Tetris.Systems
     public class StatManager
     {
         public int Level { get; private set; }
-        public int Score { get; private set; }
+        public int Score { get; set; }
         public int Lines { get; private set; }
 
         public StatManager()

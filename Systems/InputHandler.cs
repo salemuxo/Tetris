@@ -6,15 +6,24 @@ namespace Tetris.Systems
 {
     public static class InputHandler
     {
+        private static RLKeyPress _lastKeyPress;
+
         public static void HandleInput(RLRootConsole rootConsole)
         {
             HandleKeyInput(rootConsole);
-            HandleMouseInput(rootConsole);
+            //HandleMouseInput(rootConsole);
         }
 
         private static void HandleKeyInput(RLRootConsole rootConsole)
         {
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
+
+            // stop soft drop
+            if (_lastKeyPress?.Key == RLKey.Down && rootConsole.Keyboard.WasKeyReleased())
+            {
+                Game.TimeManager.IsSoftDropping = false;
+            }
+
             if (keyPress != null)
             {
                 //Debug.WriteLine(keyPress.Key);
@@ -43,7 +52,10 @@ namespace Tetris.Systems
                     // move down
                     case RLKey.Down:
                         {
-                            Game.TetrominoController.Move(Direction.Down);
+                            if (!keyPress.Repeating && !Game.TimeManager.IsSoftDropping)
+                            {
+                                Game.TimeManager.IsSoftDropping = true;
+                            }
                             break;
                         }
                     // move right
@@ -78,6 +90,7 @@ namespace Tetris.Systems
                             break;
                         }
                 }
+                _lastKeyPress = keyPress;
             }
         }
 

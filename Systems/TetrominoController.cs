@@ -8,17 +8,22 @@ namespace Tetris.Systems
     public class TetrominoController
     {
         public Tetromino FallingTetromino { get; private set; }
-        private Queue<Tetromino> _queue;
 
-        private double elapsedTime = 0;
+        private readonly Queue<Tetromino> _queue;
+        private double _elapsedTime = 0;
 
         public void Update(double deltaTime)
         {
-            elapsedTime += deltaTime;
-            if (elapsedTime >= Game.TimeManager.UpdateTime)
+            _elapsedTime += deltaTime;
+            if (_elapsedTime >= Game.TimeManager.UpdateTime)
             {
                 Move(Direction.Down);
-                elapsedTime = 0;
+                _elapsedTime = 0;
+
+                if (Game.TimeManager.IsSoftDropping)
+                {
+                    Game.StatManager.Score++;
+                }
             }
         }
 
@@ -120,6 +125,11 @@ namespace Tetris.Systems
             }
 
             return holdTetromino;
+        }
+
+        public void ResetTimer()
+        {
+            _elapsedTime = Game.TimeManager.UpdateTime;
         }
 
         // get next tetromino in queue and initialize

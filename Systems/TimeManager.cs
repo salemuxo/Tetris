@@ -7,8 +7,28 @@ namespace Tetris.Systems
     public class TimeManager
     {
         public double DeltaTime { get; private set; }
-        public double UpdateTime { get; set; }
 
+        public double UpdateTime
+        {
+            get
+            {
+                if (IsSoftDropping)
+                {
+                    return 50;
+                }
+                else
+                {
+                    return _updateTime;
+                }
+            }
+            set
+            {
+                _updateTime = value;
+            }
+        }
+        public bool IsSoftDropping { get; set; }
+
+        private double _updateTime;
         private DateTime _previousGameTime;
 
         public TimeManager()
@@ -30,8 +50,8 @@ namespace Tetris.Systems
 
         public void SetUpdateTime()
         {
-            UpdateTime = Math.Pow(0.8 - ((Game.StatManager.Level - 1) * 0.007), Game.StatManager.Level - 1) * 1000;
-            Debug.WriteLine(UpdateTime);
+            _updateTime = Math.Pow(0.8 - ((Game.StatManager.Level - 1) * 0.007), Game.StatManager.Level - 1) * 1000;
+            Debug.WriteLine(_updateTime);
         }
     }
 }
