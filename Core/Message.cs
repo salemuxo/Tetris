@@ -11,31 +11,15 @@ namespace Tetris.Core
     {
         public string Line { get; set; }
         public RLColor Color { get; set; }
-        private double _timeActive;
         private readonly double _displayTime;
+        private double _timeActive;
 
-        public Message(string message)
-        {
-            Line = message;
-            Color = RLColor.White;
-            _timeActive = 0;
-            _displayTime = 1000;
-        }
-
-        public Message(string message, RLColor color)
+        public Message(string message, RLColor color, double displayTime)
         {
             Line = message;
             Color = color;
-            _timeActive = 0;
-            _displayTime = 1000;
-        }
-
-        public Message(string message, double displayTime)
-        {
-            Line = message;
-            Color = RLColor.White;
-            _timeActive = 0;
             _displayTime = displayTime;
+            _timeActive = 0;
         }
 
         public void Update(double deltaTime)
@@ -45,6 +29,11 @@ namespace Tetris.Core
             {
                 Game.MessageLog.Remove(this);
             }
+        }
+
+        public int GetCenteredPos(int logWidth)
+        {
+            return (logWidth - Line.Length) / 2;
         }
     }
 }

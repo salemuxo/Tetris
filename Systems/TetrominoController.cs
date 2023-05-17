@@ -12,17 +12,33 @@ namespace Tetris.Systems
         private readonly Queue<Tetromino> _queue;
         private double _elapsedTime = 0;
 
+        private double _graceTime = 0;
+        private bool _isGraceTurn = false;
+
         public void Update(double deltaTime)
         {
-            _elapsedTime += deltaTime;
-            if (_elapsedTime >= Game.TimeManager.UpdateTime)
+            if (!_isGraceTurn)
             {
-                Move(Direction.Down);
-                _elapsedTime = 0;
-
-                if (Game.TimeManager.IsSoftDropping)
+                _elapsedTime += deltaTime;
+                if (_elapsedTime >= Game.TimeManager.UpdateTime)
                 {
-                    Game.StatManager.Score++;
+                    Move(Direction.Down);
+                    _elapsedTime = 0;
+
+                    if (Game.TimeManager.IsSoftDropping)
+                    {
+                        Game.StatManager.Score++;
+                    }
+                }
+            }
+            else
+            {
+                _graceTime += deltaTime;
+                if (_graceTime >= 500)
+                {
+                    _isGraceTurn = false;
+                    _graceTime = 0;
+                    PlaceTetromino();
                 }
             }
         }
@@ -47,6 +63,7 @@ namespace Tetris.Systems
                 if (direction != Direction.Down)
                 {
                     Game.GhostManager.Move();
+                    _isGraceTurn = false;
                 }
             }
         }
@@ -76,13 +93,19 @@ namespace Tetris.Systems
         {
             int droppedTiles = FallingTetromino.LowestY - FallingTetromino.Y;
             FallingTetromino.SetPos(FallingTetromino.X, FallingTetromino.LowestY);
-            NoMoveDown();
+            PlaceTetromino();
 
             Game.StatManager.HardDrop(droppedTiles);
         }
 
-        // if tetromino couldn't move down, check for full lines and get next tetromino
+        // set grace turn (half second before tetromino is placed)
         public void NoMoveDown()
+        {
+            _isGraceTurn = true;
+        }
+
+        // check for full lines and get next tetromino
+        public void PlaceTetromino()
         {
             Game.Board.CheckLines(FallingTetromino.Y, FallingTetromino.Y + FallingTetromino.Height);
             Game.HoldManager.HasHeld = false;
@@ -136,22 +159,21 @@ namespace Tetris.Systems
         private void GetNextTetromino()
         {
             var nextTetromino = _queue.Dequeue();
-            nextTetromino.Initialize();
-
-            //if (!nextTetromino.CheckValidPos(4, 0))
-            //{
-            //}
-
-            FallingTetromino = nextTetromino;
-            Game.GhostManager.Set();
+            SetFallingTetromino(nextTetromino);
         }
 
         // set falling tetromino to specific tetromino
         private void SetFallingTetromino(Tetromino tetromino)
         {
+            //if (!tetromino.CheckValidPos(tetromino.StartingX, 0))
+            //{
+            //    Game.MessageLog.Add("GAME OVER!", 10000);
+            //    Game.IsPlaying = false;
+            //}
             tetromino.Initialize();
             FallingTetromino = tetromino;
             Game.GhostManager.Set();
+            _elapsedTime = 0;
         }
 
         // get bag of all tetrominos in random order

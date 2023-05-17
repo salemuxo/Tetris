@@ -28,6 +28,7 @@
 using OpenTK;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace RLNET
     public class RLKeyboard
     {
         private RLKeyPress keyPress;
-        private bool released;
+        private RLKey? releasedKey;
         private bool numLock;
         private bool capsLock;
         private bool scrollLock;
@@ -50,7 +51,7 @@ namespace RLNET
 
         private void gameWindow_KeyUp(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
         {
-            released = true;
+            releasedKey = (RLKey)e.Key;
         }
 
         private void gameWindow_KeyDown(object sender, OpenTK.Input.KeyboardKeyEventArgs e)
@@ -73,11 +74,11 @@ namespace RLNET
             return kp;
         }
 
-        public bool WasKeyReleased()
+        public RLKey? GetKeyRelease()
         {
-            bool r = released;
-            released = false;
-            return r;
+            RLKey? release = releasedKey;
+            releasedKey = null;
+            return release;
         }
     }
 }

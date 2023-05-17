@@ -32,23 +32,29 @@ namespace Tetris.Systems
             console.Clear();
             for (int i = 0; i < _messages.Count; i++)
             {
-                console.Print(0, i, _messages[i].Line, _messages[i].Color);
+                console.Print(_messages[i].GetCenteredPos(console.Width), i,
+                    _messages[i].Line, _messages[i].Color);
             }
         }
 
         public void Add(string message)
         {
-            _messages.Add(new Message(message));
+            _messages.Add(new Message(message, RLColor.White, 1000));
         }
 
         public void Add(string message, RLColor color)
         {
-            _messages.Add(new Message(message, color));
+            _messages.Add(new Message(message, color, 1000));
         }
 
         public void Add(string message, double displayTime)
         {
-            _messages.Add(new Message(message, displayTime));
+            _messages.Add(new Message(message, RLColor.White, displayTime));
+        }
+
+        public void Add(string message, RLColor color, double displayTime)
+        {
+            _messages.Add(new Message(message, color, displayTime));
         }
 
         public void Remove(Message message)

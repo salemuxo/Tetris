@@ -13,6 +13,7 @@
             };
             SetRotationOffsets(2, -1, -2, 2, 1, -2, -1, 1);
             Color = Palette.Cyan;
+            StartingX = 3;
         }
 
         public override string ToString()
@@ -32,6 +33,7 @@
             };
             SetRotationOffsets(0, 0, 0, 0, 0, 0, 0, 0);
             Color = Palette.Yellow;
+            StartingX = 4;
         }
 
         public override string ToString()
@@ -52,6 +54,7 @@
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Purple;
+            StartingX = 3;
         }
 
         public override string ToString()
@@ -72,6 +75,7 @@
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Blue;
+            StartingX = 3;
         }
 
         public override string ToString()
@@ -92,6 +96,7 @@
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Orange;
+            StartingX = 3;
         }
 
         public override string ToString()
@@ -112,6 +117,7 @@
             };
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
             Color = Palette.Green;
+            StartingX = 3;
         }
 
         public override string ToString()
@@ -133,6 +139,7 @@
             SetRotationOffsets(1, 0, -1, 1, 0, -1, 0, 0);
 
             Color = Palette.Red;
+            StartingX = 3;
         }
 
         public override string ToString()

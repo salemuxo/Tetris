@@ -34,7 +34,7 @@ namespace Tetris
         private const int _queueHeight = 4;
         private static RLConsole _queueConsole;
 
-        private const int _logWidth = 12;
+        private const int _logWidth = 20;
         private const int _logHeight = 4;
         private static RLConsole _logConsole;
 
@@ -51,34 +51,13 @@ namespace Tetris
 
         public static void Main(string[] args)
         {
-            Random = new Random();
-            Board = new Board(_boardWidth, _boardHeight);
-            IsPlaying = true;
-
-            // initialize systems
-            GhostManager = new GhostManager();
-            StatManager = new StatManager();
-            TimeManager = new TimeManager();
-            HoldManager = new HoldManager();
-            MessageLog = new MessageLog();
-            TetrominoController = new TetrominoController();
-
-            // create root console
-            _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
-                8, 8, 3.5f, _consoleTitle);
-
-            // create subconsoles
-            _boardConsole = new RLConsole(_boardWidth, _boardHeight);
-            _borderConsole = new RLConsole(_boardWidth + 2, _boardHeight + 2);
-            _holdConsole = new RLConsole(_holdWidth, _holdHeight);
-            _statConsole = new RLConsole(_statWidth, _statHeight);
-            _queueConsole = new RLConsole(_queueWidth, _queueHeight);
-            _logConsole = new RLConsole(_logWidth, _logHeight);
+            InitializeGame();
 
             // set up event handlers
             _rootConsole.Update += OnRootConsoleUpdate;
             _rootConsole.Render += OnRootConsoleRender;
 
+            IsPlaying = true;
             TetrominoController.Start();
             _rootConsole.Run();
         }
@@ -115,14 +94,34 @@ namespace Tetris
             RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
                 _rootConsole, 2, 2);
             RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
-                _rootConsole, 9, 25);
+                _rootConsole, 5, 25);
             _rootConsole.Draw();
         }
 
-        public static void EndGame()
+        // create systems, board, consoles
+        private static void InitializeGame()
         {
-            IsPlaying = false;
-            MessageLog.Add("GAME OVER!", 10000);
+            // initialize systems
+            Random = new Random();
+            Board = new Board(_boardWidth, _boardHeight);
+            GhostManager = new GhostManager();
+            StatManager = new StatManager();
+            TimeManager = new TimeManager();
+            HoldManager = new HoldManager();
+            MessageLog = new MessageLog();
+            TetrominoController = new TetrominoController();
+
+            // create root console
+            _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
+                8, 8, 3.5f, _consoleTitle);
+
+            // create subconsoles
+            _boardConsole = new RLConsole(_boardWidth, _boardHeight);
+            _borderConsole = new RLConsole(_boardWidth + 2, _boardHeight + 2);
+            _holdConsole = new RLConsole(_holdWidth, _holdHeight);
+            _statConsole = new RLConsole(_statWidth, _statHeight);
+            _queueConsole = new RLConsole(_queueWidth, _queueHeight);
+            _logConsole = new RLConsole(_logWidth, _logHeight);
         }
     }
 }

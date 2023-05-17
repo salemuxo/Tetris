@@ -14,10 +14,24 @@ namespace Tetris.Systems
         public int Score { get; set; }
         public int Lines { get; private set; }
 
+        private int _combo = -1;
+
         public StatManager()
         {
             Level = 1;
             Score = 0;
+        }
+
+        public void Draw(RLConsole console)
+        {
+            console.Print(0, 0, "SCORE", RLColor.White);
+            console.Print(0, 1, Score.ToString(), RLColor.White);
+
+            console.Print(0, 3, "LEVEL", RLColor.White);
+            console.Print(0, 4, Level.ToString(), RLColor.White);
+
+            console.Print(0, 6, "LINES", RLColor.White);
+            console.Print(0, 7, Lines.ToString(), RLColor.White);
         }
 
         public void ClearedLines(int lines)
@@ -52,24 +66,25 @@ namespace Tetris.Systems
             {
                 IncreaseLevel();
             }
+
+            if (lines != 0)
+            {
+                _combo++;
+                if (_combo > 0)
+                {
+                    Game.MessageLog.Add($"Combo x{_combo + 1} +{50 * _combo * Level}");
+                }
+            }
+            else
+            {
+                _combo = -1;
+            }
         }
 
         public void HardDrop(int cells)
         {
             Score += 2 * cells;
             Game.MessageLog.Add($"Drop +{2 * cells}");
-        }
-
-        public void Draw(RLConsole console)
-        {
-            console.Print(0, 0, "SCORE", RLColor.White);
-            console.Print(0, 1, Score.ToString(), RLColor.White);
-
-            console.Print(0, 3, "LEVEL", RLColor.White);
-            console.Print(0, 4, Level.ToString(), RLColor.White);
-
-            console.Print(0, 6, "LINES", RLColor.White);
-            console.Print(0, 7, Lines.ToString(), RLColor.White);
         }
 
         private void IncreaseLevel()

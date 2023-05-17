@@ -17,12 +17,13 @@ namespace Tetris.Core
         // coords of top left corner
         public int X { get; set; }
         public int Y { get; set; }
+        public int StartingX { get; set; }
 
         public int LowestY
         {
             get
             {
-                int y = 0;
+                int y = Y;
                 while (true)
                 {
                     if (CheckValidPos(X, y))
@@ -46,7 +47,7 @@ namespace Tetris.Core
 
         public void Initialize()
         {
-            X = 4;
+            X = StartingX;
             Y = 0;
             SetCells();
         }

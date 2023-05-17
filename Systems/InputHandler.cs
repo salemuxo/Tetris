@@ -19,7 +19,7 @@ namespace Tetris.Systems
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
 
             // stop soft drop
-            if (_lastKeyPress?.Key == RLKey.Down && rootConsole.Keyboard.WasKeyReleased())
+            if (rootConsole.Keyboard.GetKeyRelease() == RLKey.Down)
             {
                 Game.TimeManager.IsSoftDropping = false;
             }
@@ -52,7 +52,7 @@ namespace Tetris.Systems
                     // move down
                     case RLKey.Down:
                         {
-                            if (!keyPress.Repeating && !Game.TimeManager.IsSoftDropping)
+                            if (!keyPress.Repeating)
                             {
                                 Game.TimeManager.IsSoftDropping = true;
                             }
