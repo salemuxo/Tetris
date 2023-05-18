@@ -17,14 +17,25 @@ namespace Tetris.Systems
         private static void HandleKeyInput(RLRootConsole rootConsole)
         {
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
+            RLKey? keyRelease = rootConsole.Keyboard.GetKeyRelease();
 
-            // stop soft drop
-            if (rootConsole.Keyboard.GetKeyRelease() == RLKey.Down)
+            switch (keyRelease)
             {
-                Game.TimeManager.IsSoftDropping = false;
+                // stop soft drop
+                case RLKey.Down:
+                    {
+                        Game.TimeManager.IsSoftDropping = false;
+                        break;
+                    }
+                case RLKey.Left:
+                case RLKey.Right:
+                    {
+                        Game.TetrominoController.DasDirection = null;
+                        break;
+                    }
             }
 
-            if (keyPress != null)
+            if (keyPress != null && !keyPress.Repeating)
             {
                 //Debug.WriteLine(keyPress.Key);
                 switch (keyPress.Key)
@@ -47,21 +58,21 @@ namespace Tetris.Systems
                     case RLKey.Left:
                         {
                             Game.TetrominoController.Move(Direction.Left);
+                            Game.TetrominoController.DasDirection = Direction.Left;
                             break;
                         }
                     // move down
                     case RLKey.Down:
                         {
-                            if (!keyPress.Repeating)
-                            {
-                                Game.TimeManager.IsSoftDropping = true;
-                            }
+                            Game.TimeManager.IsSoftDropping = true;
+                            Game.TetrominoController.Move(Direction.Down);
                             break;
                         }
                     // move right
                     case RLKey.Right:
                         {
                             Game.TetrominoController.Move(Direction.Right);
+                            Game.TetrominoController.DasDirection = Direction.Right;
                             break;
                         }
                     // hard drop
