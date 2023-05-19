@@ -285,10 +285,13 @@ namespace Tetris.Core
             return result;
         }
 
-        private void SetNewBody(bool[,] newBody)
+        private void SetNewBodyAndPos(bool[,] newBody, int x, int y)
         {
             ResetCells();
             Body = newBody;
+            X = x;
+            Y = y;
+            SetCells();
         }
 
         // rotate tetromino and move to keep correct center point
@@ -299,8 +302,7 @@ namespace Tetris.Core
 
             if (kickInfo.canRotate)
             {
-                SetNewBody(rotatedBody);
-                SetPos(kickInfo.x, kickInfo.y);
+                SetNewBodyAndPos(rotatedBody, kickInfo.x, kickInfo.y);
 
                 if (_rotation == 3)
                 {
@@ -321,8 +323,7 @@ namespace Tetris.Core
 
             if (kickInfo.canRotate)
             {
-                SetNewBody(rotatedBody);
-                SetPos(kickInfo.x, kickInfo.y);
+                SetNewBodyAndPos(rotatedBody, kickInfo.x, kickInfo.y);
 
                 if (_rotation == 0)
                 {

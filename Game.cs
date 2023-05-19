@@ -31,7 +31,7 @@ namespace Tetris
         private static RLConsole _statConsole;
 
         private const int _queueWidth = 4;
-        private const int _queueHeight = 4;
+        private const int _queueHeight = 11;
         private static RLConsole _queueConsole;
 
         private const int _logWidth = 20;

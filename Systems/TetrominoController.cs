@@ -38,11 +38,11 @@ namespace Tetris.Systems
         {
             if (!_isGraceTurn)
             {
-                //move down automatically
+                // move down automatically
                 _dropTime += deltaTime;
                 if (_dropTime >= Game.TimeManager.UpdateTime)
                 {
-                    //Move(Direction.Down);
+                    Move(Direction.Down);
                     _dropTime = 0;
 
                     if (Game.TimeManager.IsSoftDropping)
@@ -80,6 +80,7 @@ namespace Tetris.Systems
             _queue = new Queue<Tetromino>(GetTetrominoBag());
         }
 
+        // set first tetromino -- starts game
         public void Start()
         {
             GetNextTetromino();
@@ -149,7 +150,7 @@ namespace Tetris.Systems
         {
             var queueArray = _queue.ToArray();
             queueConsole.Print(0, 0, "NEXT", RLColor.White);
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 try
                 {
