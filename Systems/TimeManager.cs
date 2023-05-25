@@ -12,7 +12,7 @@ namespace Tetris.Systems
         {
             get
             {
-                if (IsSoftDropping)
+                if (Game.TetrominoController.IsSoftDropping)
                 {
                     return 50;
                 }
@@ -26,7 +26,6 @@ namespace Tetris.Systems
                 _updateTime = value;
             }
         }
-        public bool IsSoftDropping { get; set; }
 
         private double _updateTime;
         private DateTime _previousGameTime;

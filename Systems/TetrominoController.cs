@@ -8,11 +8,10 @@ namespace Tetris.Systems
     public class TetrominoController
     {
         public Tetromino FallingTetromino { get; private set; }
+        public bool IsSoftDropping;
 
         private readonly Queue<Tetromino> _queue;
-
         private double _dropTime = 0;
-
         private double _graceTime = 0;
         private bool _isGraceTurn = false;
 
@@ -45,7 +44,7 @@ namespace Tetris.Systems
                     Move(Direction.Down);
                     _dropTime = 0;
 
-                    if (Game.TimeManager.IsSoftDropping)
+                    if (IsSoftDropping)
                     {
                         Game.StatManager.Score++;
                     }
@@ -183,11 +182,6 @@ namespace Tetris.Systems
             return holdTetromino;
         }
 
-        public void ResetTimer()
-        {
-            _dropTime = Game.TimeManager.UpdateTime;
-        }
-
         // get next tetromino in queue and initialize
         private void GetNextTetromino()
         {
@@ -201,7 +195,7 @@ namespace Tetris.Systems
             if (!tetromino.CheckValidPos(tetromino.StartingX, 0, false))
             {
                 Game.MessageLog.Add("GAME OVER!", 10000);
-                Game.IsPlaying = false;
+                Program.Game.GameOver();
             }
 
             tetromino.Initialize();
