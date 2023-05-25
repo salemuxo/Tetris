@@ -26,7 +26,7 @@ namespace Tetris.Core
                 int y = Y;
                 while (true)
                 {
-                    if (CheckValidPos(X, y))
+                    if (CheckValidPos(X, y, true))
                     {
                         y++;
                     }
@@ -343,7 +343,7 @@ namespace Tetris.Core
             {
                 case Direction.Left:
                     {
-                        if (X > 0 && CheckValidPos(X - 1, Y))
+                        if (X > 0 && CheckValidPos(X - 1, Y, true))
                         {
                             return true;
                         }
@@ -351,7 +351,7 @@ namespace Tetris.Core
                     }
                 case Direction.Down:
                     {
-                        if (Y + Height < Game.Board.Height && CheckValidPos(X, Y + 1))
+                        if (Y + Height < Game.Board.Height && CheckValidPos(X, Y + 1, true))
                         {
                             return true;
                         }
@@ -359,7 +359,7 @@ namespace Tetris.Core
                     }
                 case Direction.Right:
                     {
-                        if (X + Width < Game.Board.Width && CheckValidPos(X + 1, Y))
+                        if (X + Width < Game.Board.Width && CheckValidPos(X + 1, Y, true))
                         {
                             return true;
                         }
@@ -373,9 +373,12 @@ namespace Tetris.Core
         }
 
         // check if body position is valid (no tiles in way)
-        public bool CheckValidPos(int newX, int newY)
+        public bool CheckValidPos(int newX, int newY, bool setCells)
         {
-            ResetCells();
+            if (setCells)
+            {
+                ResetCells();
+            }
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
@@ -396,7 +399,10 @@ namespace Tetris.Core
                     }
                 }
             }
-            SetCells();
+            if (setCells)
+            {
+                SetCells();
+            }
             return true;
         }
 

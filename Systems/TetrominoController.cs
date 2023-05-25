@@ -198,11 +198,12 @@ namespace Tetris.Systems
         // set falling tetromino to specific tetromino
         private void SetFallingTetromino(Tetromino tetromino)
         {
-            //if (!tetromino.CheckValidPos(tetromino.StartingX, 0))
-            //{
-            //    Game.MessageLog.Add("GAME OVER!", 10000);
-            //    Game.IsPlaying = false;
-            //}
+            if (!tetromino.CheckValidPos(tetromino.StartingX, 0, false))
+            {
+                Game.MessageLog.Add("GAME OVER!", 10000);
+                Game.IsPlaying = false;
+            }
+
             tetromino.Initialize();
             FallingTetromino = tetromino;
             Game.GhostManager.Set();

@@ -84,7 +84,7 @@ namespace Tetris.Systems
         public void HardDrop(int cells)
         {
             Score += 2 * cells;
-            Game.MessageLog.Add($"Drop +{2 * cells}");
+            //Game.MessageLog.Add($"Drop +{2 * cells}");
         }
 
         private void IncreaseLevel()

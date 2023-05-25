@@ -51,7 +51,27 @@ namespace Tetris
 
         public static void Main(string[] args)
         {
-            InitializeGame();
+            // initialize systems
+            Random = new Random();
+            Board = new Board(_boardWidth, _boardHeight);
+            GhostManager = new GhostManager();
+            StatManager = new StatManager();
+            TimeManager = new TimeManager();
+            HoldManager = new HoldManager();
+            MessageLog = new MessageLog();
+            TetrominoController = new TetrominoController();
+
+            // create root console
+            _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
+                8, 8, 3.5f, _consoleTitle);
+
+            // create subconsoles
+            _boardConsole = new RLConsole(_boardWidth, _boardHeight);
+            _borderConsole = new RLConsole(_boardWidth + 2, _boardHeight + 2);
+            _holdConsole = new RLConsole(_holdWidth, _holdHeight);
+            _statConsole = new RLConsole(_statWidth, _statHeight);
+            _queueConsole = new RLConsole(_queueWidth, _queueHeight);
+            _logConsole = new RLConsole(_logWidth, _logHeight);
 
             // set up event handlers
             _rootConsole.Update += OnRootConsoleUpdate;
@@ -96,32 +116,6 @@ namespace Tetris
             RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
                 _rootConsole, 5, 25);
             _rootConsole.Draw();
-        }
-
-        // create systems, board, consoles
-        private static void InitializeGame()
-        {
-            // initialize systems
-            Random = new Random();
-            Board = new Board(_boardWidth, _boardHeight);
-            GhostManager = new GhostManager();
-            StatManager = new StatManager();
-            TimeManager = new TimeManager();
-            HoldManager = new HoldManager();
-            MessageLog = new MessageLog();
-            TetrominoController = new TetrominoController();
-
-            // create root console
-            _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
-                8, 8, 3.5f, _consoleTitle);
-
-            // create subconsoles
-            _boardConsole = new RLConsole(_boardWidth, _boardHeight);
-            _borderConsole = new RLConsole(_boardWidth + 2, _boardHeight + 2);
-            _holdConsole = new RLConsole(_holdWidth, _holdHeight);
-            _statConsole = new RLConsole(_statWidth, _statHeight);
-            _queueConsole = new RLConsole(_queueWidth, _queueHeight);
-            _logConsole = new RLConsole(_logWidth, _logHeight);
         }
     }
 }
