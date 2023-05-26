@@ -48,7 +48,8 @@ namespace Tetris
 
         public void GameOver()
         {
-            Program.IsGameActive = false;
+            IsPlaying = false;
+            Program.EndGame(StatManager.Score);
         }
     }
 }

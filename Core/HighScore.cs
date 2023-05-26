@@ -16,5 +16,10 @@ namespace Tetris.Core
             Name = name;
             Score = score;
         }
+
+        public override string ToString()
+        {
+            return Name + ": " + Score;
+        }
     }
 }

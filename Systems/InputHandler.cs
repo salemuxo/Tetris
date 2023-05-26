@@ -17,99 +17,136 @@ namespace Tetris.Systems
             RLKeyPress keyPress = rootConsole.Keyboard.GetKeyPress();
             RLKey? keyRelease = rootConsole.Keyboard.GetKeyRelease();
 
-            if (!Program.IsGameActive)
+            switch (Program.GameState)
             {
-                if (keyPress != null)
-                {
-                    Program.StartGame();
-                }
-            }
-            else
-            {
-                // released key
-                switch (keyRelease)
-                {
-                    // stop soft drop
-                    case RLKey.Down:
-                        {
-                            Game.TetrominoController.IsSoftDropping = false;
-                            break;
-                        }
-                    case RLKey.Left:
-                    case RLKey.Right:
-                        {
-                            Game.TetrominoController.DasDirection = null;
-                            break;
-                        }
-                }
-
-                if (keyPress != null && !keyPress.Repeating)
-                {
-                    //Debug.WriteLine(keyPress.Key);
-                    switch (keyPress.Key)
+                case GameState.MainMenu:
                     {
-                        // rotate counter clockwise
-                        case RLKey.LControl:
-                        case RLKey.Z:
+                        if (keyPress != null)
+                        {
+                            if (keyPress.Key == RLKey.Escape)
                             {
-                                Game.TetrominoController.RotateCCW();
-                                break;
+                                Program.Close();
                             }
-                        // rotate clockwise
-                        case RLKey.Up:
-                        case RLKey.X:
+                            else
                             {
-                                Game.TetrominoController.RotateCW();
-                                break;
+                                Program.StartGame();
                             }
-                        // move left
-                        case RLKey.Left:
-                            {
-                                Game.TetrominoController.Move(Direction.Left);
-                                Game.TetrominoController.DasDirection = Direction.Left;
-                                break;
-                            }
-                        // move down
-                        case RLKey.Down:
-                            {
-                                Game.TetrominoController.IsSoftDropping = true;
-                                //Game.TetrominoController.Move(Direction.Down);
-                                break;
-                            }
-                        // move right
-                        case RLKey.Right:
-                            {
-                                Game.TetrominoController.Move(Direction.Right);
-                                Game.TetrominoController.DasDirection = Direction.Right;
-                                break;
-                            }
-                        // hard drop
-                        case RLKey.Space:
-                            {
-                                Game.TetrominoController.HardDrop();
-                                break;
-                            }
-                        // hold
-                        case RLKey.LShift:
-                        case RLKey.RShift:
-                        case RLKey.C:
-                            {
-                                Game.HoldManager.HoldPiece();
-                                break;
-                            }
-                        // pause
-                        case RLKey.Escape:
-                        case RLKey.F1:
-                            {
-                                Game.IsPlaying = !Game.IsPlaying;
-                                break;
-                            }
-                        case RLKey.R:
-                            {
-                                break;
-                            }
+                        }
+                        break;
                     }
-                }
+                case GameState.Playing:
+                    {
+                        // released key
+                        switch (keyRelease)
+                        {
+                            // stop soft drop
+                            case RLKey.Down:
+                                {
+                                    Game.TetrominoController.IsSoftDropping = false;
+                                    break;
+                                }
+                            case RLKey.Left:
+                            case RLKey.Right:
+                                {
+                                    Game.TetrominoController.DasDirection = null;
+                                    break;
+                                }
+                        }
+
+                        if (keyPress != null && !keyPress.Repeating)
+                        {
+                            //Debug.WriteLine(keyPress.Key);
+                            switch (keyPress.Key)
+                            {
+                                // rotate counter clockwise
+                                case RLKey.LControl:
+                                case RLKey.Z:
+                                    {
+                                        Game.TetrominoController.RotateCCW();
+                                        break;
+                                    }
+                                // rotate clockwise
+                                case RLKey.Up:
+                                case RLKey.X:
+                                    {
+                                        Game.TetrominoController.RotateCW();
+                                        break;
+                                    }
+                                // move left
+                                case RLKey.Left:
+                                    {
+                                        Game.TetrominoController.Move(Direction.Left);
+                                        Game.TetrominoController.DasDirection = Direction.Left;
+                                        break;
+                                    }
+                                // move down
+                                case RLKey.Down:
+                                    {
+                                        Game.TetrominoController.IsSoftDropping = true;
+                                        //Game.TetrominoController.Move(Direction.Down);
+                                        break;
+                                    }
+                                // move right
+                                case RLKey.Right:
+                                    {
+                                        Game.TetrominoController.Move(Direction.Right);
+                                        Game.TetrominoController.DasDirection = Direction.Right;
+                                        break;
+                                    }
+                                // hard drop
+                                case RLKey.Space:
+                                    {
+                                        Game.TetrominoController.HardDrop();
+                                        break;
+                                    }
+                                // hold
+                                case RLKey.LShift:
+                                case RLKey.RShift:
+                                case RLKey.C:
+                                    {
+                                        Game.HoldManager.HoldPiece();
+                                        break;
+                                    }
+                                // pause
+                                case RLKey.Escape:
+                                case RLKey.F1:
+                                    {
+                                        Game.IsPlaying = !Game.IsPlaying;
+                                        break;
+                                    }
+                                case RLKey.R:
+                                    {
+                                        break;
+                                    }
+                            }
+                        }
+                        break;
+                    }
+                case GameState.SavingScore:
+                    {
+                        if (keyPress != null)
+                        {
+                            switch (keyPress.Key)
+                            {
+                                case RLKey.BackSpace:
+                                    {
+                                        Program.NameBox.Remove();
+                                        break;
+                                    }
+                                case RLKey.Enter:
+                                    {
+                                        Program.SaveScore();
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        Program.NameBox.Add(keyPress.Char);
+                                        break;
+                                    }
+                            }
+                        }
+                        break;
+                    }
             }
         }
 
