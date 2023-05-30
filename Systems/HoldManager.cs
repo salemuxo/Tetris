@@ -11,7 +11,7 @@ namespace Tetris.Systems
 
         public void Draw(RLConsole console)
         {
-            console.Print(0, 0, "HOLD", RLColor.White);
+            console.Print(0, 0, "HOLD", Palette.Text);
             if (_heldTetromino != null)
             {
                 console.Print(0, 1, _heldTetromino.ToString(), _heldTetromino.Color);

@@ -1,13 +1,10 @@
 ﻿using RLNET;
+using Tetris.UI;
 
 namespace Tetris.Core
 {
-    public class TextBox
+    public class TextBox : UIElement
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
         public string Text { get; set; }
 
         public TextBox(int x, int y, int width, int height)
@@ -19,9 +16,9 @@ namespace Tetris.Core
             Text = "";
         }
 
-        public void Draw(RLConsole console)
+        public override void Draw(RLConsole console)
         {
-            console.Print(X, Y, Text, RLColor.White);
+            console.Print(X, Y, Text, Palette.Text);
         }
 
         public void Add(char? text)

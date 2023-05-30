@@ -24,14 +24,17 @@ namespace Tetris.Systems
 
         public void Draw(RLConsole console)
         {
-            console.Print(0, 0, "SCORE", RLColor.White);
-            console.Print(0, 1, Score.ToString(), RLColor.White);
+            console.Print(0, 0, "TOP", Palette.Text);
+            console.Print(0, 1, Program.HighScores[0].Score.ToString(), Palette.Text);
 
-            console.Print(0, 3, "LEVEL", RLColor.White);
-            console.Print(0, 4, Level.ToString(), RLColor.White);
+            console.Print(0, 3, "SCORE", Palette.Text);
+            console.Print(0, 4, Score.ToString(), Palette.Text);
 
-            console.Print(0, 6, "LINES", RLColor.White);
-            console.Print(0, 7, Lines.ToString(), RLColor.White);
+            console.Print(0, 6, "LEVEL", Palette.Text);
+            console.Print(0, 7, Level.ToString(), Palette.Text);
+
+            console.Print(0, 9, "LINES", Palette.Text);
+            console.Print(0, 10, Lines.ToString(), Palette.Text);
         }
 
         public void ClearedLines(int lines)

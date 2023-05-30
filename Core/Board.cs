@@ -29,16 +29,16 @@ namespace Tetris.Core
                 }
             }
 
-            //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, RLColor.White);
+            //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, Palette.Text);
             for (int x = 0; x < Width + 2; x++)
             {
-                borderConsole.Set(x, 0, RLColor.White, RLColor.Black, 176);
-                borderConsole.Set(x, Height + 1, RLColor.White, RLColor.Black, 176);
+                borderConsole.Set(x, 0, Palette.Text, RLColor.Black, 176);
+                borderConsole.Set(x, Height + 1, Palette.Text, RLColor.Black, 176);
             }
             for (int y = 0; y < Height + 2; y++)
             {
-                borderConsole.Set(0, y, RLColor.White, RLColor.Black, 176);
-                borderConsole.Set(Width + 1, y, RLColor.White, RLColor.Black, 176);
+                borderConsole.Set(0, y, Palette.Text, RLColor.Black, 176);
+                borderConsole.Set(Width + 1, y, Palette.Text, RLColor.Black, 176);
             }
         }
 

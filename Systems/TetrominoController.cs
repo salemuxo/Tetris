@@ -148,7 +148,7 @@ namespace Tetris.Systems
         public void DrawQueue(RLConsole queueConsole)
         {
             var queueArray = _queue.ToArray();
-            queueConsole.Print(0, 0, "NEXT", RLColor.White);
+            queueConsole.Print(0, 0, "NEXT", Palette.Text);
             for (int i = 0; i < 3; i++)
             {
                 try

@@ -12,5 +12,7 @@ namespace Tetris.Core
         public static RLColor Blue = new RLColor(0, 0, 255);
         public static RLColor Orange = new RLColor(255, 127, 0);
         public static RLColor Grey = new RLColor(127, 127, 127);
+
+        public static RLColor Text = new RLColor(255, 255, 255);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Tetris.Core;
 using Tetris.Systems;
@@ -27,8 +28,8 @@ namespace Tetris
         private const int _holdHeight = 5;
         private static RLConsole _holdConsole;
 
-        private const int _statWidth = 5;
-        private const int _statHeight = 9;
+        private const int _statWidth = 9;
+        private const int _statHeight = 11;
         private static RLConsole _statConsole;
 
         private const int _queueWidth = 4;
@@ -39,25 +40,32 @@ namespace Tetris
         private const int _logHeight = 4;
         private static RLConsole _logConsole;
 
-        private static List<HighScore> _highScores;
+        private static RLConsole _menuConsole;
+
         private static int _lastScore;
 
-        public static Game Game;
         public static GameState GameState = GameState.MainMenu;
-        public static TextBox NameBox;
+        public static Game Game { get; private set; }
+        public static List<HighScore> HighScores { get; private set; }
+        public static TextBox NameBox { get; private set; }
+        public static MainMenu MainMenu { get; private set; }
 
         public static void Main(string[] args)
         {
             // try to load high scores, otherwise create blank list
             try
             {
+                // load json data
                 string jsonString = File.ReadAllText(@"..\..\Data\HighScores.json");
-                _highScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
-                Debug.WriteLine(string.Join(", ", _highScores));
+                HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
+
+                // sort list
+                var sortedList = HighScores.OrderByDescending(x => x.Score).ToList();
+                HighScores = sortedList;
             }
             catch
             {
-                _highScores = new List<HighScore>();
+                HighScores = new List<HighScore>();
                 Debug.WriteLine("No high scores to load");
             }
 
@@ -72,6 +80,9 @@ namespace Tetris
             _statConsole = new RLConsole(_statWidth, _statHeight);
             _queueConsole = new RLConsole(_queueWidth, _queueHeight);
             _logConsole = new RLConsole(_logWidth, _logHeight);
+            _menuConsole = new RLConsole(_screenWidth, _screenHeight);
+
+            MainMenu = new MainMenu(_screenWidth, _screenHeight);
 
             // set up event handlers
             _rootConsole.Update += OnRootConsoleUpdate;
@@ -110,7 +121,7 @@ namespace Tetris
             {
                 case GameState.MainMenu:
                     {
-                        _rootConsole.Print(3, 1, "Press any key to start!", RLColor.White);
+                        MainMenu.Draw(_menuConsole);
                         break;
                     }
                 case GameState.Playing:
@@ -125,9 +136,9 @@ namespace Tetris
                 case GameState.SavingScore:
                     {
                         _rootConsole.Clear();
-                        _rootConsole.Print(3, 1, "Please enter your name:", RLColor.White);
+                        _rootConsole.Print(3, 1, "Please enter your name:", Palette.Text);
                         NameBox.Draw(_rootConsole);
-                        //_rootConsole.Print(3, 3, NameBox.Text, RLColor.White);
+                        //_rootConsole.Print(3, 3, NameBox.Text, Palette.Text);
                         break;
                     }
             }
@@ -143,21 +154,25 @@ namespace Tetris
                 RLConsole.Blit(_queueConsole, 0, 0, _queueWidth, _queueHeight,
                     _rootConsole, 22, 2);
                 RLConsole.Blit(_statConsole, 0, 0, _statWidth, _statHeight,
-                    _rootConsole, 2, 8);
+                    _rootConsole, 0, 8);
                 RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
                     _rootConsole, 2, 2);
                 RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
                     _rootConsole, 5, 25);
+            }
+            else if (GameState == GameState.MainMenu)
+            {
+                RLConsole.Blit(_menuConsole, 0, 0, _screenWidth, _screenHeight,
+                    _rootConsole, 0, 0);
             }
             _rootConsole.Draw();
         }
 
         public static void Close()
         {
-            string jsonString = JsonSerializer.Serialize(_highScores);
+            string jsonString = JsonSerializer.Serialize(HighScores);
             File.WriteAllText(@"..\..\Data\HighScores.json", jsonString);
             _rootConsole.Close();
-            //System.Environment.Exit(0);
         }
 
         public static void StartGame()
@@ -178,7 +193,7 @@ namespace Tetris
 
         public static void SaveScore()
         {
-            _highScores.Add(new HighScore(NameBox.Text, _lastScore));
+            HighScores.Add(new HighScore(NameBox.Text, _lastScore));
             GameState = GameState.MainMenu;
         }
 

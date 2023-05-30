@@ -9,7 +9,7 @@ namespace Tetris.Systems
         public static void HandleInput(RLRootConsole rootConsole)
         {
             HandleKeyInput(rootConsole);
-            //HandleMouseInput(rootConsole);
+            HandleMouseInput(rootConsole);
         }
 
         private static void HandleKeyInput(RLRootConsole rootConsole)
@@ -153,6 +153,17 @@ namespace Tetris.Systems
         private static void HandleMouseInput(RLRootConsole rootConsole)
         {
             RLMouse mouse = rootConsole.Mouse;
+            switch (Program.GameState)
+            {
+                case GameState.MainMenu:
+                    {
+                        if (mouse.GetLeftClick())
+                        {
+                            Program.MainMenu.Clicked(mouse.X, mouse.Y);
+                        }
+                        break;
+                    }
+            }
         }
     }
 }

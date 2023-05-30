@@ -39,7 +39,7 @@ namespace Tetris.Systems
 
         public void Add(string message)
         {
-            _messages.Add(new Message(message, RLColor.White, 1000));
+            _messages.Add(new Message(message, Palette.Text, 1000));
         }
 
         public void Add(string message, RLColor color)
@@ -49,7 +49,7 @@ namespace Tetris.Systems
 
         public void Add(string message, double displayTime)
         {
-            _messages.Add(new Message(message, RLColor.White, displayTime));
+            _messages.Add(new Message(message, Palette.Text, displayTime));
         }
 
         public void Add(string message, RLColor color, double displayTime)
