@@ -13,4 +13,12 @@ namespace Tetris.Core
             return (int)(Math.Ceiling(i / 10.0) * 10);
         }
     }
+
+    public static class Utility
+    {
+        public static int GetCenteredX(int backWidth, int frontWidth)
+        {
+            return (backWidth - frontWidth) / 2;
+        }
+    }
 }

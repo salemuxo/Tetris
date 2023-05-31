@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -49,25 +50,11 @@ namespace Tetris
         public static List<HighScore> HighScores { get; private set; }
         public static TextBox NameBox { get; private set; }
         public static MainMenu MainMenu { get; private set; }
+        public static Random Random { get; private set; }
 
         public static void Main(string[] args)
         {
-            // try to load high scores, otherwise create blank list
-            try
-            {
-                // load json data
-                string jsonString = File.ReadAllText(@"..\..\Data\HighScores.json");
-                HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
-
-                // sort list
-                var sortedList = HighScores.OrderByDescending(x => x.Score).ToList();
-                HighScores = sortedList;
-            }
-            catch
-            {
-                HighScores = new List<HighScore>();
-                Debug.WriteLine("No high scores to load");
-            }
+            LoadScores();
 
             // create root console
             _rootConsole = new RLRootConsole(_fontFile, _screenWidth, _screenHeight,
@@ -82,6 +69,8 @@ namespace Tetris
             _logConsole = new RLConsole(_logWidth, _logHeight);
             _menuConsole = new RLConsole(_screenWidth, _screenHeight);
 
+            // create
+            Random = new Random();
             MainMenu = new MainMenu(_screenWidth, _screenHeight);
 
             // set up event handlers
@@ -170,8 +159,7 @@ namespace Tetris
 
         public static void Close()
         {
-            string jsonString = JsonSerializer.Serialize(HighScores);
-            File.WriteAllText(@"..\..\Data\HighScores.json", jsonString);
+            SaveScores();
             _rootConsole.Close();
         }
 
@@ -194,6 +182,7 @@ namespace Tetris
         public static void SaveScore()
         {
             HighScores.Add(new HighScore(NameBox.Text, _lastScore));
+            SaveScores();
             GameState = GameState.MainMenu;
         }
 
@@ -206,6 +195,37 @@ namespace Tetris
             _holdConsole.Clear();
             _logConsole.Clear();
             _rootConsole.Clear();
+        }
+
+        private static void LoadScores()
+        {
+            // try to load high scores, otherwise create blank list
+            try
+            {
+                // load json data
+                string jsonString = File.ReadAllText(@"..\..\Data\HighScores.json");
+                HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
+
+                SortScores();
+            }
+            catch
+            {
+                HighScores = new List<HighScore>();
+                Debug.WriteLine("No high scores to load");
+            }
+        }
+
+        private static void SaveScores()
+        {
+            SortScores();
+            string jsonString = JsonSerializer.Serialize(HighScores);
+            File.WriteAllText(@"..\..\Data\HighScores.json", jsonString);
+        }
+
+        private static void SortScores()
+        {
+            var sortedList = HighScores.OrderByDescending(x => x.Score).ToList();
+            HighScores = sortedList;
         }
     }
 }

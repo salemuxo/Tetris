@@ -9,35 +9,44 @@ namespace Tetris.Core
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public List<UIElement> Children { get; set; }
+        public Button StartButton { get; set; }
+        public Button EndButton { get; set; }
 
         public MainMenu(int width, int height)
         {
             Width = width;
             Height = height;
-            Children = new List<UIElement>();
+
+            StartButton = new Button(12, 6, 6, "START!", Palette.Green, Palette.Blue);
+            StartButton.Click += StartButton_Click;
+
+            EndButton = new Button(28, 1, 4, "X", Palette.Red, false);
+            EndButton.Click += EndButton_Click;
         }
 
         public void Draw(RLConsole console)
         {
-            //console.Print(12, 2, "TETRIS", Palette.Text);
             DrawLogo(console, 12, 2);
             console.Print(11, 3, "by Salem", Palette.Text);
-            console.Print(12, 6, "START!", Palette.Text);
 
-            //foreach (var child in Children)
-            //{
-            //    child.Draw(console);
-            //}
+            StartButton.Draw(console);
+            EndButton.Draw(console);
+
+            // draw leaderboard
+            console.Print(10, 10, "Top Scores", Palette.Purple);
+            for (int i = 0; i < Program.HighScores.Count; i++)
+            {
+                string highScoreString = Program.HighScores[i].ToString();
+                console.Print(Utility.GetCenteredX(Width, highScoreString.Length),
+                    12 + i, highScoreString, Palette.Text);
+            }
         }
 
         public void Clicked(int x, int y)
         {
             //Debug.WriteLine($"{x}, {y}");
-            if (x >= 12 && x <= 16 && y == 6)
-            {
-                Program.StartGame();
-            }
+            StartButton.CheckClick(x, y);
+            EndButton.CheckClick(x, y);
         }
 
         private void DrawLogo(RLConsole console, int x, int y)
@@ -48,6 +57,16 @@ namespace Tetris.Core
             console.Set(x + 3, y, Palette.Green, null, 'R');
             console.Set(x + 4, y, Palette.Blue, null, 'I');
             console.Set(x + 5, y, Palette.Purple, null, 'S');
+        }
+
+        private void StartButton_Click(object sender, System.EventArgs e)
+        {
+            Program.StartGame();
+        }
+
+        private void EndButton_Click(object sender, System.EventArgs e)
+        {
+            Program.Close();
         }
     }
 }

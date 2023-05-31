@@ -17,13 +17,11 @@ namespace Tetris
         public static MessageLog MessageLog { get; private set; }
         public static StatManager StatManager { get; private set; }
         public static TimeManager TimeManager { get; private set; }
-        public static Random Random { get; private set; }
         public static bool IsPlaying { get; set; }
 
         public Game(int boardWidth, int boardHeight)
         {
             // initialize systems
-            Random = new Random();
             Board = new Board(boardWidth, boardHeight);
             GhostManager = new GhostManager();
             StatManager = new StatManager();

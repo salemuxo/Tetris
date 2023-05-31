@@ -224,7 +224,7 @@ namespace Tetris.Systems
             int n = list.Count;
             for (int i = 0; i < (n - 1); i++)
             {
-                int r = i + Game.Random.Next(n - i);
+                int r = i + Program.Random.Next(n - i);
                 (list[i], list[r]) = (list[r], list[i]);
             }
         }
