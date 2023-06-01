@@ -1,5 +1,4 @@
 ﻿using RLNET;
-using System.Diagnostics;
 using Tetris.Core;
 
 namespace Tetris.Systems
@@ -26,10 +25,6 @@ namespace Tetris.Systems
                             if (keyPress.Key == RLKey.Escape)
                             {
                                 Program.Close();
-                            }
-                            else
-                            {
-                                Program.StartGame();
                             }
                         }
                         break;
@@ -157,9 +152,10 @@ namespace Tetris.Systems
             {
                 case GameState.MainMenu:
                     {
+                        Program.MainMenu.SetMousePos(mouse.X, mouse.Y);
                         if (mouse.GetLeftClick())
                         {
-                            Program.MainMenu.Clicked(mouse.X, mouse.Y);
+                            Program.MainMenu.Clicked();
                         }
                         break;
                     }

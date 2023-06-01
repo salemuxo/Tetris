@@ -1,9 +1,9 @@
 ﻿using RLNET;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System;
 using Tetris.UI;
+using Tetris.Core;
 
-namespace Tetris.Core
+namespace Tetris.Menus
 {
     public class MainMenu
     {
@@ -12,12 +12,15 @@ namespace Tetris.Core
         public Button StartButton { get; set; }
         public Button EndButton { get; set; }
 
+        private int mouseX;
+        private int mouseY;
+
         public MainMenu(int width, int height)
         {
             Width = width;
             Height = height;
 
-            StartButton = new Button(12, 6, 6, "START!", Palette.Green, Palette.Blue);
+            StartButton = new Button(12, 6, 6, "START!", Palette.Green, Palette.Blue, 1);
             StartButton.Click += StartButton_Click;
 
             EndButton = new Button(28, 1, 4, "X", Palette.Red, false);
@@ -26,29 +29,51 @@ namespace Tetris.Core
 
         public void Draw(RLConsole console)
         {
+            // draw title
             DrawLogo(console, 12, 2);
             console.Print(11, 3, "by Salem", Palette.Text);
 
+            // draw buttons
             StartButton.Draw(console);
             EndButton.Draw(console);
 
             // draw leaderboard
-            console.Print(10, 10, "Top Scores", Palette.Purple);
-            for (int i = 0; i < Program.HighScores.Count; i++)
+            int leaderboardHeight = Math.Min(Program.Leaderboard.HighScores.Count, 5);
+
+            console.Print(10, 12, "Top Scores", Palette.Purple);
+            for (int i = 0; i < leaderboardHeight; i++)
             {
-                string highScoreString = Program.HighScores[i].ToString();
+                string highScoreString = Program.Leaderboard.HighScores[i].ToString();
                 console.Print(Utility.GetCenteredX(Width, highScoreString.Length),
-                    12 + i, highScoreString, Palette.Text);
+                    14 + i, highScoreString, Palette.Text);
             }
+
+            UserInterface.DrawDoubleBorder(console, 7, 12, 16, leaderboardHeight + 2, Palette.Blue);
         }
 
-        public void Clicked(int x, int y)
+        // check if buttons were clicked
+        public void Clicked()
         {
-            //Debug.WriteLine($"{x}, {y}");
-            StartButton.CheckClick(x, y);
-            EndButton.CheckClick(x, y);
+            StartButton.CheckClick(mouseX, mouseY);
+            EndButton.CheckClick(mouseX, mouseY);
         }
 
+        // set mouse position and check if buttons are hovered
+        public void SetMousePos(int x, int y)
+        {
+            mouseX = x;
+            mouseY = y;
+            HandleHover();
+        }
+
+        // check if buttons are hovered
+        private void HandleHover()
+        {
+            StartButton.HandleHover(mouseX, mouseY);
+            EndButton.HandleHover(mouseX, mouseY);
+        }
+
+        // draw rainbow logo
         private void DrawLogo(RLConsole console, int x, int y)
         {
             console.Set(x, y, Palette.Red, null, 'T');
@@ -59,11 +84,13 @@ namespace Tetris.Core
             console.Set(x + 5, y, Palette.Purple, null, 'S');
         }
 
+        // start game
         private void StartButton_Click(object sender, System.EventArgs e)
         {
             Program.StartGame();
         }
 
+        // close game
         private void EndButton_Click(object sender, System.EventArgs e)
         {
             Program.Close();

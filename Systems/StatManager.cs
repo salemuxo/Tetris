@@ -1,9 +1,4 @@
 ﻿using RLNET;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tetris.Core;
 
 namespace Tetris.Systems
@@ -25,7 +20,7 @@ namespace Tetris.Systems
         public void Draw(RLConsole console)
         {
             console.Print(0, 0, "TOP", Palette.Text);
-            console.Print(0, 1, Program.HighScores[0].Score.ToString(), Palette.Text);
+            console.Print(0, 1, Program.Leaderboard.HighScores[0].Score.ToString(), Palette.Text);
 
             console.Print(0, 3, "SCORE", Palette.Text);
             console.Print(0, 4, Score.ToString(), Palette.Text);

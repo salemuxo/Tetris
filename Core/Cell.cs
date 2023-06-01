@@ -1,5 +1,4 @@
 ﻿using RLNET;
-using System.Diagnostics;
 
 namespace Tetris.Core
 {

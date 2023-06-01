@@ -1,10 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
-using RLNET;
-using System;
-using System.Collections.Generic;
+﻿using RLNET;
 using System.Diagnostics;
-using System.Linq;
-using Tetris.Systems;
 
 namespace Tetris.Core
 {

@@ -1,7 +1,5 @@
 ﻿using RLNET;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Tetris.Systems;
 
 namespace Tetris.Core
 {

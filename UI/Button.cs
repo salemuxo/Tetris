@@ -8,12 +8,16 @@ namespace Tetris.UI
     {
         public event EventHandler Click;
 
-        private bool _drawBorder;
+        public bool IsHovered { private get; set; }
+
+        private readonly bool _drawBorder;
         private readonly string _text;
         private RLColor _textColor;
         private RLColor _borderColor;
+        private int _borderType;
 
-        public Button(int x, int y, int w, string text, RLColor textColor, RLColor borderColor)
+        public Button(int x, int y, int w, string text,
+            RLColor textColor, RLColor borderColor, int borderType)
         {
             X = x;
             Y = y;
@@ -22,6 +26,8 @@ namespace Tetris.UI
             _text = text;
             _textColor = textColor;
             _borderColor = borderColor;
+            IsHovered = false;
+            _borderType = borderType;
             _drawBorder = true;
         }
 
@@ -35,42 +41,65 @@ namespace Tetris.UI
             _text = text;
             _textColor = textColor;
             _borderColor = Palette.Text;
+            IsHovered = false;
             _drawBorder = drawBorder;
         }
 
         public override void Draw(RLConsole console)
         {
-            if (_drawBorder)
+            RLColor textColor = _textColor;
+            RLColor borderColor = _borderColor;
+            if (IsHovered)
             {
-                // create border
-                for (int x = 0; x < Width; x++)
-                {
-                    console.Set(X + x, Y - 1, _borderColor, null, 205);
-                    console.Set(X + x, Y + 1, _borderColor, null, 205);
-                }
-                console.Set(X - 1, Y, _borderColor, null, 186);
-                console.Set(X + Width, Y, _borderColor, null, 186);
-                console.Set(X - 1, Y - 1, _borderColor, null, 201);
-                console.Set(X - 1, Y + 1, _borderColor, null, 200);
-                console.Set(X + Width, Y - 1, _borderColor, null, 187);
-                console.Set(X + Width, Y + 1, _borderColor, null, 188);
+                textColor -= 60;
+                borderColor -= 60;
             }
 
-            console.Print(X, Y, _text, _textColor);
+            if (_drawBorder)
+            {
+                if (_borderType == 1)
+                {
+                    UserInterface.DrawSingleBorder(console, X, Y, Width, 1, borderColor);
+                }
+                else
+                {
+                    UserInterface.DrawDoubleBorder(console, X, Y, Width, 1, borderColor);
+                }
+            }
+
+            console.Print(X, Y, _text, textColor);
         }
 
         public void CheckClick(int x, int y)
         {
-            if (x >= X - 1 && x <= X + Width &&
-                y >= Y - 1 && y <= Y + Height)
+            if (IsInBounds(x, y))
             {
                 OnClick();
             }
         }
 
+        public void HandleHover(int x, int y)
+        {
+            IsHovered = IsInBounds(x, y);
+        }
+
         protected virtual void OnClick()
         {
             Click?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool IsInBounds(int x, int y)
+        {
+            if (_drawBorder)
+            {
+                return x >= X - 1 && x <= X + Width &&
+                    y >= Y - 1 && y <= Y + Height;
+            }
+            else
+            {
+                return x >= X && x < X + Width &&
+                    y >= Y && y < Y + Height;
+            }
         }
     }
 }
