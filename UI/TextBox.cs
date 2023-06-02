@@ -19,6 +19,7 @@ namespace Tetris.Core
         public override void Draw(RLConsole console)
         {
             console.Print(X, Y, Text, Palette.Text);
+            UserInterface.DrawSingleBorder(console, X, Y, Width, Height, Palette.Text);
         }
 
         public void Add(char? text)

@@ -125,17 +125,17 @@ namespace Tetris.Systems
                             {
                                 case RLKey.BackSpace:
                                     {
-                                        Program.NameBox.Remove();
+                                        Program.GameOverMenu.NameBox.Remove();
                                         break;
                                     }
                                 case RLKey.Enter:
                                     {
-                                        Program.SaveScore();
+                                        Program.GameOverMenu.SaveScore();
                                         break;
                                     }
                                 default:
                                     {
-                                        Program.NameBox.Add(keyPress.Char);
+                                        Program.GameOverMenu.NameBox.Add(keyPress.Char);
                                         break;
                                     }
                             }

@@ -5,15 +5,10 @@ using Tetris.Core;
 
 namespace Tetris.Menus
 {
-    public class MainMenu
+    public class MainMenu : Menu
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
         public Button StartButton { get; set; }
         public Button EndButton { get; set; }
-
-        private int mouseX;
-        private int mouseY;
 
         public MainMenu(int width, int height)
         {
@@ -27,7 +22,7 @@ namespace Tetris.Menus
             EndButton.Click += EndButton_Click;
         }
 
-        public void Draw(RLConsole console)
+        public override void Draw(RLConsole console)
         {
             // draw title
             DrawLogo(console, 12, 2);
@@ -52,22 +47,14 @@ namespace Tetris.Menus
         }
 
         // check if buttons were clicked
-        public void Clicked()
+        public override void Clicked()
         {
             StartButton.CheckClick(mouseX, mouseY);
             EndButton.CheckClick(mouseX, mouseY);
         }
 
-        // set mouse position and check if buttons are hovered
-        public void SetMousePos(int x, int y)
-        {
-            mouseX = x;
-            mouseY = y;
-            HandleHover();
-        }
-
         // check if buttons are hovered
-        private void HandleHover()
+        protected override void HandleHover()
         {
             StartButton.HandleHover(mouseX, mouseY);
             EndButton.HandleHover(mouseX, mouseY);

@@ -82,6 +82,7 @@
     <Compile Include="Core\Board.cs" />
     <Compile Include="Core\Cell.cs" />
     <Compile Include="Core\Enums.cs" />
+    <Compile Include="Menus\GameOverMenu.cs" />
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="Core\Utility.cs" />
     <Compile Include="Core\HighScore.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Core\Palette.cs" />
     <Compile Include="Core\Tetromino.cs" />
     <Compile Include="Core\Tetrominos.cs" />
+    <Compile Include="Menus\Menu.cs" />
     <Compile Include="Systems\Leaderboard.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\TextBox.cs" />

@@ -39,13 +39,11 @@ namespace Tetris
 
         private static RLConsole _menuConsole;
 
-        private static int _lastScore;
-
         public static GameState GameState = GameState.MainMenu;
         public static Game Game { get; private set; }
         public static Leaderboard Leaderboard { get; private set; }
-        public static TextBox NameBox { get; private set; }
         public static MainMenu MainMenu { get; private set; }
+        public static GameOverMenu GameOverMenu { get; private set; }
         public static Random Random { get; private set; }
 
         public static void Main(string[] args)
@@ -119,36 +117,31 @@ namespace Tetris
                     }
                 case GameState.SavingScore:
                     {
-                        _rootConsole.Clear();
-                        _rootConsole.Print(3, 1, "Please enter your name:", Palette.Text);
-                        NameBox.Draw(_rootConsole);
-                        //_rootConsole.Print(3, 3, NameBox.Text, Palette.Text);
+                        GameOverMenu.Draw(_menuConsole);
                         break;
                     }
             }
 
             // blit subconsoles to root console
-            if (GameState == GameState.Playing)
-            {
-                RLConsole.Blit(_borderConsole, 0, 0,
-                    _boardWidth + 2, _boardHeight + 2,
-                    _rootConsole, 9, 2);
-                RLConsole.Blit(_boardConsole, 0, 0, _boardWidth, _boardHeight,
-                    _rootConsole, 10, 3);
-                RLConsole.Blit(_queueConsole, 0, 0, _queueWidth, _queueHeight,
-                    _rootConsole, 22, 2);
-                RLConsole.Blit(_statConsole, 0, 0, _statWidth, _statHeight,
-                    _rootConsole, 0, 8);
-                RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
-                    _rootConsole, 2, 2);
-                RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
-                    _rootConsole, 5, 25);
-            }
-            else if (GameState == GameState.MainMenu)
+            RLConsole.Blit(_borderConsole, 0, 0,
+                _boardWidth + 2, _boardHeight + 2,
+                _rootConsole, 9, 2);
+            RLConsole.Blit(_boardConsole, 0, 0, _boardWidth, _boardHeight,
+                _rootConsole, 10, 3);
+            RLConsole.Blit(_queueConsole, 0, 0, _queueWidth, _queueHeight,
+                _rootConsole, 22, 2);
+            RLConsole.Blit(_statConsole, 0, 0, _statWidth, _statHeight,
+                _rootConsole, 0, 8);
+            RLConsole.Blit(_holdConsole, 0, 0, _holdWidth, _holdHeight,
+                _rootConsole, 2, 2);
+            RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
+                _rootConsole, 5, 25);
+            if (GameState != GameState.Playing)
             {
                 RLConsole.Blit(_menuConsole, 0, 0, _screenWidth, _screenHeight,
                     _rootConsole, 0, 0);
             }
+
             _rootConsole.Draw();
         }
 
@@ -168,28 +161,17 @@ namespace Tetris
 
         public static void EndGame(int score)
         {
-            ClearAllConsoles();
-            NameBox = new TextBox(12, 3, 6, 1);
-            _lastScore = score;
+            _menuConsole.Clear();
+            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, score);
             GameState = GameState.SavingScore;
         }
 
-        public static void SaveScore()
+        public static void SaveScore(string name, int score)
         {
-            Leaderboard.HighScores.Add(new HighScore(NameBox.Text, _lastScore));
+            _menuConsole.Clear();
+            Leaderboard.HighScores.Add(new HighScore(name, score));
             Leaderboard.SaveScores();
             GameState = GameState.MainMenu;
-        }
-
-        private static void ClearAllConsoles()
-        {
-            _borderConsole.Clear();
-            _boardConsole.Clear();
-            _queueConsole.Clear();
-            _statConsole.Clear();
-            _holdConsole.Clear();
-            _logConsole.Clear();
-            _rootConsole.Clear();
         }
     }
 }

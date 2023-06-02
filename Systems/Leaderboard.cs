@@ -24,8 +24,6 @@ namespace Tetris.Systems
                 // load json data
                 string jsonString = File.ReadAllText(@"..\..\Data\HighScores.json");
                 HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
-
-                SortScores();
             }
             catch
             {
