@@ -159,6 +159,15 @@ namespace Tetris.Systems
                         }
                         break;
                     }
+                case GameState.SavingScore:
+                    {
+                        Program.GameOverMenu.SetMousePos(mouse.X, mouse.Y);
+                        if (mouse.GetLeftClick())
+                        {
+                            Program.GameOverMenu.Clicked();
+                        }
+                        break;
+                    }
             }
         }
     }

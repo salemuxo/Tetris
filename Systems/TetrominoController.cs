@@ -1,4 +1,5 @@
 ﻿using RLNET;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Tetris.Core;
@@ -7,6 +8,11 @@ namespace Tetris.Systems
 {
     public class TetrominoController
     {
+        // config variables
+        private double _dasDelay = 167;
+        private double _dasRate = 33;
+
+        // other variables
         public Tetromino FallingTetromino { get; private set; }
         public bool IsSoftDropping;
 
@@ -23,15 +29,14 @@ namespace Tetris.Systems
             }
             set
             {
-                if (value == null)
-                {
-                    _dasTime = 0;
-                }
+                _dasTime = 0;
+                isDasMoving = false;
                 _dasDirection = value;
             }
         }
         private Direction? _dasDirection;
         private double _dasTime = 0;
+        private bool isDasMoving = false;
 
         public void Update(double deltaTime)
         {
@@ -54,9 +59,21 @@ namespace Tetris.Systems
                 if (_dasDirection != null)
                 {
                     _dasTime += deltaTime;
-                    if (_dasTime >= 200)
+                    if (!isDasMoving)
                     {
-                        Move((Direction)_dasDirection);
+                        if (_dasTime >= _dasDelay)
+                        {
+                            isDasMoving = true;
+                            _dasTime = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (_dasTime >= _dasRate)
+                        {
+                            Move((Direction)_dasDirection);
+                            _dasTime = 0;
+                        }
                     }
                 }
             }
@@ -90,6 +107,7 @@ namespace Tetris.Systems
         {
             if (Game.IsPlaying)
             {
+                _isGraceTurn = false;
                 FallingTetromino.Move(direction);
                 if (direction != Direction.Down)
                 {
@@ -104,6 +122,7 @@ namespace Tetris.Systems
         {
             if (Game.IsPlaying)
             {
+                _isGraceTurn = false;
                 FallingTetromino.RotateCW();
                 Game.GhostManager.Set();
             }
@@ -114,6 +133,7 @@ namespace Tetris.Systems
         {
             if (Game.IsPlaying)
             {
+                _isGraceTurn = false;
                 FallingTetromino.RotateCCW();
                 Game.GhostManager.Set();
             }
@@ -202,6 +222,7 @@ namespace Tetris.Systems
             FallingTetromino = tetromino;
             Game.GhostManager.Set();
             _dropTime = 0;
+            _dasDirection = null;
         }
 
         // get bag of all tetrominos in random order

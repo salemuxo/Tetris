@@ -32,18 +32,7 @@ namespace Tetris.Menus
             StartButton.Draw(console);
             EndButton.Draw(console);
 
-            // draw leaderboard
-            int leaderboardHeight = Math.Min(Program.Leaderboard.HighScores.Count, 5);
-
-            console.Print(10, 12, "Top Scores", Palette.Purple);
-            for (int i = 0; i < leaderboardHeight; i++)
-            {
-                string highScoreString = Program.Leaderboard.HighScores[i].ToString();
-                console.Print(Utility.GetCenteredX(Width, highScoreString.Length),
-                    14 + i, highScoreString, Palette.Text);
-            }
-
-            UserInterface.DrawDoubleBorder(console, 7, 12, 16, leaderboardHeight + 2, Palette.Blue);
+            UserInterface.DrawLeaderboard(console);
         }
 
         // check if buttons were clicked

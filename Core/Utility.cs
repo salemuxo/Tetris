@@ -4,9 +4,9 @@ namespace Tetris.Core
 {
     public static class ExtensionMethods
     {
-        public static int RoundUp(this int i)
+        public static int RoundUp(this int i, double roundBy)
         {
-            return (int)(Math.Ceiling(i / 10.0) * 10);
+            return (int)(Math.Ceiling(i / roundBy) * roundBy);
         }
     }
 

@@ -59,7 +59,7 @@ namespace Tetris.Systems
                     Game.MessageLog.Add($"Tetris +{800 * Level}", Palette.Purple);
                     break;
             }
-            int nearestLevel = oldLines.RoundUp();
+            int nearestLevel = oldLines.RoundUp(15);
             if (oldLines < nearestLevel && Lines > nearestLevel)
             {
                 IncreaseLevel();

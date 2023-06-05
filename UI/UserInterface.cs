@@ -1,4 +1,6 @@
 ﻿using RLNET;
+using System;
+using Tetris.Core;
 
 namespace Tetris.UI
 {
@@ -48,6 +50,22 @@ namespace Tetris.UI
             console.Set(x - 1, y + height, color, null, 192);
             console.Set(x + width, y - 1, color, null, 191);
             console.Set(x + width, y + height, color, null, 217);
+        }
+
+        // draw leaderboard
+        public static void DrawLeaderboard(RLConsole console)
+        {
+            int leaderboardHeight = Math.Min(Program.Leaderboard.HighScores.Count, 5);
+
+            console.Print(10, 12, "Top Scores", Palette.Purple);
+            for (int i = 0; i < leaderboardHeight; i++)
+            {
+                string highScoreString = Program.Leaderboard.HighScores[i].ToString();
+                console.Print(Utility.GetCenteredX(console.Width, highScoreString.Length),
+                    14 + i, highScoreString, Palette.Text);
+            }
+
+            UserInterface.DrawDoubleBorder(console, 7, 12, 16, leaderboardHeight + 2, Palette.Blue);
         }
     }
 }
