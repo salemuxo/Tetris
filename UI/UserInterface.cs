@@ -53,19 +53,20 @@ namespace Tetris.UI
         }
 
         // draw leaderboard
-        public static void DrawLeaderboard(RLConsole console)
+        public static void DrawLeaderboard(RLConsole console, int y)
         {
             int leaderboardHeight = Math.Min(Program.Leaderboard.HighScores.Count, 5);
 
-            console.Print(10, 12, "Top Scores", Palette.Purple);
+            console.Print(10, y, "Top Scores", Palette.Purple);
             for (int i = 0; i < leaderboardHeight; i++)
             {
-                string highScoreString = Program.Leaderboard.HighScores[i].ToString();
-                console.Print(Utility.GetCenteredX(console.Width, highScoreString.Length),
-                    14 + i, highScoreString, Palette.Text);
+                console.Print(9, y + 2 + i,
+                    Program.Leaderboard.HighScores[i].Name, Palette.Text);
+                console.Print(16, y + 2 + i,
+                    Program.Leaderboard.HighScores[i].Score.ToString(), Palette.Text);
             }
 
-            UserInterface.DrawDoubleBorder(console, 7, 12, 16, leaderboardHeight + 2, Palette.Blue);
+            DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);
         }
     }
 }

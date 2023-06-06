@@ -26,7 +26,7 @@ namespace Tetris.Menus
         {
             if (_score > Program.Leaderboard.HighScores[0].Score)
             {
-                console.Print(0, 1, "New high score!", Palette.Green);
+                console.Print(0, 8, "New high score", Palette.Green);
             }
 
             string scoreLine = $"Score: {_score}";
@@ -37,7 +37,7 @@ namespace Tetris.Menus
             NameBox.Draw(console);
             EnterButton.Draw(console);
 
-            UserInterface.DrawLeaderboard(console);
+            UserInterface.DrawLeaderboard(console, 12);
         }
 
         public override void Clicked()

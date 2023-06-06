@@ -160,7 +160,7 @@ namespace Tetris.Systems
         public void PlaceTetromino()
         {
             Game.Board.CheckLines(FallingTetromino.Y, FallingTetromino.Y + FallingTetromino.Height);
-            Game.HoldManager.HasHeld = false;
+            Game.HoldManager.CanHold = true;
             GetNextTetromino();
         }
 

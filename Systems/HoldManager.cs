@@ -5,7 +5,7 @@ namespace Tetris.Systems
 {
     public class HoldManager
     {
-        public bool HasHeld { get; set; } = false;
+        public bool CanHold { get; set; } = true;
         private Tetromino _heldTetromino;
 
         public void Draw(RLConsole console)
@@ -19,9 +19,9 @@ namespace Tetris.Systems
 
         public void HoldPiece()
         {
-            if (!HasHeld)
+            if (CanHold)
             {
-                HasHeld = true;
+                CanHold = false;
                 _heldTetromino = Game.TetrominoController.HoldTetromino(_heldTetromino);
             }
         }

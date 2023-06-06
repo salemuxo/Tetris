@@ -153,7 +153,7 @@ namespace Tetris
 
         public static void StartGame()
         {
-            _rootConsole.Clear();
+            ClearAllConsoles();
             Game = new Game(_boardWidth, _boardHeight);
             GameState = GameState.Playing;
             Game.Start();
@@ -172,6 +172,18 @@ namespace Tetris
             Leaderboard.HighScores.Add(new HighScore(name, score));
             Leaderboard.SaveScores();
             GameState = GameState.MainMenu;
+        }
+
+        private static void ClearAllConsoles()
+        {
+            _borderConsole.Clear();
+            _boardConsole.Clear();
+            _queueConsole.Clear();
+            _menuConsole.Clear();
+            _statConsole.Clear();
+            _holdConsole.Clear();
+            _logConsole.Clear();
+            _rootConsole.Clear();
         }
     }
 }

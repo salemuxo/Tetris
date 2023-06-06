@@ -32,7 +32,7 @@ namespace Tetris.Menus
             StartButton.Draw(console);
             EndButton.Draw(console);
 
-            UserInterface.DrawLeaderboard(console);
+            UserInterface.DrawLeaderboard(console, 12);
         }
 
         // check if buttons were clicked
