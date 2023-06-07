@@ -6,21 +6,32 @@ namespace Tetris
     public class Game
     {
         // systems
-        public static Board Board { get; private set; }
-        public static GhostManager GhostManager { get; private set; }
-        public static TetrominoController TetrominoController { get; private set; }
-        public static HoldManager HoldManager { get; private set; }
-        public static MessageLog MessageLog { get; private set; }
-        public static StatManager StatManager { get; private set; }
-        public static TimeManager TimeManager { get; private set; }
+        public static Board Board { get; protected set; }
+        public static GhostManager GhostManager { get; protected set; }
+        public static TetrominoController TetrominoController { get; protected set; }
+        public static HoldManager HoldManager { get; protected set; }
+        public static MessageLog MessageLog { get; protected set; }
+        public static StatManager StatManager { get; protected set; }
+        public static TimeManager TimeManager { get; protected set; }
         public static bool IsPlaying { get; set; }
 
-        public Game(int boardWidth, int boardHeight)
+        private static int _gameMode;
+
+        public Game(int boardWidth, int boardHeight, int gameMode)
         {
             // initialize systems
             Board = new Board(boardWidth, boardHeight);
             GhostManager = new GhostManager();
-            StatManager = new StatManager();
+
+            switch (gameMode)
+            {
+                case 0:
+                    {
+                        StatManager = new MarathonStatManager();
+                        break;
+                    }
+            }
+
             TimeManager = new TimeManager();
             HoldManager = new HoldManager();
             MessageLog = new MessageLog();

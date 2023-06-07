@@ -9,8 +9,8 @@ namespace Tetris.Systems
     public class TetrominoController
     {
         // config variables
-        private double _dasDelay = 167;
-        private double _dasRate = 33;
+        private const double _dasDelay = 167;
+        private const double _dasRate = 33;
 
         // other variables
         public Tetromino FallingTetromino { get; private set; }
@@ -21,6 +21,7 @@ namespace Tetris.Systems
         private double _graceTime = 0;
         private bool _isGraceTurn = false;
 
+        // direction of horizontal movement
         public Direction? DasDirection
         {
             get
@@ -196,7 +197,7 @@ namespace Tetris.Systems
             }
             else
             {
-                SetFallingTetromino(heldTetromino);
+                SetFallingTetromino(heldTetromino.Clone());
             }
 
             return holdTetromino;

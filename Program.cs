@@ -39,6 +39,7 @@ namespace Tetris
 
         private static RLConsole _menuConsole;
 
+        // systems
         public static GameState GameState = GameState.MainMenu;
         public static Game Game { get; private set; }
         public static Leaderboard Leaderboard { get; private set; }
@@ -48,7 +49,7 @@ namespace Tetris
 
         public static void Main(string[] args)
         {
-            // create
+            // create systems
             Random = new Random();
             MainMenu = new MainMenu(_screenWidth, _screenHeight);
             Leaderboard = new Leaderboard();
@@ -101,12 +102,12 @@ namespace Tetris
             // draw to subconsoles
             switch (GameState)
             {
-                case GameState.MainMenu:
+                case GameState.MainMenu: // draw main menu
                     {
                         MainMenu.Draw(_menuConsole);
                         break;
                     }
-                case GameState.Playing:
+                case GameState.Playing: // draw game
                     {
                         Game.Board.Draw(_boardConsole, _borderConsole);
                         Game.TetrominoController.DrawQueue(_queueConsole);
@@ -115,8 +116,9 @@ namespace Tetris
                         Game.MessageLog.Draw(_logConsole);
                         break;
                     }
-                case GameState.SavingScore:
+                case GameState.SavingScore: // draw game over menu
                     {
+                        _menuConsole.Clear();
                         GameOverMenu.Draw(_menuConsole);
                         break;
                     }
@@ -145,20 +147,23 @@ namespace Tetris
             _rootConsole.Draw();
         }
 
+        // save scores and close
         public static void Close()
         {
             Leaderboard.SaveScores();
             _rootConsole.Close();
         }
 
-        public static void StartGame()
+        // clear consoles and start new game
+        public static void StartGame(int gameMode)
         {
             ClearAllConsoles();
-            Game = new Game(_boardWidth, _boardHeight);
+            Game = new Game(_boardWidth, _boardHeight, gameMode);
             GameState = GameState.Playing;
             Game.Start();
         }
 
+        // end game and prompt game over screen
         public static void EndGame(int score)
         {
             _menuConsole.Clear();
@@ -166,6 +171,7 @@ namespace Tetris
             GameState = GameState.SavingScore;
         }
 
+        // save score and go to main menu
         public static void SaveScore(string name, int score)
         {
             _menuConsole.Clear();

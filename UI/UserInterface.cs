@@ -6,6 +6,7 @@ namespace Tetris.UI
 {
     public static class UserInterface
     {
+        // draw double line border
         public static void DrawDoubleBorder(RLConsole console, int x, int y,
             int width, int height, RLColor color)
         {
@@ -29,6 +30,7 @@ namespace Tetris.UI
             console.Set(x + width, y + height, color, null, 188);
         }
 
+        // draw single line border
         public static void DrawSingleBorder(RLConsole console, int x, int y,
             int width, int height, RLColor color)
         {
@@ -67,6 +69,17 @@ namespace Tetris.UI
             }
 
             DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);
+        }
+
+        // draw rainbow logo
+        public static void DrawLogo(RLConsole console, int x, int y)
+        {
+            console.Set(x, y, Palette.Red, null, 'T');
+            console.Set(x + 1, y, Palette.Orange, null, 'E');
+            console.Set(x + 2, y, Palette.Yellow, null, 'T');
+            console.Set(x + 3, y, Palette.Green, null, 'R');
+            console.Set(x + 4, y, Palette.Blue, null, 'I');
+            console.Set(x + 5, y, Palette.Purple, null, 'S');
         }
     }
 }

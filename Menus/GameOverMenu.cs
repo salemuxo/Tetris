@@ -10,7 +10,7 @@ namespace Tetris.Menus
         public TextBox NameBox { get; set; }
         public Button EnterButton { get; set; }
 
-        private int _score;
+        private readonly int _score;
 
         public GameOverMenu(int width, int height, int score)
         {
@@ -40,21 +40,25 @@ namespace Tetris.Menus
             UserInterface.DrawLeaderboard(console, 12);
         }
 
+        // check for clicks on buttons
         public override void Clicked()
         {
             EnterButton.CheckClick(mouseX, mouseY);
         }
 
+        // check for hover on buttons
         protected override void HandleHover()
         {
             EnterButton.HandleHover(mouseX, mouseY);
         }
 
+        // save score
         public void SaveScore()
         {
             Program.SaveScore(NameBox.Text, _score);
         }
 
+        // save score when button is clicked
         private void EnterButton_Click(object sender, EventArgs e)
         {
             SaveScore();

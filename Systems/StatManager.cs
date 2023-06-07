@@ -3,13 +3,13 @@ using Tetris.Core;
 
 namespace Tetris.Systems
 {
-    public class StatManager
+    public abstract class StatManager
     {
-        public int Level { get; private set; }
+        public int Level { get; protected set; }
         public int Score { get; set; }
-        public int Lines { get; private set; }
+        public int Lines { get; protected set; }
 
-        private int _combo = -1;
+        protected int _combo = -1;
 
         public StatManager()
         {
@@ -32,60 +32,12 @@ namespace Tetris.Systems
             console.Print(0, 10, Lines.ToString(), Palette.Text);
         }
 
-        public void ClearedLines(int lines)
-        {
-            int oldLines = Lines;
+        public abstract void ClearedLines(int lines);
 
-            Lines += lines;
-            switch (lines)
-            {
-                case 1:
-                    Score += 100 * Level;
-                    Game.MessageLog.Add($"Single +{100 * Level}", Palette.Red);
-                    break;
+        public abstract void HardDrop(int cells);
 
-                case 2:
-                    Score += 300 * Level;
-                    Game.MessageLog.Add($"Double +{300 * Level}", Palette.Blue);
-                    break;
-
-                case 3:
-                    Score += 500 * Level;
-                    Game.MessageLog.Add($"Triple +{500 * Level}", Palette.Green);
-                    break;
-
-                case 4:
-                    Score += 800 * Level;
-                    Game.MessageLog.Add($"Tetris +{800 * Level}", Palette.Purple);
-                    break;
-            }
-            int nearestLevel = oldLines.RoundUp(15);
-            if (oldLines < nearestLevel && Lines > nearestLevel)
-            {
-                IncreaseLevel();
-            }
-
-            if (lines != 0)
-            {
-                _combo++;
-                if (_combo > 0)
-                {
-                    Game.MessageLog.Add($"Combo x{_combo + 1} +{50 * _combo * Level}");
-                }
-            }
-            else
-            {
-                _combo = -1;
-            }
-        }
-
-        public void HardDrop(int cells)
-        {
-            Score += 2 * cells;
-            //Game.MessageLog.Add($"Drop +{2 * cells}");
-        }
-
-        private void IncreaseLevel()
+        // level up and speed up time
+        protected void IncreaseLevel()
         {
             Level++;
             Game.TimeManager.SetUpdateTime();

@@ -14,6 +14,7 @@ namespace Tetris.Core
         public int Y { get; set; }
         public int StartingX { get; set; }
 
+        // get lowest possible Y without moving X or hitting tile
         public int LowestY
         {
             get
@@ -40,6 +41,7 @@ namespace Tetris.Core
         // rotation offsets
         private readonly int[,] _offsets = new int[4, 2];
 
+        // initialize location and set cells
         public void Initialize()
         {
             X = StartingX;
@@ -47,6 +49,7 @@ namespace Tetris.Core
             SetCells();
         }
 
+        // move in direction
         public void Move(Direction direction)
         {
             if (CanMove(direction))
@@ -77,6 +80,7 @@ namespace Tetris.Core
             }
         }
 
+        // rotate piece CW and move to offset properly
         public void RotateCW()
         {
             ResetCells();
@@ -100,6 +104,7 @@ namespace Tetris.Core
             }
         }
 
+        // rotate piece CCW and move to offset properly
         public void RotateCCW()
         {
             ResetCells();
@@ -123,6 +128,7 @@ namespace Tetris.Core
             }
         }
 
+        // unset cells, set coords, set cells
         public void SetPos(int x, int y)
         {
             ResetCells();
@@ -131,13 +137,11 @@ namespace Tetris.Core
             SetCells();
         }
 
-        public Tetromino Clone()
-        {
-            return this.MemberwiseClone() as Tetromino;
-        }
+        // return initialized clone
+        public abstract Tetromino Clone();
 
         // set all cells occupied by tetromino to tile
-        public virtual void SetCells()
+        public void SetCells()
         {
             if (!_isGhost)
             {
@@ -169,7 +173,7 @@ namespace Tetris.Core
         }
 
         // remove tile from cells
-        public virtual void ResetCells()
+        public void ResetCells()
         {
             if (!_isGhost)
             {
@@ -217,12 +221,13 @@ namespace Tetris.Core
         // create ghost piece from this
         public Tetromino CreateGhost()
         {
-            var ghostTetromino = Clone();
+            var ghostTetromino = (Tetromino)MemberwiseClone();
             ghostTetromino._isGhost = true;
             ghostTetromino.SetPos(X, LowestY);
             return ghostTetromino;
         }
 
+        // set rotation offsets to keep center
         protected void SetRotationOffsets(
             int aX, int aY, int bX, int bY, int cX, int cY, int dX, int dY)
         {

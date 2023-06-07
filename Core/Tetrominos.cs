@@ -20,6 +20,11 @@
         {
             return "I";
         }
+
+        public override Tetromino Clone()
+        {
+            return new I();
+        }
     }
 
     public class O : Tetromino
@@ -39,6 +44,11 @@
         public override string ToString()
         {
             return "O";
+        }
+
+        public override Tetromino Clone()
+        {
+            return new O();
         }
     }
 
@@ -61,6 +71,11 @@
         {
             return "T";
         }
+
+        public override Tetromino Clone()
+        {
+            return new T();
+        }
     }
 
     public class J : Tetromino
@@ -81,6 +96,11 @@
         public override string ToString()
         {
             return "J";
+        }
+
+        public override Tetromino Clone()
+        {
+            return new J();
         }
     }
 
@@ -103,6 +123,11 @@
         {
             return "L";
         }
+
+        public override Tetromino Clone()
+        {
+            return new L();
+        }
     }
 
     public class S : Tetromino
@@ -123,6 +148,11 @@
         public override string ToString()
         {
             return "S";
+        }
+
+        public override Tetromino Clone()
+        {
+            return new S();
         }
     }
 
@@ -145,6 +175,11 @@
         public override string ToString()
         {
             return "Z";
+        }
+
+        public override Tetromino Clone()
+        {
+            return new Z();
         }
     }
 }

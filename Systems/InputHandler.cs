@@ -150,6 +150,7 @@ namespace Tetris.Systems
             RLMouse mouse = rootConsole.Mouse;
             switch (Program.GameState)
             {
+                // handle hover and clicks for menus
                 case GameState.MainMenu:
                     {
                         Program.MainMenu.SetMousePos(mouse.X, mouse.Y);
