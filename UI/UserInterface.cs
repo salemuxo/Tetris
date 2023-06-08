@@ -55,17 +55,33 @@ namespace Tetris.UI
         }
 
         // draw leaderboard
-        public static void DrawLeaderboard(RLConsole console, int y)
+        public static void DrawMarathonLeaderboard(RLConsole console, int y)
         {
-            int leaderboardHeight = Math.Min(Program.Leaderboard.HighScores.Count, 5);
+            int leaderboardHeight = Math.Min(Program.Leaderboard.MarathonScores.Count, 5);
 
             console.Print(10, y, "Top Scores", Palette.Purple);
             for (int i = 0; i < leaderboardHeight; i++)
             {
                 console.Print(9, y + 2 + i,
-                    Program.Leaderboard.HighScores[i].Name, Palette.Text);
+                    Program.Leaderboard.MarathonScores[i].Name, Palette.Text);
                 console.Print(16, y + 2 + i,
-                    Program.Leaderboard.HighScores[i].Score.ToString(), Palette.Text);
+                    Program.Leaderboard.MarathonScores[i].Score.ToString(), Palette.Text);
+            }
+
+            DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);
+        }
+
+        public static void DrawSprintLeaderboard(RLConsole console, int y)
+        {
+            int leaderboardHeight = Math.Min(Program.Leaderboard.SprintScores.Count, 5);
+
+            console.Print(10, y, "Top Times", Palette.Purple);
+            for (int i = 0; i < leaderboardHeight; i++)
+            {
+                console.Print(9, y + 2 + i,
+                    Program.Leaderboard.SprintScores[i].Name, Palette.Text);
+                console.Print(16, y + 2 + i,
+                    Utility.TimeToString((double)Program.Leaderboard.SprintScores[i].Time), Palette.Text);
             }
 
             DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);

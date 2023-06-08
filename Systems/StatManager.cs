@@ -8,29 +8,13 @@ namespace Tetris.Systems
         public int Level { get; protected set; }
         public int Score { get; set; }
         public int Lines { get; protected set; }
+        public double Time { get; protected set; }
 
         protected int _combo = -1;
 
-        public StatManager()
-        {
-            Level = 1;
-            Score = 0;
-        }
+        public abstract void Update(double deltaTime);
 
-        public void Draw(RLConsole console)
-        {
-            console.Print(0, 0, "TOP", Palette.Text);
-            console.Print(0, 1, Program.Leaderboard.HighScores[0].Score.ToString(), Palette.Text);
-
-            console.Print(0, 3, "SCORE", Palette.Text);
-            console.Print(0, 4, Score.ToString(), Palette.Text);
-
-            console.Print(0, 6, "LEVEL", Palette.Text);
-            console.Print(0, 7, Level.ToString(), Palette.Text);
-
-            console.Print(0, 9, "LINES", Palette.Text);
-            console.Print(0, 10, Lines.ToString(), Palette.Text);
-        }
+        public abstract void Draw(RLConsole console);
 
         public abstract void ClearedLines(int lines);
 

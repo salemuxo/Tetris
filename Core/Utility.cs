@@ -16,5 +16,10 @@ namespace Tetris.Core
         {
             return (backWidth - frontWidth) / 2;
         }
+
+        public static string TimeToString(double time)
+        {
+            return TimeSpan.FromMilliseconds(time).ToString("mm':'ss");
+        }
     }
 }

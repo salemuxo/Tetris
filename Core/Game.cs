@@ -1,5 +1,7 @@
 ﻿using Tetris.Core;
 using Tetris.Systems;
+using Tetris.Modes;
+using System.Diagnostics;
 
 namespace Tetris
 {
@@ -30,7 +32,17 @@ namespace Tetris
                         StatManager = new MarathonStatManager();
                         break;
                     }
+                case 1:
+                    {
+                        StatManager = new SprintStatManager();
+                        break;
+                    }
+                case 2:
+                    {
+                        break;
+                    }
             }
+            _gameMode = gameMode;
 
             TimeManager = new TimeManager();
             HoldManager = new HoldManager();
@@ -49,12 +61,34 @@ namespace Tetris
             TimeManager.Update();
             TetrominoController.Update(TimeManager.DeltaTime);
             MessageLog.Update(TimeManager.DeltaTime);
+
+            if (_gameMode != 0)
+            {
+                StatManager.Update(TimeManager.DeltaTime);
+            }
         }
 
         public void GameOver()
         {
+            //Debug.WriteLine(_gameMode);
             IsPlaying = false;
-            Program.EndGame(StatManager.Score);
+            switch (_gameMode)
+            {
+                case 0:
+                    {
+                        Program.EndGame(StatManager.Score);
+                        break;
+                    }
+                case 1:
+                    {
+                        Program.EndGame(StatManager.Time);
+                        break;
+                    }
+                case 2:
+                    {
+                        break;
+                    }
+            }
         }
     }
 }

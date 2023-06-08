@@ -1,9 +1,37 @@
-﻿using Tetris.Core;
+﻿using RLNET;
+using Tetris.Core;
+using Tetris.Systems;
 
-namespace Tetris.Systems
+namespace Tetris.Modes
 {
     public class MarathonStatManager : StatManager
     {
+        public MarathonStatManager()
+        {
+            Level = 1;
+            Score = 0;
+        }
+
+        public override void Update(double deltaTime)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Draw(RLConsole console)
+        {
+            console.Print(0, 0, "TOP", Palette.Text);
+            console.Print(0, 1, Program.Leaderboard.MarathonScores[0].Score.ToString(), Palette.Text);
+
+            console.Print(0, 3, "SCORE", Palette.Text);
+            console.Print(0, 4, Score.ToString(), Palette.Text);
+
+            console.Print(0, 6, "LEVEL", Palette.Text);
+            console.Print(0, 7, Level.ToString(), Palette.Text);
+
+            console.Print(0, 9, "LINES", Palette.Text);
+            console.Print(0, 10, Lines.ToString(), Palette.Text);
+        }
+
         // add score for lines cleared and check for combo and level up
         public override void ClearedLines(int lines)
         {

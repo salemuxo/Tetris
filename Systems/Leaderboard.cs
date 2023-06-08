@@ -9,40 +9,83 @@ namespace Tetris.Systems
 {
     public class Leaderboard
     {
-        public List<HighScore> HighScores { get; private set; }
+        public List<HighScore> MarathonScores { get; private set; }
+        public List<HighScore> SprintScores { get; private set; }
 
         public Leaderboard()
         {
-            LoadScores();
+            LoadAllScores();
         }
 
-        // try to load high scores, otherwise create blank list
-        private void LoadScores()
+        public void LoadAllScores()
+        {
+            LoadMarathonScores();
+            LoadSprintScores();
+        }
+
+        public void SaveAllScores()
+        {
+            SaveMarathonScores();
+            SaveSprintScores();
+        }
+
+        // MARATHON
+        private void LoadMarathonScores()
         {
             try
             {
                 // load json data
-                string jsonString = File.ReadAllText(@"..\..\Data\HighScores.json");
-                HighScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
+                string jsonString = File.ReadAllText(@"..\..\Data\MarathonScores.json");
+                MarathonScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
             }
             catch
             {
-                HighScores = new List<HighScore>();
+                MarathonScores = new List<HighScore>();
                 Debug.WriteLine("No high scores to load");
             }
         }
 
-        public void SaveScores()
+        public void SaveMarathonScores()
         {
-            SortScores();
-            string jsonString = JsonSerializer.Serialize(HighScores);
-            File.WriteAllText(@"..\..\Data\HighScores.json", jsonString);
+            MarathonScores = SortByScore(MarathonScores);
+            string jsonString = JsonSerializer.Serialize(MarathonScores);
+            File.WriteAllText(@"..\..\Data\MarathonScores.json", jsonString);
         }
 
-        private void SortScores()
+        // SPRINT
+        private void LoadSprintScores()
         {
-            var sortedList = HighScores.OrderByDescending(x => x.Score).ToList();
-            HighScores = sortedList;
+            try
+            {
+                // load json data
+                string jsonString = File.ReadAllText(@"..\..\Data\SprintScores.json");
+                SprintScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
+            }
+            catch
+            {
+                SprintScores = new List<HighScore>();
+                Debug.WriteLine("No high scores to load");
+            }
+        }
+
+        public void SaveSprintScores()
+        {
+            SprintScores = SortByTime(SprintScores);
+            string jsonString = JsonSerializer.Serialize(SprintScores);
+            File.WriteAllText(@"..\..\Data\SprintScores.json", jsonString);
+        }
+
+        // SORT
+        private List<HighScore> SortByScore(List<HighScore> listToSort)
+        {
+            var sortedList = listToSort.OrderByDescending(x => x.Score).ToList();
+            return sortedList;
+        }
+
+        private List<HighScore> SortByTime(List<HighScore> listToSort)
+        {
+            var sortedList = listToSort.OrderByDescending(x => x.Time).ToList();
+            return sortedList;
         }
     }
 }

@@ -3,17 +3,14 @@
     public class HighScore
     {
         public string Name { get; set; }
-        public int Score { get; set; }
+        public int? Score { get; set; }
+        public double? Time { get; set; }
 
-        public HighScore(string name, int score)
+        public HighScore(string name, int? score, double? time)
         {
             Name = name;
             Score = score;
-        }
-
-        public override string ToString()
-        {
-            return Name + ": " + Score;
+            Time = time;
         }
     }
 }

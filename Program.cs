@@ -118,7 +118,7 @@ namespace Tetris
                     }
                 case GameState.SavingScore: // draw game over menu
                     {
-                        _menuConsole.Clear();
+                        ClearMenu();
                         GameOverMenu.Draw(_menuConsole);
                         break;
                     }
@@ -150,7 +150,7 @@ namespace Tetris
         // save scores and close
         public static void Close()
         {
-            Leaderboard.SaveScores();
+            Leaderboard.SaveAllScores();
             _rootConsole.Close();
         }
 
@@ -163,29 +163,49 @@ namespace Tetris
             Game.Start();
         }
 
-        // end game and prompt game over screen
+        // end marathon and prompt game over screen
         public static void EndGame(int score)
         {
-            _menuConsole.Clear();
-            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, score);
+            ClearMenu();
+            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, score, 0);
+            GameState = GameState.SavingScore;
+        }
+
+        public static void EndGame(double time)
+        {
+            ClearMenu();
+            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, time, 1);
             GameState = GameState.SavingScore;
         }
 
         // save score and go to main menu
-        public static void SaveScore(string name, int score)
+        public static void SaveMarathonScore(string name, int score)
+        {
+            ClearMenu();
+            Leaderboard.MarathonScores.Add(new HighScore(name, score, null));
+            Leaderboard.SaveMarathonScores();
+            GameState = GameState.MainMenu;
+        }
+
+        public static void SaveSprintScore(string name, double time)
+        {
+            ClearMenu();
+            Leaderboard.SprintScores.Add(new HighScore(name, null, time));
+            Leaderboard.SaveSprintScores();
+            GameState = GameState.MainMenu;
+        }
+
+        public static void ClearMenu()
         {
             _menuConsole.Clear();
-            Leaderboard.HighScores.Add(new HighScore(name, score));
-            Leaderboard.SaveScores();
-            GameState = GameState.MainMenu;
         }
 
         private static void ClearAllConsoles()
         {
+            ClearMenu();
             _borderConsole.Clear();
             _boardConsole.Clear();
             _queueConsole.Clear();
-            _menuConsole.Clear();
             _statConsole.Clear();
             _holdConsole.Clear();
             _logConsole.Clear();

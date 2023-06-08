@@ -12,6 +12,13 @@ namespace Tetris.Menus
         public Button UltraButton { get; set; }
         public Button EndButton { get; set; }
 
+        // leaderboard tabs
+        public Button MLButton { get; set; }
+        public Button SLButton { get; set; }
+        public Button ULButton { get; set; }
+
+        private int _leaderboardTab = 0;
+
         public MainMenu(int width, int height)
         {
             Width = width;
@@ -28,6 +35,15 @@ namespace Tetris.Menus
 
             EndButton = new Button(28, 1, 4, "X", Palette.Red, false);
             EndButton.Click += EndButton_Click;
+
+            MLButton = new Button(7, 14, 1, "M", Palette.Green, false);
+            MLButton.Click += MLButton_Click;
+
+            SLButton = new Button(9, 14, 1, "S", Palette.Cyan, false);
+            SLButton.Click += SLButton_Click;
+
+            ULButton = new Button(11, 14, 1, "Y", Palette.Orange, false);
+            ULButton.Click += ULButton_Click;
         }
 
         public override void Draw(RLConsole console)
@@ -42,7 +58,28 @@ namespace Tetris.Menus
             UltraButton.Draw(console);
             EndButton.Draw(console);
 
-            UserInterface.DrawLeaderboard(console, 16);
+            MLButton.Draw(console);
+            SLButton.Draw(console);
+            ULButton.Draw(console);
+
+            switch (_leaderboardTab)
+            {
+                case 0:
+                    {
+                        UserInterface.DrawMarathonLeaderboard(console, 16);
+                        break;
+                    }
+                case 1:
+                    {
+                        UserInterface.DrawSprintLeaderboard(console, 16);
+                        break;
+                    }
+                case 2:
+                    {
+                        UserInterface.DrawSprintLeaderboard(console, 16);
+                        break;
+                    }
+            }
         }
 
         // check if buttons were clicked
@@ -52,6 +89,10 @@ namespace Tetris.Menus
             SprintButton.CheckClick(mouseX, mouseY);
             UltraButton.CheckClick(mouseX, mouseY);
             EndButton.CheckClick(mouseX, mouseY);
+
+            MLButton.CheckClick(mouseX, mouseY);
+            SLButton.CheckClick(mouseX, mouseY);
+            ULButton.CheckClick(mouseX, mouseY);
         }
 
         // check if buttons are hovered
@@ -61,6 +102,10 @@ namespace Tetris.Menus
             SprintButton.HandleHover(mouseX, mouseY);
             UltraButton.HandleHover(mouseX, mouseY);
             EndButton.HandleHover(mouseX, mouseY);
+
+            MLButton.HandleHover(mouseX, mouseY);
+            SLButton.HandleHover(mouseX, mouseY);
+            ULButton.HandleHover(mouseX, mouseY);
         }
 
         // start game
@@ -71,7 +116,7 @@ namespace Tetris.Menus
 
         private void SprintButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Program.StartGame(1);
         }
 
         private void UltraButton_Click(object sender, EventArgs e)
@@ -83,6 +128,33 @@ namespace Tetris.Menus
         private void EndButton_Click(object sender, System.EventArgs e)
         {
             Program.Close();
+        }
+
+        private void MLButton_Click(object sender, EventArgs e)
+        {
+            _leaderboardTab = 0;
+            MLButton.BackgroundColor = Palette.Yellow;
+            SLButton.BackgroundColor = RLColor.Black;
+            ULButton.BackgroundColor = RLColor.Black;
+            Program.ClearMenu();
+        }
+
+        private void SLButton_Click(object sender, EventArgs e)
+        {
+            _leaderboardTab = 1;
+            MLButton.BackgroundColor = RLColor.Black;
+            SLButton.BackgroundColor = Palette.Yellow;
+            ULButton.BackgroundColor = RLColor.Black;
+            Program.ClearMenu();
+        }
+
+        private void ULButton_Click(object sender, EventArgs e)
+        {
+            _leaderboardTab = 2;
+            MLButton.BackgroundColor = RLColor.Black;
+            SLButton.BackgroundColor = RLColor.Black;
+            ULButton.BackgroundColor = Palette.Yellow;
+            Program.ClearMenu();
         }
     }
 }

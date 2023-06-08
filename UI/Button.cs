@@ -9,12 +9,13 @@ namespace Tetris.UI
         public event EventHandler Click;
 
         public bool IsHovered { private get; set; }
+        public RLColor BackgroundColor { private get; set; }
 
         private readonly bool _drawBorder;
         private readonly string _text;
+        private readonly int _borderType;
         private RLColor _textColor;
         private RLColor _borderColor;
-        private int _borderType;
 
         public Button(int x, int y, int w, string text,
             RLColor textColor, RLColor borderColor, int borderType)
@@ -29,6 +30,7 @@ namespace Tetris.UI
             IsHovered = false;
             _borderType = borderType;
             _drawBorder = true;
+            BackgroundColor = RLColor.Black;
         }
 
         public Button(int x, int y, int w, string text,
@@ -43,6 +45,7 @@ namespace Tetris.UI
             _borderColor = Palette.Text;
             IsHovered = false;
             _drawBorder = drawBorder;
+            BackgroundColor = RLColor.Black;
         }
 
         public override void Draw(RLConsole console)
@@ -67,7 +70,7 @@ namespace Tetris.UI
                 }
             }
 
-            console.Print(X, Y, _text, textColor);
+            console.Print(X, Y, _text, textColor, BackgroundColor);
         }
 
         public void CheckClick(int x, int y)
