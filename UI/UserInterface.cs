@@ -54,12 +54,12 @@ namespace Tetris.UI
             console.Set(x + width, y + height, color, null, 217);
         }
 
-        // draw leaderboard
+        // draw marathon leaderboard to console with top left corner at y
         public static void DrawMarathonLeaderboard(RLConsole console, int y)
         {
             int leaderboardHeight = Math.Min(Program.Leaderboard.MarathonScores.Count, 5);
 
-            console.Print(10, y, "Top Scores", Palette.Purple);
+            console.Print(7, y, "Marathon Scores", Palette.Green);
             for (int i = 0; i < leaderboardHeight; i++)
             {
                 console.Print(9, y + 2 + i,
@@ -71,17 +71,35 @@ namespace Tetris.UI
             DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);
         }
 
+        // draw sprint leaderboard to console with top left corner at y
         public static void DrawSprintLeaderboard(RLConsole console, int y)
         {
             int leaderboardHeight = Math.Min(Program.Leaderboard.SprintScores.Count, 5);
 
-            console.Print(10, y, "Top Times", Palette.Purple);
+            console.Print(9, y, "Sprint Times", Palette.Cyan);
             for (int i = 0; i < leaderboardHeight; i++)
             {
                 console.Print(9, y + 2 + i,
                     Program.Leaderboard.SprintScores[i].Name, Palette.Text);
                 console.Print(16, y + 2 + i,
                     Utility.TimeToString((double)Program.Leaderboard.SprintScores[i].Time), Palette.Text);
+            }
+
+            DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);
+        }
+
+        // draw ultra leaderboard to console with top left corner at y
+        public static void DrawUltraLeaderboard(RLConsole console, int y)
+        {
+            int leaderboardHeight = Math.Min(Program.Leaderboard.UltraScores.Count, 5);
+
+            console.Print(9, y, "Ultra Scores", Palette.Orange);
+            for (int i = 0; i < leaderboardHeight; i++)
+            {
+                console.Print(9, y + 2 + i,
+                    Program.Leaderboard.UltraScores[i].Name, Palette.Text);
+                console.Print(16, y + 2 + i,
+                    Program.Leaderboard.UltraScores[i].Score.ToString(), Palette.Text);
             }
 
             DrawDoubleBorder(console, 7, y, 16, leaderboardHeight + 2, Palette.Blue);

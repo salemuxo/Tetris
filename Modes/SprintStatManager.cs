@@ -1,5 +1,4 @@
 ﻿using RLNET;
-using System;
 using Tetris.Core;
 using Tetris.Systems;
 
@@ -13,6 +12,7 @@ namespace Tetris.Modes
             Score = 0;
         }
 
+        // update time
         public override void Update(double deltaTime)
         {
             if (Game.IsPlaying)
@@ -24,7 +24,7 @@ namespace Tetris.Modes
         public override void Draw(RLConsole console)
         {
             console.Print(0, 0, "TOP", Palette.Text);
-            //console.Print(0, 1, Utility.TimeToString(Program.Leaderboard.SprintScores[0].Time), Palette.Text);
+            console.Print(0, 1, Utility.TimeToString((double)Program.Leaderboard.SprintScores[0].Time), Palette.Text);
 
             console.Print(0, 3, "TIME", Palette.Text);
             console.Print(0, 4, Utility.TimeToString(Time), Palette.Text);
@@ -33,6 +33,7 @@ namespace Tetris.Modes
             console.Print(0, 7, Lines.ToString(), Palette.Text);
         }
 
+        // if 40 or more lines are cleared, end game
         public override void ClearedLines(int lines)
         {
             Lines += lines;
@@ -42,6 +43,7 @@ namespace Tetris.Modes
             }
         }
 
+        // sprint doesnt use score
         public override void HardDrop(int cells)
         {
             //throw new NotImplementedException();

@@ -1,7 +1,6 @@
 ﻿using Tetris.Core;
 using Tetris.Systems;
 using Tetris.Modes;
-using System.Diagnostics;
 
 namespace Tetris
 {
@@ -17,33 +16,34 @@ namespace Tetris
         public static TimeManager TimeManager { get; protected set; }
         public static bool IsPlaying { get; set; }
 
-        private static int _gameMode;
+        private static GameMode _gameMode;
 
-        public Game(int boardWidth, int boardHeight, int gameMode)
+        public Game(int boardWidth, int boardHeight, GameMode gameMode)
         {
-            // initialize systems
-            Board = new Board(boardWidth, boardHeight);
-            GhostManager = new GhostManager();
-
+            // use stat manager corresponding to game mode
             switch (gameMode)
             {
-                case 0:
+                case GameMode.Marathon:
                     {
                         StatManager = new MarathonStatManager();
                         break;
                     }
-                case 1:
+                case GameMode.Sprint:
                     {
                         StatManager = new SprintStatManager();
                         break;
                     }
-                case 2:
+                case GameMode.Ultra:
                     {
+                        StatManager = new UltraStatManager();
                         break;
                     }
             }
             _gameMode = gameMode;
 
+            // initialize systems
+            Board = new Board(boardWidth, boardHeight);
+            GhostManager = new GhostManager();
             TimeManager = new TimeManager();
             HoldManager = new HoldManager();
             MessageLog = new MessageLog();
@@ -56,38 +56,32 @@ namespace Tetris
             TetrominoController.Start();
         }
 
+        // update time
         public void Update()
         {
             TimeManager.Update();
+
             TetrominoController.Update(TimeManager.DeltaTime);
             MessageLog.Update(TimeManager.DeltaTime);
 
-            if (_gameMode != 0)
+            if (_gameMode != GameMode.Marathon)
             {
                 StatManager.Update(TimeManager.DeltaTime);
             }
         }
 
+        // end game, prompt game over screen
         public void GameOver()
         {
             //Debug.WriteLine(_gameMode);
             IsPlaying = false;
-            switch (_gameMode)
+            if (_gameMode == GameMode.Sprint)
             {
-                case 0:
-                    {
-                        Program.EndGame(StatManager.Score);
-                        break;
-                    }
-                case 1:
-                    {
-                        Program.EndGame(StatManager.Time);
-                        break;
-                    }
-                case 2:
-                    {
-                        break;
-                    }
+                Program.EndGame(GameMode.Sprint, null, StatManager.Time);
+            }
+            else
+            {
+                Program.EndGame(_gameMode, StatManager.Score, null);
             }
         }
     }

@@ -48,6 +48,7 @@ namespace Tetris.UI
             BackgroundColor = RLColor.Black;
         }
 
+        // draw button and border if enabled
         public override void Draw(RLConsole console)
         {
             RLColor textColor = _textColor;
@@ -73,6 +74,7 @@ namespace Tetris.UI
             console.Print(X, Y, _text, textColor, BackgroundColor);
         }
 
+        // check if click is on button
         public void CheckClick(int x, int y)
         {
             if (IsInBounds(x, y))
@@ -81,16 +83,19 @@ namespace Tetris.UI
             }
         }
 
+        // check if mouse is hovering over button
         public void HandleHover(int x, int y)
         {
             IsHovered = IsInBounds(x, y);
         }
 
+        // click event
         protected virtual void OnClick()
         {
             Click?.Invoke(this, EventArgs.Empty);
         }
 
+        // check if position is on button
         public bool IsInBounds(int x, int y)
         {
             if (_drawBorder)

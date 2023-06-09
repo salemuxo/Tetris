@@ -19,6 +19,7 @@ namespace Tetris.Core
             IsGhost = false;
         }
 
+        // draw based on if tile, ghost, or neither
         public void Draw(RLConsole console)
         {
             if (IsTile)
@@ -65,6 +66,7 @@ namespace Tetris.Core
             IsGhost = false;
         }
 
+        // remove tile and ghost and set to grey
         public void ClearCell()
         {
             Color = Palette.Grey;
@@ -74,7 +76,7 @@ namespace Tetris.Core
 
         public Cell Clone()
         {
-            return this.MemberwiseClone() as Cell;
+            return MemberwiseClone() as Cell;
         }
     }
 }

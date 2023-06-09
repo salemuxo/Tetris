@@ -15,6 +15,7 @@ namespace Tetris.Systems
             _toRemove = new List<Message>();
         }
 
+        // update times, remove old messages
         public void Update(double deltaTime)
         {
             foreach (var message in _messages)
@@ -32,11 +33,12 @@ namespace Tetris.Systems
             console.Clear();
             for (int i = 0; i < _messages.Count; i++)
             {
-                console.Print(_messages[i].GetCenteredPos(console.Width), i,
-                    _messages[i].Line, _messages[i].Color);
+                console.Print(Utility.GetCenteredX(console.Width, _messages[i].Line.Length),
+                    i, _messages[i].Line, _messages[i].Color);
             }
         }
 
+        // add message to queue
         public void Add(string message)
         {
             _messages.Add(new Message(message, Palette.Text, 1000));
@@ -57,6 +59,7 @@ namespace Tetris.Systems
             _messages.Add(new Message(message, color, displayTime));
         }
 
+        // mark message to be removed
         public void Remove(Message message)
         {
             _toRemove.Add(message);

@@ -14,4 +14,11 @@
         Playing,
         SavingScore
     }
+
+    public enum GameMode
+    {
+        Marathon,
+        Sprint,
+        Ultra
+    }
 }

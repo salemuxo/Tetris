@@ -1,6 +1,6 @@
 ﻿using RLNET;
 
-namespace Tetris.Menus
+namespace Tetris.Core
 {
     public abstract class Menu
     {

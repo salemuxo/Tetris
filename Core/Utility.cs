@@ -12,11 +12,13 @@ namespace Tetris.Core
 
     public static class Utility
     {
+        // get centered X for item of frontWidth on background of backWidth
         public static int GetCenteredX(int backWidth, int frontWidth)
         {
             return (backWidth - frontWidth) / 2;
         }
 
+        // convert milliseconds to mm:ss formatting
         public static string TimeToString(double time)
         {
             return TimeSpan.FromMilliseconds(time).ToString("mm':'ss");

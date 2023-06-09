@@ -17,6 +17,7 @@ namespace Tetris.Core
             _timeActive = 0;
         }
 
+        // update time
         public void Update(double deltaTime)
         {
             _timeActive += deltaTime;
@@ -24,11 +25,6 @@ namespace Tetris.Core
             {
                 Game.MessageLog.Remove(this);
             }
-        }
-
-        public int GetCenteredPos(int logWidth)
-        {
-            return (logWidth - Line.Length) / 2;
         }
     }
 }

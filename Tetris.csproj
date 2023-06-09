@@ -90,8 +90,9 @@
     <Compile Include="Core\Palette.cs" />
     <Compile Include="Core\Tetromino.cs" />
     <Compile Include="Core\Tetrominos.cs" />
-    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Core\Menu.cs" />
     <Compile Include="Modes\SprintStatManager.cs" />
+    <Compile Include="Modes\UltraStatManager.cs" />
     <Compile Include="Systems\Leaderboard.cs" />
     <Compile Include="Modes\MarathonStatManager.cs" />
     <Compile Include="UI\Button.cs" />
@@ -113,6 +114,7 @@
     <None Include="App.config" />
     <None Include="Data\MarathonScores.json" />
     <None Include="Data\SprintScores.json" />
+    <None Include="Data\UltraScores.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

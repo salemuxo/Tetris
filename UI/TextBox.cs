@@ -22,14 +22,16 @@ namespace Tetris.Core
             UserInterface.DrawSingleBorder(console, X, Y, Width, Height, Palette.Text);
         }
 
-        public void Add(char? text)
+        // if box isnt full and character isnt space, add to text
+        public void Add(char? character)
         {
-            if (text != null && Text.Length < Width)
+            if (character != null && character != '\u0020' && Text.Length < Width)
             {
-                Text += text;
+                Text += character;
             }
         }
 
+        // remove last character from text
         public void Remove()
         {
             if (Text.Length > 0)

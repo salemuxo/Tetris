@@ -6,6 +6,7 @@ namespace Tetris.Systems
     {
         private Tetromino _ghost;
 
+        // remove old ghost and set new ghost based on falling tetromino
         public void Set()
         {
             _ghost?.ResetCells();
@@ -13,6 +14,7 @@ namespace Tetris.Systems
             Move();
         }
 
+        // move ghost to be under falling tetromino
         public void Move()
         {
             var lowestY = Game.TetrominoController.FallingTetromino.LowestY;

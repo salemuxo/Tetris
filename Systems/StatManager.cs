@@ -12,12 +12,16 @@ namespace Tetris.Systems
 
         protected int _combo = -1;
 
+        // update time
         public abstract void Update(double deltaTime);
 
+        // draw stats
         public abstract void Draw(RLConsole console);
 
+        // handle line clears
         public abstract void ClearedLines(int lines);
 
+        // handle hard drop
         public abstract void HardDrop(int cells);
 
         // level up and speed up time

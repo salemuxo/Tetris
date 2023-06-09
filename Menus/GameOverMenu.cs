@@ -1,6 +1,7 @@
 ﻿using RLNET;
 using System;
 using Tetris.Core;
+using Tetris.Systems;
 using Tetris.UI;
 
 namespace Tetris.Menus
@@ -13,9 +14,9 @@ namespace Tetris.Menus
         private readonly int _score;
         private readonly double _time;
 
-        private readonly int _gameMode;
+        private readonly GameMode _gameMode;
 
-        public GameOverMenu(int width, int height, int score, int gameMode)
+        public GameOverMenu(int width, int height, int score, GameMode gameMode)
         {
             Width = width;
             Height = height;
@@ -27,7 +28,7 @@ namespace Tetris.Menus
             EnterButton.Click += EnterButton_Click;
         }
 
-        public GameOverMenu(int width, int height, double time, int gameMode)
+        public GameOverMenu(int width, int height, double time, GameMode gameMode)
         {
             Width = width;
             Height = height;
@@ -43,12 +44,12 @@ namespace Tetris.Menus
         {
             switch (_gameMode)
             {
-                case 0:
+                case GameMode.Marathon:
                     {
                         // check for new high score
                         if (_score > Program.Leaderboard.MarathonScores[0].Score)
                         {
-                            console.Print(0, 8, "New high score", Palette.Green);
+                            console.Print(8, 1, "New high score", Palette.Green);
                         }
 
                         // write new score
@@ -60,13 +61,13 @@ namespace Tetris.Menus
                         UserInterface.DrawMarathonLeaderboard(console, 12);
                         break;
                     }
-                case 1:
+                case GameMode.Sprint:
                     {
                         // check for new high score
-                        //if (_time < Program.Leaderboard.SprintScores[0].Time)
-                        //{
-                        //    console.Print(0, 8, "New high score", Palette.Green);
-                        //}
+                        if (_time < Program.Leaderboard.SprintScores[0].Time)
+                        {
+                            console.Print(8, 1, "New high score", Palette.Green);
+                        }
 
                         // write new time
                         string timeLine = $"Time: {Utility.TimeToString(_time)}";
@@ -75,6 +76,23 @@ namespace Tetris.Menus
 
                         // draw leaderboard
                         UserInterface.DrawSprintLeaderboard(console, 12);
+                        break;
+                    }
+                case GameMode.Ultra:
+                    {
+                        // check for new high score
+                        if (_score > Program.Leaderboard.UltraScores[0].Score)
+                        {
+                            console.Print(8, 1, "New high score", Palette.Green);
+                        }
+
+                        // write new score
+                        string scoreLine = $"Score: {_score}";
+                        console.Print(Utility.GetCenteredX(console.Width, scoreLine.Length),
+                            2, scoreLine, Palette.Blue);
+
+                        // draw leaderboard
+                        UserInterface.DrawUltraLeaderboard(console, 12);
                         break;
                     }
             }
@@ -101,14 +119,19 @@ namespace Tetris.Menus
         {
             switch (_gameMode)
             {
-                case 0:
+                case GameMode.Marathon:
                     {
-                        Program.SaveMarathonScore(NameBox.Text, _score);
+                        SaveMarathonScore(NameBox.Text, _score);
                         break;
                     }
-                case 1:
+                case GameMode.Sprint:
                     {
-                        Program.SaveSprintScore(NameBox.Text, _time);
+                        SaveSprintScore(NameBox.Text, _time);
+                        break;
+                    }
+                case GameMode.Ultra:
+                    {
+                        SaveUltraScore(NameBox.Text, _score);
                         break;
                     }
             }
@@ -118,6 +141,31 @@ namespace Tetris.Menus
         private void EnterButton_Click(object sender, EventArgs e)
         {
             SaveScore();
+        }
+
+        // save score and go to main menu
+        private static void SaveMarathonScore(string name, int score)
+        {
+            Program.ClearMenu();
+            Program.Leaderboard.MarathonScores.Add(new HighScore(name, score, null));
+            Program.Leaderboard.SaveMarathonScores();
+            Program.GameState = GameState.MainMenu;
+        }
+
+        private static void SaveSprintScore(string name, double time)
+        {
+            Program.ClearMenu();
+            Program.Leaderboard.SprintScores.Add(new HighScore(name, null, time));
+            Program.Leaderboard.SaveSprintScores();
+            Program.GameState = GameState.MainMenu;
+        }
+
+        private static void SaveUltraScore(string name, int score)
+        {
+            Program.ClearMenu();
+            Program.Leaderboard.UltraScores.Add(new HighScore(name, score, null));
+            Program.Leaderboard.SaveUltraScores();
+            Program.GameState = GameState.MainMenu;
         }
     }
 }

@@ -5,8 +5,10 @@ namespace Tetris.Systems
 {
     public class TimeManager
     {
+        // time between current frame and last frame in ms
         public double DeltaTime { get; private set; }
 
+        // time between auto movement
         public double UpdateTime
         {
             get
@@ -35,6 +37,7 @@ namespace Tetris.Systems
             _previousGameTime = DateTime.UtcNow;
         }
 
+        // calculate DeltaTime
         public void Update()
         {
             if (Game.IsPlaying)
@@ -46,6 +49,7 @@ namespace Tetris.Systems
             }
         }
 
+        // set update time based on level
         public void SetUpdateTime()
         {
             _updateTime = Math.Pow(0.8 - ((Game.StatManager.Level - 1) * 0.007), Game.StatManager.Level - 1) * 1000;

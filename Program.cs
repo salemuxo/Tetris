@@ -138,6 +138,7 @@ namespace Tetris
                 _rootConsole, 2, 2);
             RLConsole.Blit(_logConsole, 0, 0, _logWidth, _logHeight,
                 _rootConsole, 5, 25);
+
             if (GameState != GameState.Playing)
             {
                 RLConsole.Blit(_menuConsole, 0, 0, _screenWidth, _screenHeight,
@@ -155,7 +156,7 @@ namespace Tetris
         }
 
         // clear consoles and start new game
-        public static void StartGame(int gameMode)
+        public static void StartGame(GameMode gameMode)
         {
             ClearAllConsoles();
             Game = new Game(_boardWidth, _boardHeight, gameMode);
@@ -164,37 +165,23 @@ namespace Tetris
         }
 
         // end marathon and prompt game over screen
-        public static void EndGame(int score)
+        public static void EndGame(GameMode gameMode, int? score, double? time)
         {
             ClearMenu();
-            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, score, 0);
+            if (gameMode == GameMode.Sprint)
+            {
+                GameOverMenu = new GameOverMenu(
+                    _screenWidth, _screenHeight, (double)time, GameMode.Sprint);
+            }
+            else
+            {
+                GameOverMenu = new GameOverMenu(
+                    _screenWidth, _screenHeight, (int)score, gameMode);
+            }
             GameState = GameState.SavingScore;
         }
 
-        public static void EndGame(double time)
-        {
-            ClearMenu();
-            GameOverMenu = new GameOverMenu(_screenWidth, _screenHeight, time, 1);
-            GameState = GameState.SavingScore;
-        }
-
-        // save score and go to main menu
-        public static void SaveMarathonScore(string name, int score)
-        {
-            ClearMenu();
-            Leaderboard.MarathonScores.Add(new HighScore(name, score, null));
-            Leaderboard.SaveMarathonScores();
-            GameState = GameState.MainMenu;
-        }
-
-        public static void SaveSprintScore(string name, double time)
-        {
-            ClearMenu();
-            Leaderboard.SprintScores.Add(new HighScore(name, null, time));
-            Leaderboard.SaveSprintScores();
-            GameState = GameState.MainMenu;
-        }
-
+        // clear menu console (public)
         public static void ClearMenu()
         {
             _menuConsole.Clear();

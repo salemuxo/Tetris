@@ -11,6 +11,7 @@ namespace Tetris.Systems
     {
         public List<HighScore> MarathonScores { get; private set; }
         public List<HighScore> SprintScores { get; private set; }
+        public List<HighScore> UltraScores { get; private set; }
 
         public Leaderboard()
         {
@@ -21,12 +22,14 @@ namespace Tetris.Systems
         {
             LoadMarathonScores();
             LoadSprintScores();
+            LoadUltraScores();
         }
 
         public void SaveAllScores()
         {
             SaveMarathonScores();
             SaveSprintScores();
+            SaveUltraScores();
         }
 
         // MARATHON
@@ -75,6 +78,29 @@ namespace Tetris.Systems
             File.WriteAllText(@"..\..\Data\SprintScores.json", jsonString);
         }
 
+        // ULTRA
+        private void LoadUltraScores()
+        {
+            try
+            {
+                // load json data
+                string jsonString = File.ReadAllText(@"..\..\Data\UltraScores.json");
+                UltraScores = JsonSerializer.Deserialize<List<HighScore>>(jsonString);
+            }
+            catch
+            {
+                UltraScores = new List<HighScore>();
+                Debug.WriteLine("No high scores to load");
+            }
+        }
+
+        public void SaveUltraScores()
+        {
+            UltraScores = SortByTime(UltraScores);
+            string jsonString = JsonSerializer.Serialize(UltraScores);
+            File.WriteAllText(@"..\..\Data\UltraScores.json", jsonString);
+        }
+
         // SORT
         private List<HighScore> SortByScore(List<HighScore> listToSort)
         {
@@ -84,7 +110,7 @@ namespace Tetris.Systems
 
         private List<HighScore> SortByTime(List<HighScore> listToSort)
         {
-            var sortedList = listToSort.OrderByDescending(x => x.Time).ToList();
+            var sortedList = listToSort.OrderBy(x => x.Time).ToList();
             return sortedList;
         }
     }

@@ -1,44 +1,23 @@
 ﻿using RLNET;
+using System;
+using System.Diagnostics;
 using Tetris.Core;
 using Tetris.Systems;
 
 namespace Tetris.Modes
 {
-    public class MarathonStatManager : StatManager
+    public class UltraStatManager : StatManager
     {
-        public MarathonStatManager()
+        public UltraStatManager()
         {
             Level = 1;
             Score = 0;
         }
 
-        // marathon doesnt use time
-        public override void Update(double deltaTime)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Draw(RLConsole console)
-        {
-            console.Print(0, 0, "TOP", Palette.Text);
-            console.Print(0, 1, Program.Leaderboard.MarathonScores[0].Score.ToString(), Palette.Text);
-
-            console.Print(0, 3, "SCORE", Palette.Text);
-            console.Print(0, 4, Score.ToString(), Palette.Text);
-
-            console.Print(0, 6, "LEVEL", Palette.Text);
-            console.Print(0, 7, Level.ToString(), Palette.Text);
-
-            console.Print(0, 9, "LINES", Palette.Text);
-            console.Print(0, 10, Lines.ToString(), Palette.Text);
-        }
-
-        // add score for lines cleared and check for combo and level up
+        // calculate lines cleared, score, combo when piece is dropped
         public override void ClearedLines(int lines)
         {
-            int oldLines = Lines;
-
-            Lines += lines;
+            //Debug.WriteLine(lines);
             switch (lines)
             {
                 case 1:
@@ -61,12 +40,8 @@ namespace Tetris.Modes
                     Game.MessageLog.Add($"Tetris +{800 * Level}", Palette.Purple);
                     break;
             }
-            int nearestLevel = oldLines.RoundUp(15);
-            if (oldLines < nearestLevel && Lines > nearestLevel)
-            {
-                IncreaseLevel();
-            }
 
+            // calculate combo
             if (lines != 0)
             {
                 _combo++;
@@ -81,11 +56,39 @@ namespace Tetris.Modes
             }
         }
 
-        // give points for hard drop
+        public override void Draw(RLConsole console)
+        {
+            console.Print(0, 0, "TOP", Palette.Text);
+            console.Print(0, 1, Program.Leaderboard.UltraScores[0].Score.ToString(), Palette.Text);
+
+            console.Print(0, 3, "SCORE", Palette.Text);
+            console.Print(0, 4, Score.ToString(), Palette.Text);
+
+            console.Print(0, 6, "TIME", Palette.Text);
+            console.Print(0, 7, Utility.TimeToString(Time), Palette.Text);
+
+            console.Print(0, 9, "LINES", Palette.Text);
+            console.Print(0, 10, Lines.ToString(), Palette.Text);
+        }
+
+        // calculate hard drop score
         public override void HardDrop(int cells)
         {
             Score += 2 * cells;
-            //Game.MessageLog.Add($"Drop +{2 * cells}");
+        }
+
+        // update time and check if time is up
+        public override void Update(double deltaTime)
+        {
+            if (Game.IsPlaying)
+            {
+                Time += deltaTime;
+            }
+
+            if (Time >= 120000)
+            {
+                Program.Game.GameOver();
+            }
         }
     }
 }

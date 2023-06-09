@@ -36,13 +36,16 @@ namespace Tetris.Menus
             EndButton = new Button(28, 1, 4, "X", Palette.Red, false);
             EndButton.Click += EndButton_Click;
 
-            MLButton = new Button(7, 14, 1, "M", Palette.Green, false);
+            MLButton = new Button(7, 14, 1, "M", Palette.Green, false)
+            {
+                BackgroundColor = Palette.Blue
+            };
             MLButton.Click += MLButton_Click;
 
             SLButton = new Button(9, 14, 1, "S", Palette.Cyan, false);
             SLButton.Click += SLButton_Click;
 
-            ULButton = new Button(11, 14, 1, "Y", Palette.Orange, false);
+            ULButton = new Button(11, 14, 1, "U", Palette.Orange, false);
             ULButton.Click += ULButton_Click;
         }
 
@@ -76,7 +79,7 @@ namespace Tetris.Menus
                     }
                 case 2:
                     {
-                        UserInterface.DrawSprintLeaderboard(console, 16);
+                        UserInterface.DrawUltraLeaderboard(console, 16);
                         break;
                     }
             }
@@ -111,17 +114,17 @@ namespace Tetris.Menus
         // start game
         private void MarathonButton_Click(object sender, System.EventArgs e)
         {
-            Program.StartGame(0);
+            Program.StartGame(GameMode.Marathon);
         }
 
         private void SprintButton_Click(object sender, EventArgs e)
         {
-            Program.StartGame(1);
+            Program.StartGame(GameMode.Sprint);
         }
 
         private void UltraButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Program.StartGame(GameMode.Ultra);
         }
 
         // close game
@@ -130,10 +133,11 @@ namespace Tetris.Menus
             Program.Close();
         }
 
+        // switch tabs
         private void MLButton_Click(object sender, EventArgs e)
         {
             _leaderboardTab = 0;
-            MLButton.BackgroundColor = Palette.Yellow;
+            MLButton.BackgroundColor = Palette.Blue;
             SLButton.BackgroundColor = RLColor.Black;
             ULButton.BackgroundColor = RLColor.Black;
             Program.ClearMenu();
@@ -143,7 +147,7 @@ namespace Tetris.Menus
         {
             _leaderboardTab = 1;
             MLButton.BackgroundColor = RLColor.Black;
-            SLButton.BackgroundColor = Palette.Yellow;
+            SLButton.BackgroundColor = Palette.Blue;
             ULButton.BackgroundColor = RLColor.Black;
             Program.ClearMenu();
         }
@@ -153,7 +157,7 @@ namespace Tetris.Menus
             _leaderboardTab = 2;
             MLButton.BackgroundColor = RLColor.Black;
             SLButton.BackgroundColor = RLColor.Black;
-            ULButton.BackgroundColor = Palette.Yellow;
+            ULButton.BackgroundColor = Palette.Blue;
             Program.ClearMenu();
         }
     }

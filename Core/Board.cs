@@ -27,7 +27,7 @@ namespace Tetris.Core
                 }
             }
 
-            //borderConsole.SetBackColor(0, 0, Width + 2, Height + 2, Palette.Text);
+            // create border
             for (int x = 0; x < Width + 2; x++)
             {
                 borderConsole.Set(x, 0, Palette.Text, RLColor.Black, 176);

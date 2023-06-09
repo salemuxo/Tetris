@@ -1,5 +1,4 @@
 ﻿using RLNET;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Tetris.Core;
@@ -154,7 +153,6 @@ namespace Tetris.Systems
         public void NoMoveDown()
         {
             _isGraceTurn = true;
-            //PlaceTetromino();
         }
 
         // check for full lines and get next tetromino
