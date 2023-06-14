@@ -84,5 +84,24 @@ namespace Tetris
                 Program.EndGame(_gameMode, StatManager.Score, null);
             }
         }
+
+        // when piece cant be dropped, end game
+        public void EndGame()
+        {
+            switch (_gameMode)
+            {
+                case GameMode.Marathon:
+                case GameMode.Ultra:
+                    {
+                        GameOver();
+                        break;
+                    }
+                case GameMode.Sprint:
+                    {
+                        Program.FailGame();
+                        break;
+                    }
+            }
+        }
     }
 }

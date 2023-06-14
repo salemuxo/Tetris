@@ -39,13 +39,15 @@ namespace Tetris
 
         private static RLConsole _menuConsole;
 
-        // systems
+        // global systems
         public static GameState GameState = GameState.MainMenu;
         public static Game Game { get; private set; }
         public static Leaderboard Leaderboard { get; private set; }
+        public static Random Random { get; private set; }
+
+        // menus
         public static MainMenu MainMenu { get; private set; }
         public static GameOverMenu GameOverMenu { get; private set; }
-        public static Random Random { get; private set; }
 
         public static void Main(string[] args)
         {
@@ -179,6 +181,12 @@ namespace Tetris
                     _screenWidth, _screenHeight, (int)score, gameMode);
             }
             GameState = GameState.SavingScore;
+        }
+
+        public static void FailGame()
+        {
+            ClearMenu();
+            GameState = GameState.MainMenu;
         }
 
         // clear menu console (public)

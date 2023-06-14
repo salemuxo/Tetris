@@ -213,8 +213,8 @@ namespace Tetris.Systems
         {
             if (!tetromino.CheckValidPos(tetromino.StartingX, 0, false))
             {
-                Game.MessageLog.Add("GAME OVER!", 10000);
-                Program.Game.GameOver();
+                //Game.MessageLog.Add("GAME OVER!", 10000);
+                Program.Game.EndGame();
             }
 
             tetromino.Initialize();
